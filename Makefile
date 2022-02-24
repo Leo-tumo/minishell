@@ -1,5 +1,5 @@
 CC			=	gcc
-CC_FLAGS	=	-Wall -Wextra -Werror
+CC_FLAGS	=	-Wall -Wextra -Werror 
 RM			=	rm -rf
 DIR_HEADERS =	./includes/
 HEADER			= includes/minishell.h
@@ -14,6 +14,9 @@ NAME 		=	minishell
 
 all:			$(NAME)
 
+debug:			CC_FLAGS += -g3 -fsanitize=address
+debug:			all
+
 $(DIR_OBJS)%.o: $(DIR_SRCS)%.c
 				@tput setaf 190 && printf "\033[2K\r Compiling $<"
 				@$(CC) $(CC_FLAGS) -I $(DIR_HEADERS) -c $< -o $@
@@ -21,7 +24,7 @@ $(DIR_OBJS)%.o: $(DIR_SRCS)%.c
 $(NAME):		$(OBJS) $(HEADER)
 				@make -C $(LIBFT_DIR)
 				@tput setaf 2 && printf "\033[2K\r.o compiled.\n"
-				@$(CC) $(CC_FLAGS)  -L $(LIBFT_DIR) -lft -I $(DIR_HEADERS) $(OBJS) -o $(NAME)
+				@$(CC) $(CC_FLAGS)  -L $(LIBFT_DIR) -lft -I $(DIR_HEADERS) -l readline $(OBJS) -o $(NAME)
 				@tput setaf 2 && printf "$(NAME) created.\n"
 
 $(OBJS):		$(DIR_OBJS)
@@ -42,4 +45,8 @@ fclean:			clean
 
 re:				fclean all
 
-.PHONY:			all clean fclean re norm
+me:				all
+				@./minishell
+
+
+.PHONY:			all clean fclean re me debug
