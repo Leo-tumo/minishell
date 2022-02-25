@@ -13,5 +13,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define BOLD  "\033[1m" 
+# define BEGIN(x,y) "\033["#x";"#y"m" 
+# define CLOSE "\033[0m" 
 
 #endif
