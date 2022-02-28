@@ -4,7 +4,10 @@ int main(void)
 {
     while (1)
     {
-        char * str = readline(BEGIN(49, 31)BOLD"minihell $> "CLOSE);
+        char * str = readline("minihell $> ");
+        add_history(str);
+        if (str[0] == '-')
+            clear_history();
         free(str);
     }
 }
