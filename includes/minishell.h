@@ -26,6 +26,7 @@ typedef struct  s_gehenna
 
 }               t_gehenna;
 
-void    data_init(t_gehenna **gehenna);
+void        data_init(t_gehenna **gehenna);
+t_env       *env_keeper(char **env);
 
 #endif

@@ -1,19 +1,27 @@
 #include "../includes/minishell.h"
-t_env    *env_keeper(char **env);
+#include <sys/stat.h>
 
 int main(int argc, char **argv, char **env)
 {
+    char fd[10] = "myfile.txt";
+    struct stat *buf;
+
+    buf = malloc(sizeof(struct stat));
+
+    stat(fd, buf);
+    printf("%d\n",buf->st_mode);
+
+    free(buf);
+
     t_gehenna *gehenna;
 
     data_init(&gehenna);
     (void)argc;
     (void)argv;
+    // printf("%s\n", getenv("PWD"));
     gehenna->env_head = env_keeper(env);
-   
     while (1)
     {
-        int fd = open("/dev/tty", O_RDWR);
-        printf("%s\n",ttyname(fd));
         char *line = readline("AvôeL> ");
         if (!line)
             break;
