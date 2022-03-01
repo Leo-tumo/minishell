@@ -13,5 +13,19 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct s_env
+{
+    char        *name;
+    char        *data;
+    struct      s_env *next;
+}        t_env;
+
+typedef struct  s_gehenna
+{
+    t_env *env_head;
+
+}               t_gehenna;
+
+void    data_init(t_gehenna **gehenna);
 
 #endif

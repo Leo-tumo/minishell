@@ -11,8 +11,8 @@ SRC			=	main.c
 SRCS		=	$(SRC)
 OBJS 		=	$(SRCS:%.c=$(DIR_OBJS)%.o)
 NAME 		=	minishell
-LDFLAGS		=	-L /usr/local/opt/readline/lib
-CPPFLAGS 	=	-I /usr/local/opt/readline/include
+# LDFLAGS		=	-L usr/local/opt/readline/lib
+# CPPFLAGS 	=	-I /usr/local/opt/readline/include
 
 all:			$(NAME)
 
@@ -26,7 +26,7 @@ $(DIR_OBJS)%.o: $(DIR_SRCS)%.c
 $(NAME):		$(OBJS) $(HEADER)
 				@make -C $(LIBFT_DIR)
 				@tput setaf 2 && printf "\033[2K\r.o compiled.\n"
-				@$(CC) $(CC_FLAGS)  -L $(LIBFT_DIR) -lft -I $(DIR_HEADERS) $(LDFLAGS) $(CPPFLAGS) -lreadline $(OBJS) -o $(NAME)
+				@$(CC) $(CC_FLAGS)  -L $(LIBFT_DIR) -lft -I $(DIR_HEADERS) -lreadline $(OBJS) -o $(NAME)
 				@tput setaf 2 && printf "$(NAME) created.\n"
 
 $(OBJS):		$(DIR_OBJS)
