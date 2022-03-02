@@ -13,5 +13,19 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct s_cmd
+{
+	char	*infile;
+	int		double_input;
+	char	*outfile;
+	int		double_output;
+	char	*flag;
+	char	*argument;
+	char	*name;
+
+}	t_cmd;
+
+void	fill(char **to, char *from);
+char	**first_step(char *str);
 
 #endif

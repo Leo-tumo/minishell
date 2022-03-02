@@ -7,7 +7,7 @@ LIBFT_DIR		= libs/libft/
 LIBFT 			= $(LIBFT_DIR)libft.a
 DIR_SRCS	=	./srcs/
 DIR_OBJS	=	./compiled_srcs/
-SRC			=	main.c	
+SRC			=	main.c
 SRCS		=	$(SRC)
 OBJS 		=	$(SRCS:%.c=$(DIR_OBJS)%.o)
 NAME 		=	minishell
