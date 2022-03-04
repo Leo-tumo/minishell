@@ -3,6 +3,7 @@
 
 int main(int argc, char **argv, char **env)
 {
+    test();
     char fd[10] = "myfile.txt";
     struct stat *buf;
 
