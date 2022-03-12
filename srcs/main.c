@@ -1,42 +1,40 @@
 #include "../includes/minishell.h"
-#include <sys/stat.h>
 
 int main(int argc, char **argv, char **env)
 {
-    test();
-    char fd[10] = "myfile.txt";
-    struct stat *buf;
+        t_gehenna *gehenna;
 
-    buf = malloc(sizeof(struct stat));
+        data_init(&gehenna);
+        (void)argc;
+        (void)argv;
+        // printf("%s\n", getenv("OLDPWD"));
+        gehenna->env_head = env_keeper(env);
+        show_prompt();
+    return (0);
+}
 
-    stat(fd, buf);
-    printf("%d\n",buf->st_mode);
 
-    free(buf);
-
-    t_gehenna *gehenna;
-
-    data_init(&gehenna);
-    (void)argc;
-    (void)argv;
-    // printf("%s\n", getenv("PWD"));
-    gehenna->env_head = env_keeper(env);
+/* 
+** Shows the prompt via readline
+*/
+char    *show_prompt(void)
+{
+    char    *line;
     while (1)
     {
-        char *line = readline("AvôeL> ");
+        line = readline("AvôeL> ");
         if (!line)
             break;
         if (ft_strlen(line) == 0)
             continue;
         add_history(line);
+        free(line);
         // char **args = split_line(line);
         // int status = execute(args);
-        free(line);
         // free(args);
     }
-    return (0);
+    return line;
 }
-
 /* 
 ** Shows the content of chosen directory
 */

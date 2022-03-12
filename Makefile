@@ -7,7 +7,7 @@ LIBFT_DIR		= libs/libft/
 LIBFT 			= $(LIBFT_DIR)libft.a
 DIR_SRCS	=	./srcs/
 DIR_OBJS	=	./compiled_srcs/
-SRC			=	main.c
+SRC			=	main.c file_checker.c
 
 
 
