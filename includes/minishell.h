@@ -14,8 +14,16 @@
 # include <readline/history.h>
 # include <sys/stat.h>
 
+/*
+* Sorry I love 🐍
+*/
 # define True 1
 # define False 0
+
+/*  
+* This struck keeps 'env' variables
+*/
+
 typedef struct s_env
 {
     char        *name;
@@ -23,16 +31,23 @@ typedef struct s_env
     struct      s_env *next;
 }        t_env;
 
-typedef struct  s_gehenna
+/*  
+** This is the main struct, maybe it'll turn to global
+** and the name is too good 🤘🏻
+*/
+typedef struct  s_korn
 {
     t_env *env_head;
 
-}               t_gehenna;
+}               t_korn;
 
-void        data_init(t_gehenna **gehenna);
+void        data_init(t_korn **korn);
 t_env       *env_keeper(char **env);
 
 
+/* 
+** file status checking functions 
+*/
 int     is_directory(char *path);
 int     is_executable(char *path);
 int     is_file(char *path);

@@ -23,3 +23,26 @@ int    echo(char **str, int fd, int flag, int argc)
         write (fd, "\n", 1);
     return ret;
 }
+
+/* 
+** Shows the content of chosen directory
+*/
+int mini_ls(char *path)
+{
+    struct dirent   *de;
+    DIR             *dr;
+
+    dr = opendir(path);
+    if (dr == NULL) 
+    {
+        perror("Could not open current directory");
+        return 0;
+    }
+  
+    while ((de = readdir(dr)) != NULL)
+            printf("%s\n", de->d_name);
+  
+    closedir(dr);    
+    return 0;
+}
+

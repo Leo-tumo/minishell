@@ -79,11 +79,3 @@ int is_socket(char *path)
         return 1;
     return 0;
 }
-
-// int is_block_device(char *path)
-// {
-//     struct stat *buf;
-
-//     buf = malloc(sizeof(struct stat));
-
-//     int k = stat(path, buf);

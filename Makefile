@@ -7,15 +7,13 @@ LIBFT_DIR		= libs/libft/
 LIBFT 			= $(LIBFT_DIR)libft.a
 DIR_SRCS	=	./srcs/
 DIR_OBJS	=	./compiled_srcs/
-SRC			=	main.c file_checker.c
+SRCS		=	main.c builtins.c cd.c \
+				parser.c file_checker.c \
+				var_keeper.c 
 
 
-
-SRCS		=	$(SRC)
 OBJS 		=	$(SRCS:%.c=$(DIR_OBJS)%.o)
 NAME 		=	minishell
-# LDFLAGS		=	-L usr/local/opt/readline/lib
-# CPPFLAGS 	=	-I /usr/local/opt/readline/include
 
 all:			$(NAME)
 

@@ -2,5 +2,5 @@
 
 void    cd()
 {
-    
+    printf("%s\n", getenv("PWD"));
 }
