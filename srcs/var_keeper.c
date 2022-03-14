@@ -5,8 +5,11 @@
 */
 char    **env_split(char *str)
 {
-    int     i = 0;
-    char    **s = calloc(2, sizeof(char *));
+    int     i;
+    char    **s;
+    
+    i = 0;
+    s = ft_calloc(2, sizeof(char *));
     while (str[i] != '=')
         ++i;
     s[0] = ft_substr(str, 0, i);
@@ -35,6 +38,7 @@ t_env*    env_keeper(char **env)
         temp->name = s[0];
         temp->data = s[1];
         temp->next = NULL;
+        temp->is_exported = 1;
         free (s);
         if (!head)
             head = temp;

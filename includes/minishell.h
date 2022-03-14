@@ -28,6 +28,7 @@ typedef struct s_env
 {
     char        *name;
     char        *data;
+    int         is_exported;
     struct      s_env *next;
 }        t_env;
 
@@ -43,6 +44,19 @@ typedef struct  s_korn
 
 void        data_init(t_korn **korn);
 t_env       *env_keeper(char **env);
+
+
+
+char    **env_split(char *str);
+
+/*  
+** builtins and their utils
+*/
+int     export(int fd, t_env *env);
+int     export_append(char *s);
+int     check_value(char *s);
+int     check_existance(char *s, t_env *head);
+
 
 
 /* 
