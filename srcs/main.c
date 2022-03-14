@@ -3,19 +3,20 @@
 extern  char    **environ;
 int main(int argc, char **argv, char **env)
 {
-        char    **s = environ;
-        for(; *s; s++){printf("--%s\n", *s);}
-        printf("%s\n", getenv("OLDWD"));
         t_korn   *korn;
         t_env       *track = NULL;
         (void)argc;
         (void)argv;
 
+		char	**test = calloc(2, 50);
+		test[0] = "new_var=8137";
+		test[1] = "next_var+=fhauf8";
         data_init(&korn);
         korn->env_head = env_keeper(env);
         track = korn->env_head;
         int fd = open("new.txt", O_RDWR | O_CREAT, 0x755);
-        // export(fd, track);
+		export_(test, track);
+        export(1, track);
         close(fd);
         show_prompt();
     return (0);

@@ -66,13 +66,48 @@ int    export_(char**s, t_env *head)
         sign = export_append(s[i]);
         empty_value = check_value(s[i]);
         if (check_existance(s[i], head))
-            renew_var(char *s, int sign, empty_value);
+            renew_var(s[i], sign, empty_value, head);
         else
-            append_var(char *s, int sign, empty_value);
-
+            append_var(s[i], sign * 10 + empty_value, head, 1);
     }
     return (ret);
 }
+
+void	append_var(char *str, int flags, t_env *head, int is_exported)
+{
+	t_env	*tmp;
+	char	**var;
+	int		sign;
+	int		empty_value;
+	char	*key;
+
+	key = NULL;
+	var = env_split(str);
+	sign = flags / 10;
+	empty_value = flags % 10;
+	tmp = head;
+	while (tmp)
+		tmp = tmp->next;
+	tmp = malloc(sizeof(t_env));
+	tmp->next = NULL;
+	tmp->is_exported = is_exported;
+	if (sign)
+		key = remove_plus_sign(var[0]);
+	else
+		key = var[0];
+	tmp->name = key;
+	if (!empty_value)
+		tmp->data = var[1];
+}
+
+
+
+
+
+
+
+
+
 
 
 // TODO check if name is right DONE:
