@@ -26,6 +26,8 @@ int     check_value(char *s)
     i = 0;
     while (s[i] && s[i] != '=')
         ++i;
+    if (s[i] == '=')
+        ++i;
     if (!s[i] || s[i] == ' ')
         return (False);
     else
@@ -39,13 +41,22 @@ int     check_value(char *s)
 int     check_existance(char *s, t_env *head)
 {
     t_env   *tmp;
+    size_t     i;
 
+    i = 0;
     tmp = head;
-    while (tmp->next)
+    while (s[i])
     {
-        if (ft_strlen(s) >= ft_strlen(tmp->name))
+        if (s[i] == '+' || s[i] == '=')
+            break;
+        ++i;
+    }
+    while (tmp)
+    {
+        if (i == ft_strlen(tmp->name))
         {
-            if (ft_strncmp(s, tmp->name, ft_strlen(tmp->name)) == 0)
+            if (ft_strncmp(s, tmp->name, i) == 0)
+                //printf("%s = %zu True\n",tmp->name , i);
                 return (True);
         }
         tmp = tmp->next;   
@@ -82,25 +93,27 @@ void    renew_var(char *new_var, int append, int has_value, t_env *head)
     t_env   *tmp;
     int     i;
     char    **var;
-    
+    //TODO: if there is no '=', and the variable already exists, set is_exported to 1
     var = NULL;
     var = env_split(new_var);
     tmp = head;
     i = 0;
     if (!append)
     {
-        while (ft_strncmp(var[0], tmp->name, ft_strlen(var[0]) + 1) != 0)
+        while (tmp)
+        {
+            if (ft_strlen(tmp->name) == ft_strlen(var[0]))
+                if (!ft_strncmp(tmp->name, var[0], ft_strlen(var[0])))
+                    break;
             tmp = tmp->next;
+        }
 		tmp->is_exported = 1;
-        if (tmp->data!= NULL)
-            ft_bzero(tmp->data, ft_strlen(tmp->data));
+        printf("tttttttt %s, %s\n", tmp->data, var[1]);
+        if (tmp->data != NULL)
+            free(tmp);
+        printf("HAS VALUE === %d\n", has_value);
         if (has_value)
-		{
-			if (ft_strlen(var[1]) > ft_strlen(tmp->data))
-            	ft_strlcpy(tmp->data, var[1], ft_strlen(var[1]));
-			else
-            	ft_strlcpy(tmp->data, var[1], ft_strlen(tmp->data));
-		}
+            tmp->data = ft_strdup(var[1]);
     }
     else
 		renew_var_norme(var, has_value, head);

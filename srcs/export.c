@@ -28,7 +28,7 @@ int    export(int fd, t_env *env)
     t_env   *tmp;
 
     tmp = env;
-    while (tmp->next)
+    while (tmp)
     {
         ft_putstr_fd("declare -x ", fd);
         ft_putstr_fd(tmp->name, fd);
@@ -55,20 +55,23 @@ int    export_(char**s, t_env *head)
 
     i = 0;
     ret = 0;
-    while (s[i])
+    while (s[i] != NULL)
     {
         if (!(is_valid_name(s[i])))
         {
-            printf(" bash: export: `%s': not a valid identifier", s[i]);
+            printf("bash: export: `%s': not a valid identifier\n", s[i]);
             ret = 1;
             ++i;
+            continue;
         }
         sign = export_append(s[i]);
         empty_value = check_value(s[i]);
+        printf("EMPTY VALUE?? === %d\n", empty_value);
         if (check_existance(s[i], head))
             renew_var(s[i], sign, empty_value, head);
         else
             append_var(s[i], sign * 10 + empty_value, head, 1);
+        ++i;
     }
     return (ret);
 }
@@ -81,23 +84,23 @@ void	append_var(char *str, int flags, t_env *head, int is_exported)
 	int		empty_value;
 	char	*key;
 
-	key = NULL;
+    tmp = head;
+    key = NULL;
 	var = env_split(str);
 	sign = flags / 10;
 	empty_value = flags % 10;
-	tmp = head;
-	while (tmp)
+	while (tmp->next)
 		tmp = tmp->next;
-	tmp = malloc(sizeof(t_env));
-	tmp->next = NULL;
-	tmp->is_exported = is_exported;
+    tmp->next = malloc(sizeof(t_env));
+	tmp->next->next = NULL;
+	tmp->next->is_exported = is_exported;
 	if (sign)
 		key = remove_plus_sign(var[0]);
 	else
 		key = var[0];
-	tmp->name = key;
-	if (!empty_value)
-		tmp->data = var[1];
+	tmp->next->name = key;
+	if (empty_value)
+		tmp->next->data = var[1];
 }
 
 
@@ -112,6 +115,7 @@ void	append_var(char *str, int flags, t_env *head, int is_exported)
 
 // TODO check if name is right DONE:
 // TODO if_wrong =>  bash: export: `NAME': not a valid identifier \n
+
 // TODO: check if there's an unexported variable with that name
 // TODO: check if it's '=' or '+='
 // TODO: check if it's already in the list
