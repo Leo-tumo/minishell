@@ -52,14 +52,16 @@ char    **env_split(char *str);
 /*  
 ** builtins and their utils
 */
-int     export(int fd, t_env *env);
-int		export_(char**s, t_env *head);
-int     export_append(char *s);
-int     check_value(char *s);
-int     check_existance(char *s, t_env *head);
-char    *remove_plus_sign(char *s);
-void    renew_var(char *new_var, int append, int has_value, t_env *head);
-void	append_var(char *str, int flags, t_env *head, int is_exported);
+int         ft_cd(char *path, t_env *head);
+int         export(int fd, t_env *env);
+int		    export_(char**s, t_env *head);
+int         export_append(char *s);
+int         check_value(char *s);
+int         check_existance(char *s, t_env *head);
+char        *remove_plus_sign(char *s);
+void        renew_var(char *new_var, int append, int has_value, t_env *head);
+void	    append_var(char *str, int flags, t_env *head, int is_exported);
+char        *get_value(char *name, t_env *head);
 
 
 

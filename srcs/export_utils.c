@@ -56,7 +56,6 @@ int     check_existance(char *s, t_env *head)
         if (i == ft_strlen(tmp->name))
         {
             if (ft_strncmp(s, tmp->name, i) == 0)
-                //printf("%s = %zu True\n",tmp->name , i);
                 return (True);
         }
         tmp = tmp->next;   
@@ -93,7 +92,7 @@ void    renew_var(char *new_var, int append, int has_value, t_env *head)
     t_env   *tmp;
     int     i;
     char    **var;
-    //TODO: if there is no '=', and the variable already exists, set is_exported to 1
+    
     var = NULL;
     var = env_split(new_var);
     tmp = head;
@@ -108,15 +107,13 @@ void    renew_var(char *new_var, int append, int has_value, t_env *head)
             tmp = tmp->next;
         }
 		tmp->is_exported = 1;
-        printf("tttttttt %s, %s\n", tmp->data, var[1]);
-        if (tmp->data != NULL)
-            free(tmp);
-        printf("HAS VALUE === %d\n", has_value);
+        free(tmp->data);
         if (has_value)
             tmp->data = ft_strdup(var[1]);
     }
     else
 		renew_var_norme(var, has_value, head);
+    free(var);
 }
 
 

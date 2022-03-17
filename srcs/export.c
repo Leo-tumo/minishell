@@ -66,7 +66,6 @@ int    export_(char**s, t_env *head)
         }
         sign = export_append(s[i]);
         empty_value = check_value(s[i]);
-        printf("EMPTY VALUE?? === %d\n", empty_value);
         if (check_existance(s[i], head))
             renew_var(s[i], sign, empty_value, head);
         else
@@ -102,23 +101,3 @@ void	append_var(char *str, int flags, t_env *head, int is_exported)
 	if (empty_value)
 		tmp->next->data = var[1];
 }
-
-
-
-
-
-
-
-
-
-
-
-// TODO check if name is right DONE:
-// TODO if_wrong =>  bash: export: `NAME': not a valid identifier \n
-
-// TODO: check if there's an unexported variable with that name
-// TODO: check if it's '=' or '+='
-// TODO: check if it's already in the list
-// TODO: if in_list { if2 '+=' => append else2 replace } 
-// TODO: else create new - 
-// TODO: if argument is empty - {if2 = '+' => leave it empty, else2 = '+='add 'space'}

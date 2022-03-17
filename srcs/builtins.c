@@ -1,5 +1,12 @@
 #include "../includes/minishell.h"
 
+/*  
+**  echo "$unknown_var" => '\n'
+**  echo -n "$unknown_var" => 
+**  echo xcho => xcho
+**  echo $HOME =>  /Users/letumany
+**  echo '$HOME' => $HOME
+*/
 int    echo(char **str, int fd, int flag, int argc)
 {
     int     i;
@@ -45,4 +52,3 @@ int mini_ls(char *path)
     closedir(dr);    
     return 0;
 }
-
