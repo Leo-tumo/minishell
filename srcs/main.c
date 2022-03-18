@@ -10,18 +10,12 @@ int main(int argc, char **argv, char **env)
         (void)argc;
         (void)argv;
         
-
-		// char	**test = calloc(2, 50);
-		// test[1] = "leo=10";
-		// test[0] = "xcho=9";
         data_init(&korn);
         korn->env_head = env_keeper(env);
         track = korn->env_head;
-        ft_cd("~+", track);
-        printf("%s\n", getcwd(NULL, 0));
+        ft_cd("~-", track);
+        // printf("%s\n", getcwd(NULL, 0));
 
-		// export_(test, track);
-        // export(1, track);
         // show_prompt();
     return (0);
 }

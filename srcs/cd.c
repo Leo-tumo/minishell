@@ -1,4 +1,5 @@
 #include "../includes/minishell.h"
+#include <string.h>
 /*  
 ** replaces '-' & '~' with accordingly to ...
 */
@@ -18,21 +19,17 @@ char    *replace_path(char *p, t_env *head)
         else if (p[1] == '+' && !p[2])
             return (".");
         else if (ft_isalpha(p[1]) || p[1] == '_')
-        {
-            p[0] = '/';
-            return (ft_strjoin("/var", p));
-        }
-        else{
-        printf("NO SEGF#1, p === %s\n", p);
+            return (ft_strjoin("/var/", p + 1));
+        else
             return (ft_strjoin(home, p + 1));
-    }}
+    }
     else
         return (NULL);
 }
 
 /*
-*this function converts a string to a 2d array, 
-*where a[0] = string, a[1] = NULL
+* this function converts a string to a 2d array, 
+* where a[0] = string, a[1] = NULL
 */
 char **twod_array(char *str)
 {
@@ -58,6 +55,13 @@ int  ft_cd(char *path, t_env *head)
     ret = chdir(clean_path);
     if (ret == 0)
        export_(twod_array(ft_strjoin("OLDPWD=", cwd)), head);
+    else
+    {
+        if (errno == 14)
+            printf("bash: cd: OLDPWD not set\n");
+        else
+            printf("bash: cd: %s: No such file or directory\n", path);
+    }
     return (ret);
 }
 
@@ -76,6 +80,8 @@ char    *get_value(char *name, t_env *head)
                 break;
         tmp = tmp->next;
     }
+    if (tmp == NULL)
+        return (NULL);
     ret = tmp->data;
     return (ret);
 }
