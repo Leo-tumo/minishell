@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void    test()
+void	test()
 {
-    printf("This shit works");
+	printf("This shit works");
 }
