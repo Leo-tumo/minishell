@@ -8,16 +8,16 @@
 int	is_valid_name(char *str)
 {
 	if (!ft_isalpha(*str) && *str != '_')
-		return (False);
+		return (FALSE);
 	str++;
 	while (*str && *str != '=')
 	{
 		if (!ft_isalnum(*str) && *str != '_')
 			if (!(*str == '+' && *(str +1) && *(str + 1) == '='))
-				return (False);
+				return (FALSE);
 		str++;
 	}
-	return (True);
+	return (TRUE);
 }
 
 /*  

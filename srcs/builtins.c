@@ -27,7 +27,7 @@ int	echo(char **str, int fd, int flag, int argc)
 			ret += write(fd, " ", 1);
 		++i;
 	}
-	if (flag == False)
+	if (flag == FALSE)
 		write (fd, "\n", 1);
 	return (ret);
 }
@@ -53,5 +53,19 @@ int	mini_ls(char *path)
 		de = readdir(dr);
 	}
 	closedir (dr);
+	return (0);
+}
+
+/*  
+** prints current working directory to given fd
+** works even if PWD is unset
+*/
+int	pwd(t_korn *korn)
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	ft_putstr_fd(pwd, korn->out);
+	ft_putstr_fd("\n", korn->out);
 	return (0);
 }

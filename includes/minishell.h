@@ -17,8 +17,8 @@
 /*
 * Sorry I love 🐍
 */
-# define True 1
-# define False 0
+# define TRUE 1
+# define FALSE 0
 
 /*  
 * This struck keeps 'env' variables
@@ -26,54 +26,63 @@
 
 typedef struct s_env
 {
-    char        *name;
-    char        *data;
-    int         is_exported;
-    struct      s_env *next;
-}        t_env;
+	char			*name;
+	char			*data;
+	int				is_exported;
+	struct s_env	*next;
+}				t_env;
 
 /*  
 ** This is the main struct, maybe it'll turn to global
 ** and the name is too good 🤘🏻
+** out => redirection output fd
+** in  <= redirection input fd
 */
-typedef struct  s_korn
+typedef struct s_korn
 {
-    t_env *env_head;
+	t_env	*env_head;
+	int		out;
+	int		in;
+	int		argc;
+	char	**argv;
 
-}               t_korn;
+}			t_korn;
 
-void        data_init(t_korn **korn);
-t_env       *env_keeper(char **env);
+void		data_init(t_korn **korn);
+t_env		*env_keeper(char **env);
 
 
 
-char    **env_split(char *str);
+char		**env_split(char *str);
 
 /*  
 ** builtins and their utils
 */
-int         ft_cd(char *path, t_env *head);
-int         export(int fd, t_env *env);
-int		    export_(char**s, t_env *head);
-int         export_append(char *s);
-int         check_value(char *s);
-int         check_existance(char *s, t_env *head);
-char        *remove_plus_sign(char *s);
-void        renew_var(char *new_var, int append, int has_value, t_env *head);
-void	    append_var(char *str, int flags, t_env *head, int is_exported);
-char        *get_value(char *name, t_env *head);
+int			is_valid_name(char *str);
+int			env(t_korn *korn);
+int			pwd(t_korn *korn);
+int			ft_cd(char *path, t_env *head);
+int			export(int fd, t_env *env);
+int			export_(char**s, t_env *head);
+int			export_append(char *s);
+int			check_value(char *s);
+int			check_existance(char *s, t_env *head);
+char		*remove_plus_sign(char *s);
+void		renew_var(char *new_var, int append, int has_value, t_env *head);
+void		append_var(char *str, int flags, t_env *head, int is_exported);
+char		*get_value(char *name, t_env *head);
 
 
 
 /* 
 ** file status checking functions 
 */
-int     is_directory(char *path);
-int     is_executable(char *path);
-int     is_file(char *path);
-int     is_link(char *path);
-int     is_socket(char *path);
-char    *show_prompt(void);
-int     is_meta(char c);
+int			is_directory(char *path);
+int			is_executable(char *path);
+int			is_file(char *path);
+int			is_link(char *path);
+int			is_socket(char *path);
+char		*show_prompt(void);
+int			is_meta(char c);
 
 #endif

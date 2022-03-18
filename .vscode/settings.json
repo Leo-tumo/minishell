@@ -4,6 +4,7 @@
         "termios.h": "c",
         "minishell.h": "c",
         "stat.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "libft.h": "c"
     }
 }

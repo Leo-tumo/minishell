@@ -11,9 +11,9 @@ int	export_append(char *s)
 	while (ft_isalnum(s[i]) || s[i] == '_')
 		++i;
 	if (s[i] == '+')
-		return (True);
+		return (TRUE);
 	else
-		return (False);
+		return (FALSE);
 }
 
 /*  
@@ -29,9 +29,9 @@ int	check_value(char *s)
 	if (s[i] == '=')
 		++i;
 	if (!s[i] || s[i] == ' ')
-		return (False);
+		return (FALSE);
 	else
-		return (True);
+		return (TRUE);
 }
 
 /*  
@@ -56,11 +56,11 @@ int	check_existance(char *s, t_env *head)
 		if (i == ft_strlen(tmp->name))
 		{
 			if (ft_strncmp(s, tmp->name, i) == 0)
-				return (True);
+				return (TRUE);
 		}
 		tmp = tmp->next;
 	}
-	return (False);
+	return (FALSE);
 }
 
 /*  
