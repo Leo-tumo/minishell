@@ -20,10 +20,26 @@
 # define TRUE 1
 # define FALSE 0
 
+
+/*  
+** Struct for command
+*/
+
+typedef struct s_cmd
+{
+	char		*name;
+	char		*path;
+	char		*args;
+	int			input;
+	int			output;
+	int			flag; // 0 = other, 1 = echo, 2 = cd, 3 = pwd, 4 = export, 5 = unset, 6 = env, 7 = exit
+	int			e_flag; // for echo command 0 = no flag, 1 = -n
+}			t_cmd;
+
+
 /*  
 * This struck keeps 'env' variables
 */
-
 typedef struct s_env
 {
 	char			*name;
@@ -71,6 +87,7 @@ char		*remove_plus_sign(char *s);
 void		renew_var(char *new_var, int append, int has_value, t_env *head);
 void		append_var(char *str, int flags, t_env *head, int is_exported);
 char		*get_value(char *name, t_env *head);
+int			echo(char **str, int fd, int flag, int argc);
 
 
 
