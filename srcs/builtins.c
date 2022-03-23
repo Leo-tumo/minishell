@@ -1,6 +1,37 @@
 #include "../includes/minishell.h"
 
 /*  
+** This is the pure echo command
+** it parses everything and executes 
+** 'echo' command with ready arguments
+*/
+int	ft_echo(t_cmd *cmd)
+{
+	int		i;
+	char	*s;
+
+	i = 0;
+	s = cmd->args;
+	while (s[i])
+	{
+		while (s[i] == ' ')
+			++i;
+		if (s[i] == '-')
+		{
+			if (s[i] == 'n')
+			{
+				if ( s[i] == ' ')
+				{	
+					if (s[i + 1] != '\0')
+						++i;
+					else
+						break;
+				}
+			}
+		}
+	}
+}
+/*  
 **  echo "$unknown_var" => '\n'
 **  echo -n "$unknown_var" => 
 **  echo xcho => xcho
