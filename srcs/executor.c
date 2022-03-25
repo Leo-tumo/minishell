@@ -26,21 +26,21 @@ int		is_builtin(t_cmd *cmd)
 /*  
 ** This func executes the builtin commands
 */
-int		exec_(t_cmd *cmd, t_env *env, int command)
-{
-	if (command == 1)
-		return (echo(cmd, env));
-	if (command == 2)
-		return (ft_cd(cmd->args, env));
-	if (command == 3)
-		return (pwd(env));
-	if (command == 4)
-		return (export(env));
-	if (command == 5)
-		return (unset(cmd->args, env));
-	if (command == 6)
-		return (env(env));
-	if (command == 7)
-		return (exit(0));
-	return (0);
-}
+// int		exec_(t_cmd *cmd, t_env *env, int command)
+// {
+// 	if (command == 1)
+// 		return (echo(cmd, env));
+// 	if (command == 2)
+// 		return (ft_cd(cmd->args, env));
+// 	if (command == 3)
+// 		return (pwd(env));
+// 	if (command == 4)
+// 		return (export(env));
+// 	if (command == 5)
+// 		return (unset(cmd->args, env));
+// 	if (command == 6)
+// 		return (env(env));
+// 	if (command == 7)
+// 		return (exit(0));
+// 	return (0);
+// }

@@ -70,7 +70,7 @@ t_env		*env_keeper(char **env);
 
 
 char		**env_split(char *str);
-
+char		*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 /*  
 ** builtins and their utils
 */
@@ -88,7 +88,7 @@ void		renew_var(char *new_var, int append, int has_value, t_env *head);
 void		append_var(char *str, int flags, t_env *head, int is_exported);
 char		*get_value(char *name, t_env *head);
 int			echo(char **str, int fd, int flag, int argc);
-
+void		ft_echo(t_cmd *cmd);
 
 
 /* 

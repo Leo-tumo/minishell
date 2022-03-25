@@ -5,32 +5,36 @@
 ** it parses everything and executes 
 ** 'echo' command with ready arguments
 */
-int	ft_echo(t_cmd *cmd)
+void	ft_echo(t_cmd *cmd)
 {
+	char	**s;
 	int		i;
-	char	*s;
+	char	*arg;
+	int		flag;
 
+	flag = 0;
+	arg = NULL;
 	i = 0;
-	s = cmd->args;
+	s = ft_split(cmd->args, ' ');
 	while (s[i])
 	{
-		while (s[i] == ' ')
-			++i;
-		if (s[i] == '-')
+		while (s[i][0] == '-' && s[i][1] == 'n' && !s[i][2])
 		{
-			if (s[i] == 'n')
-			{
-				if ( s[i] == ' ')
-				{	
-					if (s[i + 1] != '\0')
-						++i;
-					else
-						break;
-				}
-			}
+			flag = 1;
+			++i;
 		}
+		if (!arg && s[i])
+			arg = s[i];
+		else
+			arg = ft_strjoin3(arg, " ", s[i]);
+		++i;
 	}
+	echo(&arg, cmd->output, flag, 1);
 }
+
+
+
+
 /*  
 **  echo "$unknown_var" => '\n'
 **  echo -n "$unknown_var" => 

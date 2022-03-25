@@ -10,7 +10,7 @@ DIR_OBJS	=	./compiled_srcs/
 SRC			=	main.c builtins.c cd.c\
 				export_utils.c export.c\
 				file_checker.c parcer.c\
-				var_keeper.c\
+				var_keeper.c utils.c\
  
 
 

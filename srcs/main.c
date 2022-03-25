@@ -1,7 +1,5 @@
 #include "../includes/minishell.h"
 
-extern char	**environ;
-
 int	main(int argc, char **argv, char **env)
 {
 	t_korn		*korn;
@@ -12,8 +10,12 @@ int	main(int argc, char **argv, char **env)
 	data_init(&korn);
 	korn->env_head = env_keeper(env);
 	track = korn->env_head;
-	ft_cd("~-", track);
-	// printf("%s\n", getcwd(NULL, 0));
+
+	
+	// t_cmd	*cmd = malloc(sizeof(t_cmd));
+	// cmd->args = "-n -n -n Hello my friend";
+	// cmd->output = 1;
+	// ft_echo(cmd);
 
 	// show_prompt();
 	return (0);
