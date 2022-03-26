@@ -11,11 +11,11 @@ int	main(int argc, char **argv, char **env)
 	korn->env_head = env_keeper(env);
 	track = korn->env_head;
 
-	
-	// t_cmd	*cmd = malloc(sizeof(t_cmd));
-	// cmd->args = "-n -n -n Hello my friend";
-	// cmd->output = 1;
-	// ft_echo(cmd);
+	// rl_replace_line();
+	t_cmd	*cmd = malloc(sizeof(t_cmd));
+	cmd->args = "Hello my friend";
+	cmd->output = 1;
+	ft_echo(cmd);
 
 	// show_prompt();
 	return (0);

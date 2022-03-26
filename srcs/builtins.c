@@ -5,7 +5,7 @@
 ** it parses everything and executes 
 ** 'echo' command with ready arguments
 */
-void	ft_echo(t_cmd *cmd)
+int	ft_echo(t_cmd *cmd)
 {
 	char	**s;
 	int		i;
@@ -29,11 +29,9 @@ void	ft_echo(t_cmd *cmd)
 			arg = ft_strjoin3(arg, " ", s[i]);
 		++i;
 	}
-	echo(&arg, cmd->output, flag, 1);
+	free(s);
+	return (echo(&arg, cmd->output, flag, 1));
 }
-
-
-
 
 /*  
 **  echo "$unknown_var" => '\n'
@@ -64,6 +62,7 @@ int	echo(char **str, int fd, int flag, int argc)
 	}
 	if (flag == FALSE)
 		write (fd, "\n", 1);
+	free(str[0]);
 	return (ret);
 }
 

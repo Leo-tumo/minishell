@@ -65,6 +65,11 @@ int	ft_cd(char *path, t_env *head)
 	return (ret);
 }
 
+/*  
+** Gets the value of $name variable
+** ex. get_value("HOME", korn->env_head)
+** returns Users/letumany
+*/
 char	*get_value(char *name, t_env *head)
 {
 	t_env	*tmp;
