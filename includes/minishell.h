@@ -35,9 +35,9 @@
 typedef struct s_cmd
 {
 	char		*name; // command name - ex. echo, cd, yes, tee, cal etc...
-	char		*path;
-	char		*args; // not sure yet for argument to use char * or char **
-	char		**argv; // temporary maybe ....
+	char		*path; // this is very important
+	char		*args; // temporary, just for test
+	char		**argv; // needed for execve
 	int			argc; // argument count
 	int			input;
 	int			output;
@@ -81,9 +81,9 @@ int			check_bin(t_cmd *cmd, t_korn *korn);
 */
 char		**env_split(char *str);
 char		*ft_strjoin3(const char *s1, const char *s2, const char *s3);
-void    	free_cmd(t_cmd *cmd);
+void		free_cmd(t_cmd *cmd);
 int			check_bin(t_cmd *cmd, t_korn *korn);
-
+int			guns_n_roses(char *name);
 
 
 /*  
@@ -105,7 +105,7 @@ void		append_var(char *str, int flags, t_env *head, int is_exported);
 char		*get_value(char *name, t_env *head);
 int			echo(char **str, int fd, int flag, int argc);
 int			ft_echo(t_cmd *cmd);
-int  		ft_exit(t_korn *korn, t_cmd *cmd);
+int			ft_exit(t_korn *korn, t_cmd *cmd);
 
 
 

@@ -24,7 +24,9 @@ int	env(t_korn *korn)
 	return (0);
 }
 
-
+/*  
+** Unsets variable from my env
+*/
 int	unset_name(char *name)
 {
 	if (is_valid_name(name))
@@ -35,8 +37,6 @@ int	unset_name(char *name)
 		return (FALSE);
 	}
 }
-
-
 
 int	env_norme(char *name, t_korn *korn)
 {
@@ -49,12 +49,12 @@ int	env_norme(char *name, t_korn *korn)
 			return (1);
 		if (ft_strlen(tmp->name) == ft_strlen(korn->argv[1])
 			&& !ft_strncmp(tmp->name, name, ft_strlen(name)))
-			{
+		{
 				tmp->is_exported = 0;
-				ft_bzero(tmp->name, ft_strlen(tmp->name));
-				ft_bzero(tmp->data, ft_strlen(tmp->data));
-				break ;
-			}
+			ft_bzero(tmp->name, ft_strlen(tmp->name));
+			ft_bzero(tmp->data, ft_strlen(tmp->data));
+			break ;
+		}
 		tmp = tmp->next;
 	}
 	return (0);

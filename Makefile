@@ -11,13 +11,14 @@ SRC			=	main.c builtins.c cd.c\
 				export_utils.c export.c\
 				file_checker.c parcer.c\
 				var_keeper.c utils.c\
+				echo.c
  
 
 
 SRCS		=	$(SRC)
 OBJS 		=	$(SRCS:%.c=$(DIR_OBJS)%.o)
 NAME 		=	minishell
-# LDFLAGS		=	-L /usr/local/opt/readline/lib
+# LDFLAGS	=	-L /usr/local/opt/readline/lib
 # CPPFLAGS 	=	-I /usr/local/opt/readline/include
 
 all:			$(NAME)
@@ -34,6 +35,7 @@ $(NAME):		$(OBJS) $(HEADER)
 				@tput setaf 2 && printf "\033[2K\r.o compiled.\n"
 				@$(CC) $(CC_FLAGS)  -L $(LIBFT_DIR) -lft -I $(DIR_HEADERS) -lreadline  $(OBJS) -o $(NAME)
 				@tput setaf 2 && printf "$(NAME) created.\n"
+				@tput setaf 255
 
 $(OBJS):		| $(DIR_OBJS)
 
@@ -45,6 +47,7 @@ clean:
 				@$(RM) $(DIR_OBJS)
 				@make clean -C $(LIBFT_DIR)
 				@tput setaf 928 && printf ".o deleted.\n"
+				@tput setaf 255
 
 fclean:			clean
 				@$(RM) $(NAME)

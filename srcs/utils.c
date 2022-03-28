@@ -17,3 +17,22 @@ char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
 	}
 	return (tmp);
 }
+
+/*
+** Checks if there's a SLASH in command name or not
+** ./a.out - returns TRUE (1)
+** mkdir - returns FALSE (0)
+*/
+int	guns_n_roses(char *name)
+{
+	int		i;
+
+	i = 0;
+	while (name[i])
+	{
+		if (name[i] == '/')
+			return (TRUE);
+		++i;
+	}
+	return (FALSE);
+}

@@ -1,6 +1,36 @@
 #include "../includes/minishell.h"
 
 /*  
+** Executes binary file
+** Note: execve works this way
+** execve("/bin/cat", argv, NULL);
+** where argv should be =>
+** "cat", "-e", "file1", "file2" 
+*/
+int	exec_bin(t_cmd *cmd)
+{
+	int		pid;
+	int		err;
+
+	pid = fork();
+	if (pid == -1)
+		perror("AvôeL");
+	if (pid == 0)
+	{
+		dup2(cmd->input, STDIN_FILENO);
+		dup2(cmd->output, STDOUT_FILENO);
+		execve(cmd->path, cmd->argv, NULL);
+		close(cmd->input);
+		close(cmd->output);
+	}
+	else
+	{
+		wait(&err);
+	}
+	return (err / 256);
+}
+
+/*  
 ** This func check if the given command is builtin or not
 */
 int		is_builtin(t_cmd *cmd)
@@ -46,30 +76,11 @@ int		exec_(t_cmd *cmd, t_korn *korn, int command)
 }
 
 /*
-** Checks if there's a SLASH in command name or not
-** ./a.out - returns TRUE (1)
-** mkdir - returns FALSE (0)
-*/
-int	guns_n_roses(char *name)
-{
-	int		i;
-
-	i = 0;
-	while (name[i])
-	{
-		if (name[i] == '/')
-			return (TRUE);
-		++i;
-	}
-	return (FALSE);
-}
-
-/*
 ** Takes the command and decides, if it's 
 ** builtin or not - and executes it as
 ** needed
 */
-int		cmd_switch(t_cmd *cmd, t_korn *korn)
+int	cmd_switch(t_cmd *cmd, t_korn *korn)
 {
 	int		command;
 	int		ret;
@@ -101,24 +112,13 @@ int		check_bin(t_cmd *cmd, t_korn *korn)
 	{
 		final_path = ft_strjoin3(paths[i], "/", cmd->name);
 		if (access(final_path, F_OK) == 0)
-			break;
+			break ;
 		free(final_path);
 		++i;
 	}
 	if (!final_path)
 		return (127);
 	else
-	{
-		ft_bzero(cmd->name, ft_strlen(cmd->name));
-		cmd->name = final_path;
-	}
+		cmd->path = final_path;
 	return (0);
 }
-
-// int	exec_bin(t_cmd *cmd)
-// {
-// 	int		pid;
-
-// 	pid = fork();
-
-// }

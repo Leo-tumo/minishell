@@ -17,7 +17,7 @@ int	main(int argc, char **argv, char **env)
 	cmd->output = 1;
 	ft_echo(cmd);
 
-	// show_prompt();
+	show_prompt();
 	return (0);
 }
 
