@@ -1,25 +1,25 @@
 #include "../includes/minishell.h"
 
-int	main(int argc, char **argv, char **env)
-{
-	t_korn		*korn;
-	t_env		*track;
+// int	main(int argc, char **argv, char **env)
+// {
+// 	t_korn		*korn;
+// 	t_env		*track;
 
-	(void)argc;
-	(void)argv;
-	data_init(&korn);
-	korn->env_head = env_keeper(env);
-	track = korn->env_head;
+// 	(void)argc;
+// 	(void)argv;
+// 	data_init(&korn);
+// 	korn->env_head = env_keeper(env);
+// 	track = korn->env_head;
 
-	// rl_replace_line();
-	t_cmd	*cmd = malloc(sizeof(t_cmd));
-	cmd->args = "Hello my friend";
-	cmd->output = 1;
-	ft_echo(cmd);
+// 	// rl_replace_line();
+// 	t_cmd	*cmd = malloc(sizeof(t_cmd));
+// 	cmd->args = "Hello my friend";
+// 	cmd->output = 1;
+// 	ft_echo(cmd);
 
-	show_prompt();
-	return (0);
-}
+// 	show_prompt();
+// 	return (0);
+// }
 
 /* 
 ** Shows the prompt via readline

@@ -90,13 +90,11 @@ void	renew_var_norme(char **new_var, int has_value, t_env *head)
 void	renew_var(char *new_var, int append, int has_value, t_env *head)
 {
 	t_env	*tmp;
-	int		i;
 	char	**var;
 
 	var = NULL;
 	var = env_split(new_var);
 	tmp = head;
-	i = 0;
 	if (!append)
 	{
 		while (tmp)
