@@ -35,7 +35,7 @@ $(NAME):		$(OBJS) $(HEADER)
 				@$(CC) $(CC_FLAGS)  -L $(LIBFT_DIR) -lft -I $(DIR_HEADERS) -lreadline  $(OBJS) -o $(NAME)
 				@tput setaf 2 && printf "$(NAME) created.\n"
 
-$(OBJS):		$(DIR_OBJS)
+$(OBJS):		| $(DIR_OBJS)
 
 
 $(DIR_OBJS):
