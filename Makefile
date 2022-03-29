@@ -18,8 +18,17 @@ SRC			=	main.c builtins.c cd.c\
 SRCS		=	$(SRC)
 OBJS 		=	$(SRCS:%.c=$(DIR_OBJS)%.o)
 NAME 		=	minishell
-LDFLAGS		=	-L /usr/local/opt/readline/lib 
-CPPFLAGS 	=	-I /usr/local/opt/readline/include
+
+ifeq ($(USER), letumany)
+    LDFLAGS		=	-L /Users/letumany/lib 
+	CPPFLAGS 	=	-I /Users/letumany/include
+else ifeq ($(USER), amidoyan)
+	LDFLAGS		=	-L /Users/amidoyan/lib 
+	CPPFLAGS 	=	-I /Users/amidoyan/include
+else 
+	LDFLAGS		=	-L /usr/local/opt/readline/lib 
+	CPPFLAGS 	=	-I /usr/local/opt/readline/include
+endif
 
 all:			$(NAME)
 

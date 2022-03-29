@@ -1,5 +1,8 @@
 #include "../includes/minishell.h"
 
+/*  
+** Prints env vars
+*/
 int	env(t_korn *korn)
 {
 	t_env	*tmp;

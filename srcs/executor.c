@@ -17,6 +17,7 @@ int	exec_bin(t_cmd *cmd)
 		perror("AvôeL");
 	if (pid == 0)
 	{
+		getpid();
 		dup2(cmd->input, STDIN_FILENO);
 		dup2(cmd->output, STDOUT_FILENO);
 		execve(cmd->path, cmd->argv, NULL);
