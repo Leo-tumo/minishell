@@ -12,7 +12,13 @@ SRC			=	main.c builtins.c cd.c\
 				file_checker.c parcer.c\
 				var_keeper.c utils.c\
 				echo.c signal.c
- 
+
+
+NORMINETTE	:=	$(shell which norminette)
+
+ifeq (, $(shell which norminette))
+	NORMINETTE := ${HOME}/.norminette/norminette.rb
+endif
 
 
 SRCS		=	$(SRC)
@@ -68,5 +74,8 @@ re:				fclean all
 me:				all
 				@./minishell
 
+norm:
+				@$(NORMINETTE) $(DIR_SRCS)
+				@$(NORMINETTE) $(DIR_HEADERS)
 
 .PHONY:			all clean fclean re me debug
