@@ -17,7 +17,8 @@
 
 # define CYAN "\001\033[1;36m\002"
 # define WHITE "\001\033[0m\002"
-# define GREEN "\001\033[1;31m\002"
+# define GREEN "\001\033[1;92m\002"
+# define RED "\001\033[1;31m\002"
 /*
 * Sorry I love 🐍
 */
