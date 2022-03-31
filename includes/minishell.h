@@ -63,6 +63,13 @@ typedef struct s_cmd
 	int			command_flag;
 }			t_cmd;
 
+typedef struct s_sig
+{
+	int		exit_status;
+}		t_sig;
+
+t_sig	g_sig; // exit status aka '$?'
+
 /*  
 * This struck keeps 'env' variables
 */
@@ -87,14 +94,13 @@ typedef struct s_korn
 	int		in;
 	int		argc;
 	char	**argv;		
-	int		x_st;		// exit status aka '$?'
 }			t_korn;
 
 void		print_welcome_message(void);
 void		data_init(t_korn **korn);
 t_env		*env_keeper(char **env);
 int			check_bin(t_cmd *cmd, t_korn *korn);
-
+void		run_signals(int sig);
 /*  
 ** util functions
 */
@@ -127,8 +133,6 @@ int			ft_echo(t_cmd *cmd);
 int			ft_exit(t_korn *korn, t_cmd *cmd);
 
 
-
-
 /* 
 ** file status checking functions 
 */
@@ -145,22 +149,23 @@ int			is_meta(char c);
 /*
 ** AVO functions ⇣⇣
 */
-void	fill(char **to, char *from);
-char	**first_step(char *str);
-char	*get_quoted_filename(char *str, int *i);
-char	*get_filename(char *str, int *i);
-char	*double_output(char *str, int *i);
-int		parse_output(char *str, int i, t_cmd *c);
-void	print_struct(t_cmd c);
-void	init(t_cmd *c, char *str);
-t_cmd	command_init(char *str);
-t_cmd	*t_cmd_init(char **splitted, int lines);
-void	parse(char *str, t_env *envs);
-int		parse_input(char *str, int i, t_cmd *c);
-void	heredoc(void);
-void	fill(char **to, char *from);
-char	**first_step(char *str);
-int		line_count(char **splitted);
+// int		ft_ispace(int c);
+// void	fill(char **to, char *from);
+// char	**first_step(char *str);
+// char	*get_quoted_filename(char *str, int *i);
+// char	*get_filename(char *str, int *i);
+// char	*double_output(char *str, int *i);
+// int		parse_output(char *str, int i, t_cmd *c);
+// void	print_struct(t_cmd c);
+// void	init(t_cmd *c, char *str);
+// t_cmd	command_init(char *str);
+// t_cmd	*t_cmd_init(char **splitted, int lines);
+// void	parse(char *str, t_env *envs);
+// int		parse_input(char *str, int i, t_cmd *c);
+// void	heredoc(void);
+// void	fill(char **to, char *from);
+// char	**first_step(char *str);
+// int		line_count(char **splitted);
 
 
 #endif

@@ -29,7 +29,7 @@ int  ft_exit(t_korn *korn, t_cmd *cmd)   // FIXME:
     if (korn->argc > 2)
     {
         ft_putstr_fd("exit\n bash: exit: too many arguments\n", 2);
-        korn->x_st = 1;
+        g_sig.exit_status = 1;
     }
     else
     {
@@ -41,14 +41,14 @@ int  ft_exit(t_korn *korn, t_cmd *cmd)   // FIXME:
             ft_putstr_fd("exit\nbash: exit: ", 2);
             ft_putstr_fd(cmd->argv[1], 2);
             ft_putstr_fd(": numeric argument required\n", 2);
-            korn->x_st = 2;
+            g_sig.exit_status = 2;
         }
-        if (cmd->argc > 1 && korn->x_st != 2)
+        if (cmd->argc > 1 && g_sig.exit_status != 2)
            i = ft_atoi(cmd->argv[1]) % 256; 
         else
-            i = korn->x_st;
+            i = g_sig.exit_status;
         free_cmd(cmd);  
         exit(i); 
     }
-    return (korn->x_st);
+    return (g_sig.exit_status);
 }

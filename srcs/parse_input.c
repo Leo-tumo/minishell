@@ -1,4 +1,4 @@
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 int	parse_input(char *str, int i, t_cmd *c)
 {

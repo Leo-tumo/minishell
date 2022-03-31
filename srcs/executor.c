@@ -9,15 +9,15 @@
 */
 int	exec_bin(t_cmd *cmd)
 {
-	int		pid;
-	int		err;
+	pid_t		pid;
+	int			err;
 
 	pid = fork();
 	if (pid == -1)
-		perror("AvôeL");
+		perror(GREEN"AvôeL"WHITE);
 	if (pid == 0)
 	{
-		getpid();
+		run_signals(2);
 		dup2(cmd->input, STDIN_FILENO);
 		dup2(cmd->output, STDOUT_FILENO);
 		execve(cmd->path, cmd->argv, NULL);
@@ -26,10 +26,10 @@ int	exec_bin(t_cmd *cmd)
 	}
 	else
 	{
-		wait(&err);
-		// waitpid(child_pid, &stat_loc, WUNTRACED); FIXME: Not sure which one to use
+		waitpid(pid, &err, WUNTRACED);
+		g_sig.exit_status = WEXITSTATUS(err); //FIXME: wrong status if interrupted by signal
 	}
-	return (err / 256);
+	return (WEXITSTATUS(err));
 }
 
 /*  

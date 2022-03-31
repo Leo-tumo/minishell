@@ -12,8 +12,8 @@ SRC			=	main.c builtins.c cd.c\
 				file_checker.c parcer.c\
 				var_keeper.c utils.c\
 				echo.c signal.c art.c\
-				ft_split_our.c parse_output.c\
-				parse_input.c init.c utils1.c
+				# ft_split_our.c parse_output.c\
+				# parse_input.c init.c utils1.c
 
 
 NORMINETTE	:=	$(shell which norminette)

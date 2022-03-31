@@ -1,4 +1,4 @@
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 char	*get_quoted_filename(char *str, int *i)
 {
