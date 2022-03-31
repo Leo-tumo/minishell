@@ -27,6 +27,7 @@ int	exec_bin(t_cmd *cmd)
 	else
 	{
 		wait(&err);
+		// waitpid(child_pid, &stat_loc, WUNTRACED); FIXME: Not sure which one to use
 	}
 	return (err / 256);
 }

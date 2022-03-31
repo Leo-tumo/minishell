@@ -6,7 +6,7 @@ void sig_handler(int signal)
 	if (signal == SIGINT)
 	{
 		printf("\033[K");
-		printf("^C\n");
+		// printf("%sAvôeL> %s\n", MAGENTA, WHITE);
 	}
 
 	if (rl_on_new_line() == -1) // readline Output the string set to ?
@@ -19,44 +19,65 @@ void setting_signal()
 {
 	signal(SIGINT, sig_handler); // CTRL + C
 	signal(SIGQUIT, SIG_IGN);    // CTRL + /
-	// signal(SIGTERM, sig_handler);     /7  // signal(SIGTERM, sig_handler);
 }
 
-// int main()
-// {
-// 	char *str;
-// 	struct termios term;
-// 	tcgetattr(STDIN_FILENO, &term);
-// 	term.c_lflag &= ~(ECHOCTL);
-// 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-// 	setting_signal();
+int main()
+{
+	char *str;
+	struct termios term;
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	setting_signal();
+	pid_t	child_pid = fork();
+	if (child_pid == 0)
+	{
+		while (1)
+		{
+			signal(SIGINT, SIG_DFL);
+			str = readline(MAGENTA"AvôeL> "WHITE);
+			if (!str)
+			{
+				printf("\033[1A");
+				printf("\033[10C");
+				printf(" exit\n");
+				exit(-1);
+			}
+			else if (*str == '\0')
+			{
+				free(str);
+			}
+			else
+			{
+				add_history(str);
+				signal(SIGINT, SIG_DFL);
+				execl("/bin/cat", "cat", NULL);
+				free(str);
+			}
+		}
+	}
+	else{
+		int stat_loc;
+		setting_signal();
+		waitpid(child_pid, &stat_loc, WUNTRACED);
+		perror("Error\n");
+		printf("Exit status = %d\n",  WEXITSTATUS(stat_loc));
+		while(1)
+		{
+			term.c_lflag &= ~(ECHOCTL);
+			str = readline("PAPA");
+			if (!str)
+			{
+				printf("\033[1A");
+				printf("\033[10C");
+				printf(" exit\n");
+				exit(-1);
+			}
+		}	
+	}
 
-// 	while (1)
-// 	{
-// 		str = readline(GREEN"nanoshell$ ");
-// 		if (!str)
-// 		{
-// 			printf("\033[1A");
-// 			printf("\033[10C");
-// 			printf(" exit\n");
-// 			exit(-1);
-// 		}
-// 		else if (*str == '\0')
-// 		{
-// 			free(str);
-// 		}
-// 		else
-// 		{
-// 			add_history(str);
-// 			printf("%s\n", str);
-// 			free(str);
-// 		}
-// 	}
-
-// 	return (0);
-// }
-
-
+	return (0);
+}
 
 
 void	restore_prompt(int sig)
@@ -79,9 +100,10 @@ void	ctrl_c(int sig)
 void	back_slash(int sig)
 {
 	g_ret_number = 131;
-	printf("Quit (core dumped)\n");
+	printf("Quit :3\n");
 	(void)sig;
 }
+
 void	run_signals(int sig)
 {
 	if (sig == 1)

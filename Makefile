@@ -11,7 +11,9 @@ SRC			=	main.c builtins.c cd.c\
 				export_utils.c export.c\
 				file_checker.c parcer.c\
 				var_keeper.c utils.c\
-				echo.c signal.c
+				echo.c signal.c art.c\
+				ft_split_our.c parse_output.c\
+				parse_input.c init.c utils1.c
 
 
 NORMINETTE	:=	$(shell which norminette)
@@ -42,7 +44,7 @@ debug:			CC_FLAGS += -g3 -fsanitize=address
 debug:			all
 
 $(DIR_OBJS)%.o: $(DIR_SRCS)%.c
-				@tput setaf 190 && printf "\033[2K\r Compiling $<"
+				@tput setaf 190 && printf "\033[2K\rCompiling $<"
 				@$(CC) $(CC_FLAGS) $(CPPFLAGS) -I $(DIR_HEADERS) -c $< -o $@
 
 $(NAME):		$(OBJS) $(HEADER)
@@ -78,4 +80,4 @@ norm:
 				@$(NORMINETTE) $(DIR_SRCS)
 				@$(NORMINETTE) $(DIR_HEADERS)
 
-.PHONY:			all clean fclean re me debug
+.PHONY:			all clean fclean re me debug norm

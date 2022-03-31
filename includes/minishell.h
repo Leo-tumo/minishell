@@ -15,6 +15,7 @@
 # include <sys/stat.h>
 
 
+# define MAGENTA "\001\033[1;35m\002"
 # define CYAN "\001\033[1;36m\002"
 # define WHITE "\001\033[0m\002"
 # define GREEN "\001\033[1;92m\002"
@@ -47,7 +48,19 @@ typedef struct s_cmd
 	int			input;
 	int			output;
 	int			flag; // 0 = other, 1 = echo, 2 = cd, 3 = pwd, 4 = export, 5 = unset, 6 = env, 7 = exit
-	int			e_flag; // for echo command 0 = no flag, 1 = -n
+/* Stexic sksum en structi Avoi masery 💪🏻 */
+	char		**infile;
+	int			infile_count;//? malloci hamar
+	int			input_index;
+	int			input_fd;//verjin inputi fd defaltov 0
+	int			double_input;//piti darna heredoc, logican piti poxvi
+	char		**outfile;
+	int			outfile_count;//?malloci hamar
+	int			output_fd;//defaultov 1, kam |
+	int			output_flag;//O_TRUNC kam O_APPEND kaxvac outputi tipic
+	int			output_index;//for the malloc in 2d output array
+	char		*argument;
+	int			command_flag;
 }			t_cmd;
 
 /*  
@@ -77,6 +90,7 @@ typedef struct s_korn
 	int		x_st;		// exit status aka '$?'
 }			t_korn;
 
+void		print_welcome_message(void);
 void		data_init(t_korn **korn);
 t_env		*env_keeper(char **env);
 int			check_bin(t_cmd *cmd, t_korn *korn);
@@ -125,5 +139,28 @@ int			is_link(char *path);
 int			is_socket(char *path);
 char		*show_prompt(void);
 int			is_meta(char c);
+
+
+
+/*
+** AVO functions ⇣⇣
+*/
+void	fill(char **to, char *from);
+char	**first_step(char *str);
+char	*get_quoted_filename(char *str, int *i);
+char	*get_filename(char *str, int *i);
+char	*double_output(char *str, int *i);
+int		parse_output(char *str, int i, t_cmd *c);
+void	print_struct(t_cmd c);
+void	init(t_cmd *c, char *str);
+t_cmd	command_init(char *str);
+t_cmd	*t_cmd_init(char **splitted, int lines);
+void	parse(char *str, t_env *envs);
+int		parse_input(char *str, int i, t_cmd *c);
+void	heredoc(void);
+void	fill(char **to, char *from);
+char	**first_step(char *str);
+int		line_count(char **splitted);
+
 
 #endif
