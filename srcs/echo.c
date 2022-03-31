@@ -23,9 +23,10 @@ int	ft_echo(t_cmd *cmd)
 		}
 		if (!arg && cmd->argv[i])
 			arg = cmd->argv[i];
-		else
+		else if(cmd->argv[i] && cmd->argv[i][0] != '\0')
 			arg = ft_strjoin3(arg, " ", cmd->argv[i]);
 		++i;
+		printf("111 === %s\n", arg);
 	}
 	return (echo(&arg, cmd->output, flag, 1));
 }

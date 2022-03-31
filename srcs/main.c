@@ -13,9 +13,11 @@ int	main(int argc, char **argv, char **env)
 	// track = korn->env_head;
 
 	t_cmd	*cmd = malloc(sizeof(t_cmd));
+	cmd->args = malloc(sizeof(char *) * 2);
 	cmd->args = "Hello my friend";
 	cmd->output = 1;
-	// ft_echo(cmd);  //FIXME: seg fault 
+	cmd->argv = &cmd->args;
+	ft_echo(cmd);  //FIXME: seg fault 
 
 	show_prompt();
 	return (0);
