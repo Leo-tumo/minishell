@@ -16,6 +16,8 @@ int	main(int argc, char **argv, char **env)
 	cmd->args = malloc(sizeof(char *) * 2);
 	cmd->args = "Hello my friend";
 	cmd->output = 1;
+	cmd->argc = 1;
+	cmd->argv = ft_calloc(1, sizeof(char *) * 2);
 	cmd->argv = &cmd->args;
 	ft_echo(cmd);  //FIXME: seg fault 
 

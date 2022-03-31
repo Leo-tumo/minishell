@@ -14,7 +14,7 @@ int	ft_echo(t_cmd *cmd)
 	flag = 0;
 	arg = NULL;
 	i = 0;
-	while (cmd->argv[i])
+	while (i < cmd->argc)
 	{
 		while (cmd->argv[i][0] == '-' && cmd->argv[i][1] == 'n' && !cmd->argv[i][2])
 		{
@@ -26,7 +26,6 @@ int	ft_echo(t_cmd *cmd)
 		else if(cmd->argv[i] && cmd->argv[i][0] != '\0')
 			arg = ft_strjoin3(arg, " ", cmd->argv[i]);
 		++i;
-		printf("111 === %s\n", arg);
 	}
 	return (echo(&arg, cmd->output, flag, 1));
 }
