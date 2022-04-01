@@ -30,20 +30,31 @@
 /*  
 ** Bash errors
 */
-
 # define COMMAND_NOT_FOUND 127 // command not found
 # define PERMISSION_DENIED 126 // command found, but ain't executable
+
+
+/*  
+** This is a temporary or permanent linked list for heredoc
+** I think it should work, needless to say that I'm not sure about it.
+*/
+typedef struct s_doc
+{
+	int					heredoc_count; // in case that there are many Speciall for 2🍕s
+	char				*delimiter; // EOF . otherways it can be interrupted with a signal🪦
+	char				*final_content; // in case of final input from heredoc. ex. cat << EOT
+	struct s_doc	*next;
+} 						t_doc;
 
 /*  
 ** Struct for command
 */
-
 typedef struct s_cmd
 {
 	char		*name; // command name - ex. echo, cd, yes, tee, cal etc...
-	char		*path; // this is very important
+	char		*path; // this is very important -> commands full path
 	char		*args; // temporary, just for test
-	char		**argv; // needed for execve
+	char		**argv; // needed for execve || can be replaced by ft_split(args, " "). Should include commans name
 	int			argc; // argument count
 	int			input;
 	int			output;
