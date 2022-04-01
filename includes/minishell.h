@@ -40,10 +40,8 @@
 */
 typedef struct s_doc
 {
-	int					heredoc_count; // in case that there are many Speciall for 2🍕s
 	char				*delimiter; // EOF . otherways it can be interrupted with a signal🪦
-	char				*final_content; // in case of final input from heredoc. ex. cat << EOT
-	struct s_doc	*next;
+	struct s_doc		*next;
 } 						t_doc;
 
 /*  
@@ -100,6 +98,8 @@ typedef struct s_env
 */
 typedef struct s_korn
 {
+	int		line; // counts lines for heredoc error message
+	int		heredoc_count; // in case that there are many Speciall for 2🍕s
 	t_env	*env_head;	// head of env variables
 	int		out;
 	int		in;
@@ -112,6 +112,7 @@ void		data_init(t_korn **korn);
 t_env		*env_keeper(char **env);
 int			check_bin(t_cmd *cmd, t_korn *korn);
 void		run_signals(int sig);
+
 /*  
 ** util functions
 */
