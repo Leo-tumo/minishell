@@ -5,7 +5,8 @@
 */
 int		ft_strcmp(const char *s1, const char *s2)
 {
-	unsigned int		i;
+	unsigned int	i;
+
 	i = 0;
 	while (s1[i])
 	{
@@ -49,7 +50,7 @@ void	heredoc_child(t_korn *korn, int fd, t_doc *doc)
 /*  
 ** This is fake heredoc, in case of multiple heredocs 2🍕
 */
-void	fake_heredoc(t_korn *korn, t_doc *doc) // FIXME: needs improvement for signal handling, maybe needs fork
+void	fake_heredoc(t_korn *korn, t_doc *doc)
 {
 	char	*buf;
 
@@ -80,15 +81,16 @@ void	here_doc(t_korn *korn, t_doc *doc)
 	int		fd[2];
 	pid_t	pid;
 
-	while (korn->heredoc_count > 1)
-	{
-		fake_heredoc(korn, doc);
-		doc = doc->next;
-	}
 	pipe(fd);
 	pid = fork();
 	if (pid == 0)
 	{
+		run_signals(4);
+		while (korn->heredoc_count > 1)
+		{
+			fake_heredoc(korn, doc);
+			doc = doc->next;
+		}
 		heredoc_child(korn, fd[1], doc);
 		close(fd[0]);
 	}
@@ -101,7 +103,7 @@ void	here_doc(t_korn *korn, t_doc *doc)
 	}
 }
 
-int	main() // TODO: Just for test - I think it works!
+int	main() // TODO: Just for test - I think it works!needless to say that I'm not sure about it.
 {
 	t_doc	*doc;
 	t_korn	*korn = malloc(sizeof(t_korn));

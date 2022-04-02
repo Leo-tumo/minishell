@@ -14,7 +14,6 @@
 # include <readline/history.h>
 # include <sys/stat.h>
 
-
 # define MAGENTA "\001\033[1;35m\002"
 # define CYAN "\001\033[1;36m\002"
 # define WHITE "\001\033[0m\002"
@@ -30,15 +29,14 @@
 /*  
 ** Bash errors
 */
-# define COMMAND_NOT_FOUND 127 // command not found
-# define PERMISSION_DENIED 126 // command found, but ain't executable
-
+# define PERMISSION_DENIED 	126 // command found, but ain't executable
+# define COMMAND_NOT_FOUND 	127 // command not found
 
 /*  
 ** This is a temporary or permanent linked list for heredoc
-** I think it should work, needless to say that I'm not sure about it.
+** I think it should work, 
 */
-typedef struct s_doc
+typedef struct s_doc // mitq gisherva 1000in - karelia sra poxaren unenal delimitrneri erkchap zangvac;
 {
 	char				*delimiter; // EOF . otherways it can be interrupted with a signal🪦
 	struct s_doc		*next;
@@ -72,6 +70,9 @@ typedef struct s_cmd
 	int			command_flag;
 }			t_cmd;
 
+/*  
+** Yet the only global ✵
+*/
 typedef struct s_sig
 {
 	int		exit_status;
@@ -100,6 +101,7 @@ typedef struct s_korn
 {
 	int		line; // counts lines for heredoc error message
 	int		heredoc_count; // in case that there are many Speciall for 2🍕s
+	char	**delimiters; // heredoc delimiters' gang ✵ - should replace t_doc linked list;
 	t_env	*env_head;	// head of env variables
 	int		out;
 	int		in;

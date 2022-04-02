@@ -50,7 +50,7 @@ $(DIR_OBJS)%.o: $(DIR_SRCS)%.c
 $(NAME):		$(OBJS) $(HEADER)
 				@make -C $(LIBFT_DIR)
 				@tput setaf 2 && printf "\033[2K\r.o compiled.\n"
-				@$(CC) $(CC_FLAGS)  -L $(LIBFT_DIR) -lft -I $(DIR_HEADERS)  $(LDFLAGS) -lreadline $(OBJS) -o $(NAME)
+				@$(CC) $(CC_FLAGS)  -L $(LIBFT_DIR) -lft -I $(DIR_HEADERS) -lncurses $(LDFLAGS) -lreadline $(OBJS) -o $(NAME)
 				@tput setaf 2 && printf "$(NAME) created.\n"
 				@tput setaf 255
 
