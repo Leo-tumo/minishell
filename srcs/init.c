@@ -1,13 +1,13 @@
 #include "../includes/minishell.h"
 
-void	init(t_cmd *c, char *str)
+void	init(t_cmd *c, char *str, t_korn *korn, t_doc *doc)
 {
 	c->infile_count = 0;
 	c->outfile_count = 0;
 	c->output_index = 0;
 	c->input_index = 0;
 	c->output_flag = get_output_flag(str);
-	c->infile = input_redirs(str, &c->infile_count);
+	c->infile = input_redirs(str, &c->infile_count, korn, doc);
 	c->outfile = output_redirs(str, &c->outfile_count);
 	c->input_fd = 0;
 	c->output_fd = 1;
@@ -15,13 +15,13 @@ void	init(t_cmd *c, char *str)
 	c->name = NULL;
 }
 
-t_cmd	command_init(char *str)
+t_cmd	command_init(char *str, t_korn *korn, t_doc *doc)
 {
 	int		i;
 	t_cmd	c;
 
 	i = -1;
-	init(&c, str);
+	init(&c, str, korn, doc);
 	while (str[++i])
 	{
 		if (ft_ispace(str[i]))
@@ -29,12 +29,12 @@ t_cmd	command_init(char *str)
 		else if (str[i] == '>')
 			i = parse_output(str, i, &c);
 		else if (str[i] == '<')
-			i = parse_input(str, i, &c);
+			i = parse_input(str, i, &c, korn, doc);
 	}
 	return (c);
 }
 
-t_cmd	*t_cmd_init(char **splitted, int lines)
+t_cmd	*t_cmd_init(char **splitted, int lines, t_korn *korn, t_doc *doc)
 {
 	int		i;
 	t_cmd	*ret;
@@ -43,13 +43,13 @@ t_cmd	*t_cmd_init(char **splitted, int lines)
 	ret = (t_cmd *)malloc((lines + 1) * sizeof(t_cmd));
 	while (++i < lines)
 	{
-		ret[i] = command_init(splitted[i]);
+		ret[i] = command_init(splitted[i], korn, doc);
 		print_struct(ret[i]);
 	}
 	return (ret);
 }
 
-void	parse(char *str, t_env *envs)
+void	parse(char *str, t_env *envs, t_korn *korn, t_doc *doc)
 {
 	int		lines;
 	char	**splitted;
@@ -58,6 +58,6 @@ void	parse(char *str, t_env *envs)
 	(void) envs;
 	splitted = first_step(str);
 	lines = line_count(splitted);
-	line_commands = t_cmd_init(splitted, lines);
+	line_commands = t_cmd_init(splitted, lines, korn, doc);
 	free(splitted);
 }

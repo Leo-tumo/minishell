@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int	parse_input(char *str, int i, t_cmd *c)
+int	parse_input(char *str, int i, t_cmd *c, t_korn *korn, t_doc *doc)
 {
 	int		k;
 	char	*filename;
@@ -8,7 +8,7 @@ int	parse_input(char *str, int i, t_cmd *c)
 	k = i;
 	filename = NULL;
 	if (str[k + 1] && str[k + 1] == '<' && ++k)
-		heredoc();
+		here_doc(korn, doc);
 	while (str[++k])
 	{
 		if (ft_ispace(str[k]))
@@ -33,4 +33,30 @@ int	parse_input(char *str, int i, t_cmd *c)
 	fill(&c->infile[c->input_index], filename);
 	++c->input_index;
 	return (k);
+}
+
+char **input_redirs(char *s, int *count, t_korn *korn, t_doc *doc)
+{
+    int     i;
+    char    quote;
+    char    **ret;
+
+
+    i = -1;
+    ret = NULL;
+    while (s[++i])
+    {
+        if ((s[i] == '\'' || s[i] == '"') && s[++i])
+        {
+            quote = s[i - 1];
+            while (s[i] != quote)
+                ++i;
+        }
+        if (s[i] == '<' && s[i + 1] && s[i + 1] == '<')
+            here_doc(korn, doc);
+        else if (s[i] == '<' && s[i + 1] && s[i + 1] != '<')
+            ++(*count);
+    }
+    ret = malloc(sizeof(char *) * (*count + 1));
+    return (ret);
 }

@@ -52,3 +52,28 @@ void	print_welcome_message(void)
 	printf("8  ,d \nd888b Y8b Y8b 888 88b Y88b 888 8edP  888 888 888,d88 888,");
 	printf("d88 888,d88 %s\n", WHITE);
 }
+
+/* 
+** Shows the prompt via readline
+*/
+char	*show_prompt(void)
+{
+	char	*line;
+
+	while (1)
+	{
+		run_signals(1);
+		line = readline(MAGENTA"AvôeL> "WHITE);
+		if (!line)
+			run_signals(3);
+		else if (*line == '\0')
+			free(line);
+		else
+		{
+			if (ft_strlen(line) == 0)
+				continue ;
+			add_history(line);
+		}
+	}
+	return (line);
+}

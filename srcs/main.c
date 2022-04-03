@@ -26,31 +26,6 @@ int	main(int argc, char **argv, char **env)
 }
 
 /* 
-** Shows the prompt via readline
-*/
-char	*show_prompt(void)
-{
-	char	*line;
-
-	while (1)
-	{
-		run_signals(1);
-		line = readline(MAGENTA"AvôeL> "WHITE);
-		if (!line)
-			run_signals(3);
-		else if (*line == '\0')
-			free(line);
-		else
-		{
-			if (ft_strlen(line) == 0)
-				continue ;
-			add_history(line);
-		}
-	}
-	return (line);
-}
-
-/* 
 ** initialize main data structure 
 */
 void	data_init(t_korn **korn)
