@@ -32,15 +32,7 @@
 # define PERMISSION_DENIED 	126 // command found, but ain't executable
 # define COMMAND_NOT_FOUND 	127 // command not found
 
-/*  
-** This is a temporary or permanent linked list for heredoc
-** I think it should work, 
-*/
-typedef struct s_doc // mitq gisherva 1000in - karelia sra poxaren unenal delimitrneri erkchap zangvac;
-{
-	char				*delimiter; // EOF . otherways it can be interrupted with a signal🪦
-	struct s_doc		*next;
-} 						t_doc;
+
 
 /*  
 ** Struct for command
@@ -114,7 +106,7 @@ void		data_init(t_korn **korn);
 t_env		*env_keeper(char **env);
 int			check_bin(t_cmd *cmd, t_korn *korn);
 void		run_signals(int sig);
-void		here_doc(t_korn *korn, t_doc *doc);
+void		here_doc(t_korn *korn);
 /*  
 ** util functions
 */
@@ -170,17 +162,17 @@ char		*get_filename(char *str, int *i);
 char		*double_output(char *str, int *i);
 int			parse_output(char *str, int i, t_cmd *c);
 void		print_struct(t_cmd c);
-void		init(t_cmd *c, char *str, t_korn *korn, t_doc *doc);
-t_cmd		command_init(char *str, t_korn *korn, t_doc *doc);
-t_cmd		*t_cmd_init(char **splitted, int lines, t_korn *korn, t_doc *doc);
-void		parse(char *str, t_env *envs, t_korn *korn, t_doc *doc);
-int			parse_input(char *str, int i, t_cmd *c, t_korn *korn, t_doc *doc);
+void		init(t_cmd *c, char *str, t_korn *korn);
+t_cmd		command_init(char *str, t_korn *korn);
+t_cmd		*t_cmd_init(char **splitted, int lines, t_korn *korn);
+void		parse(char *str, t_env *envs, t_korn *korn);
+int			parse_input(char *str, int i, t_cmd *c, t_korn *korn);
 void		heredoc(void);
 void		fill(char **to, char *from);
 char		**first_step(char *str);
 int			line_count(char **splitted);
 char 		**output_redirs(char *s, int *count);
-char 		**input_redirs(char *s, int *count, t_korn *korn, t_doc *doc);
+char 		**input_redirs(char *s, int *count, t_korn *korn);
 int 		get_output_flag(char *str);
 
 

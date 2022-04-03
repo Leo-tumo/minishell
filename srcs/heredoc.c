@@ -25,7 +25,7 @@ int		ft_strcmp(const char *s1, const char *s2)
 /*  
 ** Actual heredoc is here, inside child process
 */
-void	heredoc_child(t_korn *korn, int fd, t_doc *doc)
+void	heredoc_child(t_korn *korn, int fd, char *delimiter)
 {
 	char	*buf;
 
@@ -33,15 +33,18 @@ void	heredoc_child(t_korn *korn, int fd, t_doc *doc)
 	while (buf)
 	{
 		korn->line++;
-		if (!ft_strcmp(buf, doc->delimiter))
-			exit(0);
 		ft_putendl_fd(buf, fd);
 		free(buf);
 		buf = readline("> ");
+		if (!ft_strcmp(buf, delimiter))
+		{
+			free(buf);
+			exit(0);
+		}
 		if (!buf)
 		{
 			printf("bash: warning: here-document at line %d delimited ", korn->line);
-			printf("by end-of-file (wanted `%s')\n", doc->delimiter);
+			printf("by end-of-file (wanted `%s')\n", delimiter);
 			exit(0);
 		}
 	}
@@ -50,23 +53,21 @@ void	heredoc_child(t_korn *korn, int fd, t_doc *doc)
 /*  
 ** This is fake heredoc, in case of multiple heredocs 2🍕
 */
-void	fake_heredoc(t_korn *korn, t_doc *doc)
+void	fake_heredoc(t_korn *korn, char *delimiter)
 {
 	char	*buf;
 
 	korn->heredoc_count--;
 	buf = readline("> ");
-	while (buf)
+	while (ft_strcmp(buf, delimiter))
 	{
-		korn->line++;
-		if (!ft_strcmp(buf, doc->delimiter))
-			return;
 		free(buf);
 		buf = readline("> ");
+		korn->line++;
 		if (!buf)
 		{
 			printf("bash: warning: here-document at line %d delimited ", korn->line);
-			printf("by end-of-file (wanted `%s')\n", doc->delimiter);
+			printf("by end-of-file (wanted `%s')\n", delimiter);
 			return;
 		}
 	}
@@ -76,42 +77,46 @@ void	fake_heredoc(t_korn *korn, t_doc *doc)
 ** This function allows us to get heredoc's output to STDIN
 ** if there are multiple heredocs, it fake them except the last one
 */
-void	here_doc(t_korn *korn, t_doc *doc)
+void	here_doc(t_korn *korn)
 {
 	int		fd[2];
 	pid_t	pid;
+	int		i;
 
+	i = 0;
 	pipe(fd);
 	pid = fork();
 	if (pid == 0)
 	{
 		run_signals(4);
-		while (korn->heredoc_count > 1)
+		while (i + 1 < korn->heredoc_count)
 		{
-			fake_heredoc(korn, doc);
-			doc = doc->next;
+			fake_heredoc(korn, korn->delimiters[i]);
+			++i;
 		}
-		heredoc_child(korn, fd[1], doc);
+		heredoc_child(korn, fd[1], korn->delimiters[i]);
 		close(fd[0]);
 	}
 	else
 	{
 		run_signals(1);
 		waitpid(pid, &g_sig.exit_status, WEXITSTATUS(g_sig.exit_status));
-		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
+		close(fd[1]);
 	}
 }
 
-// int	main() // TODO: Just for test - I think it works!needless to say that I'm not sure about it.
-// {
-// 	t_doc	*doc;
-// 	t_korn	*korn = malloc(sizeof(t_korn));
+int	main() // TODO: Just for test - I think it works!needless to say that I'm not sure about it.
+{
+	t_korn	*korn = malloc(sizeof(t_korn));
 
-// 	korn->line = 0;
-// 	doc = malloc(sizeof(t_doc));
-// 	doc->delimiter = malloc(sizeof(char *));
-// 	doc->delimiter = "eof";
-// 	here_doc(korn, doc);
-// 	execl("/bin/cat", "cat", NULL);
-// }
+	korn->line = 0;
+	korn->heredoc_count = 1;
+	korn->delimiters = malloc(sizeof(char**));
+	korn->delimiters[0] = malloc(sizeof(char *));
+	korn->delimiters[0] = "eof";
+	here_doc(korn);
+	// while(get_next_line(0, &line))
+	// 	printf("%s\n", line);
+	execl("/bin/cat", "cat", NULL);
+}
