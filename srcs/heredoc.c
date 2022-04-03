@@ -103,15 +103,15 @@ void	here_doc(t_korn *korn, t_doc *doc)
 	}
 }
 
-int	main() // TODO: Just for test - I think it works!needless to say that I'm not sure about it.
-{
-	t_doc	*doc;
-	t_korn	*korn = malloc(sizeof(t_korn));
+// int	main() // TODO: Just for test - I think it works!needless to say that I'm not sure about it.
+// {
+// 	t_doc	*doc;
+// 	t_korn	*korn = malloc(sizeof(t_korn));
 
-	korn->line = 0;
-	doc = malloc(sizeof(t_doc));
-	doc->delimiter = malloc(sizeof(char *));
-	doc->delimiter = "eof";
-	here_doc(korn, doc);
-	execl("/bin/cat", "cat", NULL);
-}
+// 	korn->line = 0;
+// 	doc = malloc(sizeof(t_doc));
+// 	doc->delimiter = malloc(sizeof(char *));
+// 	doc->delimiter = "eof";
+// 	here_doc(korn, doc);
+// 	execl("/bin/cat", "cat", NULL);
+// }

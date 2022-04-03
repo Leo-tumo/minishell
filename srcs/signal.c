@@ -13,26 +13,15 @@ void	restore_prompt(int sig)
 	(void)sig;
 }
 
-#include <term.h> // FIXME: stugum. petqa stringic heto grem ^C
-int	fputchar(int k)
-{
-	int	ret = write(1, "^C", 2);
-	(void)k;
-	return (ret);
-}
 /*  
 ** ^C signal inside heredoc
 */
 void	doc_ctrl_c(int sig)
 {
-	char *s = tgetstr("co", NULL);
-	int column = ft_atoi(s);
 	g_sig.exit_status = 131;
 	printf("\033[1A");
-	printf("\033[0C"); // FIXME: Wrong output, if user has already typed some 💩
-	// tgoto(s, 0, 0);
-	tputs(tgoto("^C", 9, column), 1, fputchar);// FIXME: τέλος πάντων - չի աշխատում 😡😡
-	exit(131); // FIXME: maybe I need to redisplay the prompt
+	printf("\033[0C");
+	exit(131);
 	(void)sig;
 }
 
