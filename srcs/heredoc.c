@@ -167,20 +167,20 @@ void	here_doc(t_korn *korn)
 	}
 }
 
-extern char **environ;
-int	main() // TODO: Just for test - I think it works!needless to say that I'm not sure about it.
-{
-	t_korn	*korn = malloc(sizeof(t_korn));
+// extern char **environ;
+// int	main() // TODO: Just for test - I think it works!needless to say that I'm not sure about it.
+// {
+// 	t_korn	*korn = malloc(sizeof(t_korn));
 
-	t_env	*env = malloc(sizeof(t_env));
-	env = env_keeper(environ);
-	korn->env_head = env;
+// 	t_env	*env = malloc(sizeof(t_env));
+// 	env = env_keeper(environ);
+// 	korn->env_head = env;
 
-	korn->line = 0;
-	korn->heredoc_count = 1;
-	korn->delimiters = malloc(sizeof(char**));
-	korn->delimiters[0] = malloc(sizeof(char *));
-	korn->delimiters[0] = "eof";
-	here_doc(korn);
-	execl("/bin/cat", "cat", NULL);
-} 
+// 	korn->line = 0;
+// 	korn->heredoc_count = 1;
+// 	korn->delimiters = malloc(sizeof(char**));
+// 	korn->delimiters[0] = malloc(sizeof(char *));
+// 	korn->delimiters[0] = "eof";
+// 	here_doc(korn);
+// 	execl("/bin/cat", "cat", NULL);
+// } 

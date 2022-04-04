@@ -101,6 +101,7 @@ typedef struct s_korn
 	char	**argv;		
 }			t_korn;
 
+
 void		print_welcome_message(void);
 void		data_init(t_korn **korn);
 t_env		*env_keeper(char **env);
@@ -110,6 +111,7 @@ void		here_doc(t_korn *korn);
 /*  
 ** util functions
 */
+int			ft_strcmp(const char *s1, const char *s2);
 int			char_join(char c, char **s1);
 char		**env_split(char *str);
 char		*ft_strjoin3(const char *s1, const char *s2, const char *s3);
@@ -135,8 +137,7 @@ char		*remove_plus_sign(char *s);
 void		renew_var(char *new_var, int append, int has_value, t_env *head);
 void		append_var(char *str, int flags, t_env *head, int is_exported);
 char		*get_value(char *name, t_env *head);
-int			echo(char **str, int fd, int flag, int argc);
-int			ft_echo(t_cmd *cmd);
+int			echo_(t_cmd *cmd);
 int			ft_exit(t_korn *korn, t_cmd *cmd);
 
 
@@ -179,3 +180,12 @@ int 		get_output_flag(char *str);
 
 
 #endif
+
+//TODO:
+// echo ✅✅✅
+//◦ cd 		--- needs improvement FIXME: with only a relative or absolute path
+// ◦ pwd	--- needs improvement FIXME: needs remake for **argv
+// ◦ export --- needs improvement FIXME: needs test
+// ◦ unset 	--- needs improvement FIXME: problem with freeing memory
+// ◦ env  	--- needs improvement TODO: seems like it works but still needs test
+// ◦ exit 	--- needs improvement FIXME: I'm not sure that it has to be this easy
