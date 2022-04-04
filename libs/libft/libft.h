@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 19:48:58 by letumany          #+#    #+#             */
-/*   Updated: 2022/03/17 20:30:41 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/05 00:10:35 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char		*ft_strtrim(char const *s1, char const *set);
 char		*ft_strnew(size_t size);
 void		*ft_memalloc(size_t size);
-int			ft_memdel(void **ptr);
+void		ft_memdel(void **ptr);
 int			get_next_line(int fd, char **line);
 int			ft_digit_num(long int n);
 t_list		*ft_lstnew(void *content);

@@ -51,13 +51,14 @@ t_cmd	*t_cmd_init(char **splitted, int lines, t_korn *korn)
 
 void	parse(char *str, t_env *envs, t_korn *korn)
 {
-	int		lines;
+	// int		lines;
 	char	**splitted;
-	t_cmd	*line_commands;
+	// t_cmd	*line_commands;
 
+	(void) korn;
 	(void) envs;
 	splitted = first_step(str);
-	lines = line_count(splitted);
-	line_commands = t_cmd_init(splitted, lines, korn);
+	// lines = line_count(splitted);
+	// line_commands = t_cmd_init(splitted, lines, korn);
 	free(splitted);
 }

@@ -55,31 +55,26 @@ int		ft_ispace(int c)
 */
 int char_join(char c, char **s1)
 {
-    int i;
+    int 	i;
     char    *str;
 
+	str = NULL;
 	if (!(*s1))
 	{
-		*s1 = malloc(2);
-		*s1[0] = c;
-		*s1[1] = '\0';
+		str = malloc(2);
+		str[0] = c;
+		str[1] = '\0';
+		*s1 = str;
+		// free(str);
 		return (1);
 	}
-	printf("INSIDE STRJOIN S1 BEFORE ACTION ===%s<-\n", *s1);
 	i = ft_strlen(*s1);
-    str = malloc(sizeof(char) * (i + 2));
-    i = -1;
-    while (*s1[++i])
-	{
-		printf("S1 =%c,\n", *s1[i]);
-        str[i] = *s1[i];
-		printf("S1 =%c,STR =%c,\n", *s1[i], str[i]);
-	}
-	printf("INSIDE STRJOIN S1 BEFORE ACTION 2===%s<-\n", str);
+    str = (char *)malloc(i + 2);
+    ft_memcpy(str, *s1, i);
     str[i] = c;
     str[i + 1] = '\0';
-	printf("INSIDE STRJOIN READY STR ===%s<-\n", str);
-	// free(*s1);
-	*s1 = str;
+	ft_memdel((void **)s1);
+	*s1 = ft_strdup(str);
+	free(str);
     return (1);
 }

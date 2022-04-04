@@ -2,10 +2,10 @@
 
 void	print_struct(t_cmd c)
 {
-	int	i;
+	// int	i;
 	int	j;
 
-	i = -1;
+	// i = -1;
 	j = -1;
 	printf("=============INFILES=============\n");
 	while (++j < c.infile_count)

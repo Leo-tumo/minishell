@@ -37,6 +37,22 @@ int	check_dollar_sign(char	*str)
 	return (FALSE);
 }
 
+/*  
+** 		replaces $ var with it's value
+*/
+char	*replace_dollar(char * ret, char **var_name, char **str, t_env *env)
+{
+	char_join(**str, var_name);
+	(*str)++;
+	while(ft_isalnum(**str) || **str == '_')
+		*str += char_join(**str, var_name);
+	if (ret)
+		ret = ft_strjoin(ret, get_value(*var_name, env));
+	else
+		ret = get_value(*var_name, env);
+	return (ret);
+}
+
 char	*replace_var(char *str, t_env *env)
 {
 	char	*ret;
@@ -47,34 +63,20 @@ char	*replace_var(char *str, t_env *env)
 	{
 		if (*str == '$')
 		{
+			var_name = NULL;
 			str++;
-			if (ft_ispace(*str))
-			{
+			if (ft_ispace(*str) || !*str)
 				char_join('$', &ret);
-				str += char_join(*str, &ret);
-				printf("RET AFTER $ + SPACE===%s===\n", ret);
-			}
-			else if (*str == '?')
-			{
-				printf("RET BEFORE $? ===%s===\n", ret);				
+			else if (*str == '?')			
 				str += char_join('0', &ret);
-				printf("RET AFTER $? ===%s===\n", ret);
-			}
 			else if (*str == '_' || ft_isalpha(*str))
-			{//FIXME:arandzin funkciayi mej arandznacnel
-				str++;
-				while(ft_isalnum(*str) || *str == '_')
-					str += char_join(*str, &var_name);
-				printf("VAR_NAME === %s\n",var_name);
-				ret = ft_strjoin(ret, get_value(var_name, env));		
-			}
+				ret = replace_dollar(ret, &var_name, &str, env);
 			else
 				++str;
 		}
 		else
 			str += char_join(*str, &ret);
 	}
-	printf("RET=== %s<-\n", ret);
 	return (ret);
 }
 
@@ -160,6 +162,7 @@ void	here_doc(t_korn *korn)
 		run_signals(1);
 		waitpid(pid, &g_sig.exit_status, WEXITSTATUS(g_sig.exit_status));
 		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
 		close(fd[1]);
 	}
 }
@@ -173,7 +176,6 @@ int	main() // TODO: Just for test - I think it works!needless to say that I'm no
 	env = env_keeper(environ);
 	korn->env_head = env;
 
-	printf("VAR === %s\n", get_value("HOME", korn->env_head));
 	korn->line = 0;
 	korn->heredoc_count = 1;
 	korn->delimiters = malloc(sizeof(char**));
