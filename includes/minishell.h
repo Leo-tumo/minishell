@@ -110,6 +110,7 @@ void		here_doc(t_korn *korn);
 /*  
 ** util functions
 */
+int			char_join(char c, char **s1);
 char		**env_split(char *str);
 char		*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 void		free_cmd(t_cmd *cmd);

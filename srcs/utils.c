@@ -48,3 +48,38 @@ int		ft_ispace(int c)
 		return (1);
 	return (0);
 }
+
+/*  
+** 		-- adds a char at the end of string
+**		-- and returns the new string
+*/
+int char_join(char c, char **s1)
+{
+    int i;
+    char    *str;
+
+	if (!(*s1))
+	{
+		*s1 = malloc(2);
+		*s1[0] = c;
+		*s1[1] = '\0';
+		return (1);
+	}
+	printf("INSIDE STRJOIN S1 BEFORE ACTION ===%s<-\n", *s1);
+	i = ft_strlen(*s1);
+    str = malloc(sizeof(char) * (i + 2));
+    i = -1;
+    while (*s1[++i])
+	{
+		printf("S1 =%c,\n", *s1[i]);
+        str[i] = *s1[i];
+		printf("S1 =%c,STR =%c,\n", *s1[i], str[i]);
+	}
+	printf("INSIDE STRJOIN S1 BEFORE ACTION 2===%s<-\n", str);
+    str[i] = c;
+    str[i + 1] = '\0';
+	printf("INSIDE STRJOIN READY STR ===%s<-\n", str);
+	// free(*s1);
+	*s1 = str;
+    return (1);
+}

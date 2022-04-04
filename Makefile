@@ -70,6 +70,7 @@ fclean:			clean
 				@$(RM) $(NAME)
 				@make fclean -C $(LIBFT_DIR)
 				@tput setaf 928 && printf ""$(NAME)" deleted.\n"
+				@tput setaf 255
 
 re:				fclean all
 
