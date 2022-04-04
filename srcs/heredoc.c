@@ -39,6 +39,7 @@ int	check_dollar_sign(char	*str)
 
 /*  
 ** 		replaces $ var with it's value
+**		not sure bout memdel(var_name) ???
 */
 char	*replace_dollar(char * ret, char **var_name, char **str, t_env *env)
 {
@@ -50,6 +51,7 @@ char	*replace_dollar(char * ret, char **var_name, char **str, t_env *env)
 		ret = ft_strjoin(ret, get_value(*var_name, env));
 	else
 		ret = get_value(*var_name, env);
+	ft_memdel(var_name);
 	return (ret);
 }
 

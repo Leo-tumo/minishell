@@ -181,9 +181,9 @@ int 		get_output_flag(char *str);
 
 #endif
 
-//TODO:
+
 // echo ✅✅✅
-//◦ cd 		--- needs improvement FIXME: with only a relative or absolute path
+// ◦ cd		--- needs improvement FIXME: with only a relative or absolute path
 // ◦ pwd	--- needs improvement FIXME: needs remake for **argv
 // ◦ export --- needs improvement FIXME: needs test
 // ◦ unset 	--- needs improvement FIXME: problem with freeing memory
