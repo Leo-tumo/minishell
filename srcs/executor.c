@@ -61,17 +61,22 @@ int		is_builtin(t_cmd *cmd)
 int		exec_(t_cmd *cmd, t_korn *korn, int command)
 {
 	if (command == 1)
-		return (ft_echo(cmd));
+		return (echo_(cmd));
 	if (command == 2)
-		return (ft_cd(cmd->args, korn->env_head));
+		return (cd_(cmd->argv[1], korn->env_head));
 	if (command == 3)
-		return (pwd(korn));
+		return (pwd_(korn));
 	if (command == 4)
-		return (export(cmd->output, korn->env_head));
+	{
+		if (cmd->argc == 1)
+			return (export_p(cmd->output, korn->env_head));
+		else
+			return(export_v(cmd->argv, korn->env_head));
+	}
 	if (command == 5)
 		return (unset(korn));
 	if (command == 6)
-		return (env(korn));
+		return (env_(korn, cmd));
 	if (command == 7)
 		return (ft_exit(korn, cmd));
 	return (0);
@@ -80,7 +85,7 @@ int		exec_(t_cmd *cmd, t_korn *korn, int command)
 /*
 ** Takes the command and decides, if it's 
 ** builtin or not - and executes it as
-** needed
+** needed FIXME: Need to check for stupid inputs like - EcHo etc. 
 */
 int	cmd_switch(t_cmd *cmd, t_korn *korn)
 {

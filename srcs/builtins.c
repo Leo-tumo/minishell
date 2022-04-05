@@ -28,12 +28,12 @@ int	mini_ls(char *path)
 ** prints current working directory to given fd
 ** works even if PWD is unset
 */
-int	pwd(t_korn *korn)
+int	pwd_(t_korn *korn)
 {
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	ft_putstr_fd(pwd, korn->out);
+	ft_putendl_fd(pwd, korn->out);
 	ft_putstr_fd("\n", korn->out);
 	return (0);
 }

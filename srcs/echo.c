@@ -23,13 +23,14 @@ int	echo_(t_cmd *cmd)
 		}
 		while (cmd->argv[i])
 		{
-			ft_putstr_fd(cmd->argv[i], 1);
+			ft_putstr_fd(cmd->argv[i], cmd->output);
 			if (cmd->argv[i + 1] && cmd->argv[i][0] != '\0')
-				write(1, " ", 1);
+				write(cmd->output, " ", 1);
 			i++;
 		}
 	}
 	if (flag == 0)
-		write(1, "\n", 1);
+		write(cmd->output, "\n", 1);
+	g_sig.exit_status = 0;
 	return (0);
 }

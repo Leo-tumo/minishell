@@ -41,7 +41,7 @@ char	**twod_array(char *str)
 	return (ret);
 }
 
-int	ft_cd(char *path, t_env *head)
+int	cd_(char *path, t_env *head)
 {
 	int		ret;
 	char	cwd[256];
@@ -54,7 +54,10 @@ int	ft_cd(char *path, t_env *head)
 		clean_path = path;
 	ret = chdir(clean_path);
 	if (ret == 0)
-		export_(twod_array(ft_strjoin("OLDPWD=", cwd)), head);
+	{
+		export_v(twod_array(ft_strjoin("PWD=", getcwd(NULL, 0))), head);
+		export_v(twod_array(ft_strjoin("OLDPWD=", cwd)), head);
+	}
 	else
 	{
 		if (errno == 14)
@@ -89,3 +92,22 @@ char	*get_value(char *name, t_env *head)
 	ret = tmp->data;
 	return (ret);
 }
+
+// extern char **environ;
+// int	main() // TODO: Just for test - I think it works!
+// {
+// 	t_korn	*korn = malloc(sizeof(t_korn));
+
+// 	t_env	*env = malloc(sizeof(t_env));
+// 	env = env_keeper(environ);
+// 	korn->env_head = env;
+	
+
+// 	printf("NOW I'M AT == %s\n", getcwd(NULL, 0));
+// 	cd_("..", korn->env_head);
+// 	printf("NOW I'M AT == %s\n", getcwd(NULL, 0));
+// 	printf("$PWD == %s\n", get_value("OLDPWD", korn->env_head));
+// 	cd_("..", korn->env_head);
+// 	printf("$PWD == %s\n", get_value("OLDPWD", korn->env_head));
+	
+// } 

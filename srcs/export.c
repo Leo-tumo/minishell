@@ -8,13 +8,19 @@
 int	is_valid_name(char *str)
 {
 	if (!ft_isalpha(*str) && *str != '_')
+	{
+		g_sig.exit_status = 1;
 		return (FALSE);
+	}
 	str++;
 	while (*str && *str != '=')
 	{
 		if (!ft_isalnum(*str) && *str != '_')
 			if (!(*str == '+' && *(str +1) && *(str + 1) == '='))
+			{
+				g_sig.exit_status = 1;
 				return (FALSE);
+			}
 		str++;
 	}
 	return (TRUE);
@@ -23,7 +29,7 @@ int	is_valid_name(char *str)
 /*  
 ** export without arguments , just printing list
 */
-int	export(int fd, t_env *env)
+int	export_p(int fd, t_env *env)
 {
 	t_env	*tmp;
 
@@ -46,14 +52,14 @@ int	export(int fd, t_env *env)
 /*  
 ** export with arguments
 */
-int	export_(char**s, t_env *head)
+int	export_v(char **s, t_env *head)
 {
 	int		i;
 	int		sign;
 	int		empty_value;
 	int		ret;
 
-	i = 0;
+	i = 1;
 	ret = 0;
 	while (s[i] != NULL)
 	{
@@ -75,7 +81,7 @@ int	export_(char**s, t_env *head)
 	return (ret);
 }
 
-void	append_var(char *str, int flags, t_env *head, int is_exported)
+void	append_var(char *str, int flags, t_env *head, int blind)
 {
 	t_env	*tmp;
 	char	**var;
@@ -92,7 +98,7 @@ void	append_var(char *str, int flags, t_env *head, int is_exported)
 		tmp = tmp->next;
 	tmp->next = malloc(sizeof(t_env));
 	tmp->next->next = NULL;
-	tmp->next->is_exported = is_exported;
+	tmp->next->blind = blind;
 	if (sign)
 		key = remove_plus_sign(var[0]);
 	else
@@ -124,3 +130,19 @@ char	*remove_plus_sign(char *s)
 	}
 	return (new_name);
 }
+
+// extern char **environ;
+// int	main() //FIXME:
+// {
+// 	t_korn	*korn = malloc(sizeof(t_korn));
+
+// 	t_env	*env = malloc(sizeof(t_env));
+// 	env = env_keeper(environ);
+// 	korn->env_head = env;
+	
+
+// 	export_v(ft_split("export a=a b=bababe c=dsaffd", ' '), env);
+// 	printf("A === %s\n$? === %d\n", get_value("c", env), g_sig.exit_status);
+// 	export_p(1, env);
+	
+// } 

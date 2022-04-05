@@ -75,7 +75,7 @@ void	renew_var_norme(char **new_var, int has_value, t_env *head)
 	name = remove_plus_sign(new_var[0]);
 	while (ft_strncmp(name, tmp->name, ft_strlen(name) + 1) != 0)
 			tmp = tmp->next;
-	tmp->is_exported = 1;
+	tmp->blind = 1;
 	if (has_value)
 	{
 		name = ft_strjoin(tmp->data, new_var[1]);
@@ -85,7 +85,7 @@ void	renew_var_norme(char **new_var, int has_value, t_env *head)
 
 /*  
 ** Exports or renews existing var, with new value &
-** sets is_exported flag to 1
+** sets blind flag to 1
 */
 void	renew_var(char *new_var, int append, int has_value, t_env *head)
 {
@@ -104,7 +104,7 @@ void	renew_var(char *new_var, int append, int has_value, t_env *head)
 					break ;
 			tmp = tmp->next;
 		}
-		tmp->is_exported = 1;
+		tmp->blind = 1;
 		free(tmp->data);
 		if (has_value)
 			tmp->data = ft_strdup(var[1]);

@@ -64,8 +64,8 @@ int char_join(char c, char **s1)
 		str = malloc(2);
 		str[0] = c;
 		str[1] = '\0';
-		*s1 = str;
-		// free(str);
+		*s1 = ft_strdup(str);
+		free(str);
 		return (1);
 	}
 	i = ft_strlen(*s1);
@@ -77,4 +77,25 @@ int char_join(char c, char **s1)
 	*s1 = ft_strdup(str);
 	free(str);
     return (1);
+}
+
+/*  
+** 		replaces $ var with it's value
+**		not sure bout memdel(var_name) ???
+*/
+char	*replace_dollar(char *ret, char **var_name, char **str, t_env *env)
+{
+	char_join(**str, var_name);
+	(*str)++;
+	while(ft_isalnum(**str) || **str == '_')
+		*str += char_join(**str, var_name);
+	if (get_value(*var_name, env))
+	{	
+		if (ret)
+			ret = ft_strjoin(ret, get_value(*var_name, env));
+		else
+			ret = ft_strdup(get_value(*var_name, env));
+	}
+	ft_memdel((void **)var_name);
+	return (ret);
 }

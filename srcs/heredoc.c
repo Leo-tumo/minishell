@@ -37,23 +37,7 @@ int	check_dollar_sign(char	*str)
 	return (FALSE);
 }
 
-/*  
-** 		replaces $ var with it's value
-**		not sure bout memdel(var_name) ???
-*/
-char	*replace_dollar(char * ret, char **var_name, char **str, t_env *env)
-{
-	char_join(**str, var_name);
-	(*str)++;
-	while(ft_isalnum(**str) || **str == '_')
-		*str += char_join(**str, var_name);
-	if (ret)
-		ret = ft_strjoin(ret, get_value(*var_name, env));
-	else
-		ret = get_value(*var_name, env);
-	ft_memdel(var_name);
-	return (ret);
-}
+
 
 char	*replace_var(char *str, t_env *env)
 {
@@ -77,7 +61,9 @@ char	*replace_var(char *str, t_env *env)
 				++str;
 		}
 		else
+		{
 			str += char_join(*str, &ret);
+		}
 	}
 	return (ret);
 }
@@ -164,8 +150,7 @@ void	here_doc(t_korn *korn)
 		run_signals(1);
 		waitpid(pid, &g_sig.exit_status, WEXITSTATUS(g_sig.exit_status));
 		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
+		close_2(fd);
 	}
 }
 
@@ -177,6 +162,7 @@ void	here_doc(t_korn *korn)
 // 	t_env	*env = malloc(sizeof(t_env));
 // 	env = env_keeper(environ);
 // 	korn->env_head = env;
+	
 
 // 	korn->line = 0;
 // 	korn->heredoc_count = 1;

@@ -79,7 +79,7 @@ typedef struct s_env
 {
 	char			*name;
 	char			*data;
-	int				is_exported;
+	int				blind;
 	struct s_env	*next;
 }				t_env;
 
@@ -111,6 +111,9 @@ void		here_doc(t_korn *korn);
 /*  
 ** util functions
 */
+void		delete_var(t_env** head, char *key);
+void		close_2(int *fd);
+char		*replace_dollar(char * ret, char **var_name, char **str, t_env *env);
 int			ft_strcmp(const char *s1, const char *s2);
 int			char_join(char c, char **s1);
 char		**env_split(char *str);
@@ -124,18 +127,18 @@ int			guns_n_roses(char *name);
 ** builtins and their utils
 */
 int			is_valid_name(char *str);
-int			env(t_korn *korn);
-int			pwd(t_korn *korn);
-int			ft_cd(char *path, t_env *head);
-int			unset(t_korn *korn);
-int			export(int fd, t_env *env);
-int			export_(char**s, t_env *head);
+int			env_(t_korn *korn, t_cmd *cmd);
+int			pwd_(t_korn *korn);
+int			cd_(char *path, t_env *head);
+int			unset_(t_korn *korn, t_cmd *cmd);
+int			export_p(int fd, t_env *env);
+int			export_v(char**s, t_env *head);
 int			export_append(char *s);
 int			check_value(char *s);
 int			check_existance(char *s, t_env *head);
 char		*remove_plus_sign(char *s);
 void		renew_var(char *new_var, int append, int has_value, t_env *head);
-void		append_var(char *str, int flags, t_env *head, int is_exported);
+void		append_var(char *str, int flags, t_env *head, int blind);
 char		*get_value(char *name, t_env *head);
 int			echo_(t_cmd *cmd);
 int			ft_exit(t_korn *korn, t_cmd *cmd);
@@ -181,11 +184,11 @@ int 		get_output_flag(char *str);
 
 #endif
 
-
-// echo ✅✅✅
-// ◦ cd		--- needs improvement FIXME: with only a relative or absolute path
-// ◦ pwd	--- needs improvement FIXME: needs remake for **argv
-// ◦ export --- needs improvement FIXME: needs test
-// ◦ unset 	--- needs improvement FIXME: problem with freeing memory
-// ◦ env  	--- needs improvement TODO: seems like it works but still needs test
-// ◦ exit 	--- needs improvement FIXME: I'm not sure that it has to be this easy
+//	TODO: Have to update Exit status of all builtins 😥 
+// ◦ echo 	✅✅✅
+// ◦ cd		✅✅✅
+// ◦ pwd 	✅✅✅
+// ◦ export ✅✅✅
+// ◦ unset 	✅✅✅
+// ◦ env  	✅✅✅
+// ◦ exit 	✅✅✅ FIXME: I'm not sure that it has to be this easy - need to handle signed 💩 & limit should be size_t

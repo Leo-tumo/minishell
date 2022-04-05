@@ -13,7 +13,8 @@ SRC			=	main.c builtins.c cd.c heredoc.c\
 				var_keeper.c utils.c\
 				echo.c signal.c art.c\
 				ft_split_our.c parse_output.c\
-				parse_input.c init.c utils1.c
+				parse_input.c init.c utils1.c\
+				utils2.c env.c
 
 
 NORMINETTE	:=	$(shell which norminette)

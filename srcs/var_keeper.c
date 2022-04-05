@@ -38,7 +38,7 @@ t_env	*env_keeper(char **env)
 		temp->name = s[0];
 		temp->data = s[1];
 		temp->next = NULL;
-		temp->is_exported = 1;
+		temp->blind = 1;
 		free (s);
 		if (!head)
 			head = temp;
