@@ -35,28 +35,27 @@ int	parse_input(char *str, int i, t_cmd *c, t_korn *korn)
 	return (k);
 }
 
-char **input_redirs(char *s, int *count, t_korn *korn)
+char	**input_redirs(char *s, int *count, t_korn *korn)
 {
-    int     i;
-    char    quote;
-    char    **ret;
+	int		i;
+	char	quote;
+	char	**ret;
 
-
-    i = -1;
-    ret = NULL;
-    while (s[++i])
-    {
-        if ((s[i] == '\'' || s[i] == '"') && s[++i])
-        {
-            quote = s[i - 1];
-            while (s[i] != quote)
-                ++i;
-        }
-        if (s[i] == '<' && s[i + 1] && s[i + 1] == '<')
-            here_doc(korn);
-        else if (s[i] == '<' && s[i + 1] && s[i + 1] != '<')
-            ++(*count);
-    }
-    ret = malloc(sizeof(char *) * (*count + 1));
-    return (ret);
+	i = -1;
+	ret = NULL;
+	while (s[++i])
+	{
+		if ((s[i] == '\'' || s[i] == '"') && s[++i])
+		{
+			quote = s[i - 1];
+			while (s[i] != quote)
+				++i;
+		}
+		if (s[i] == '<' && s[i + 1] && s[i + 1] == '<')
+			here_doc(korn);
+		else if (s[i] == '<' && s[i + 1] && s[i + 1] != '<')
+			++(*count);
+	}
+	ret = malloc(sizeof(char *) * (*count + 1));
+	return (ret);
 }

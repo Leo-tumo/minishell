@@ -1,29 +1,7 @@
 #include "../includes/minishell.h"
 
 /*  
-** I hate libft's strncmp -> that 'n' is disgusting
-*/
-int		ft_strcmp(const char *s1, const char *s2)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (s1[i])
-	{
-		if (s1[i] != s2[i])
-		{
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		}
-		i++;
-	}
-	if (s2[i] == '\0')
-		return (0);
-	else
-		return (-s2[i]);
-}
-
-/*  
-** 		 if string gcontains any '$' sign
+** 		 if string contains any '$' sign
 **		returns -TRUE- else returns -FALSE-
 */
 int	check_dollar_sign(char	*str)
@@ -37,8 +15,9 @@ int	check_dollar_sign(char	*str)
 	return (FALSE);
 }
 
-
-
+/*  
+** 	Replaces var name in heredoc with its value
+*/
 char	*replace_var(char *str, t_env *env)
 {
 	char	*ret;
@@ -53,7 +32,7 @@ char	*replace_var(char *str, t_env *env)
 			str++;
 			if (ft_ispace(*str) || !*str)
 				char_join('$', &ret);
-			else if (*str == '?')			
+			else if (*str == '?')
 				str += char_join('0', &ret);
 			else if (*str == '_' || ft_isalpha(*str))
 				ret = replace_dollar(ret, &var_name, &str, env);
@@ -79,7 +58,7 @@ void	heredoc_child(t_korn *korn, int fd, char *delimiter)
 	while (buf)
 	{
 		korn->line++;
-		if (check_dollar_sign(buf))
+		if (korn->d_q && check_dollar_sign(buf))
 			buf = replace_var(buf, korn->env_head);
 		ft_putendl_fd(buf, fd);
 		free(buf);
@@ -91,8 +70,8 @@ void	heredoc_child(t_korn *korn, int fd, char *delimiter)
 		}
 		if (!buf)
 		{
-			printf("bash: warning: here-document at line %d delimited ", korn->line);
-			printf("by end-of-file (wanted `%s')\n", delimiter);
+			printf("bash: warning: here-document at line %d ", korn->line);
+			printf("delimited by end-of-file (wanted `%s')\n", delimiter);
 			exit(0);
 		}
 	}
@@ -114,9 +93,9 @@ void	fake_heredoc(t_korn *korn, char *delimiter)
 		korn->line++;
 		if (!buf)
 		{
-			printf("bash: warning: here-document at line %d delimited ", korn->line);
-			printf("by end-of-file (wanted `%s')\n", delimiter);
-			return;
+			printf("bash: warning: here-document at line %d ", korn->line);
+			printf("delimited by end-of-file (wanted `%s')\n", delimiter);
+			return ;
 		}
 	}
 }

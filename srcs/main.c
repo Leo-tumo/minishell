@@ -4,12 +4,13 @@
 // {
 // 	t_korn		*korn;
 // 	// t_env		*track;
-	
+
 // 	print_welcome_message();
 // 	(void)argc;
 // 	(void)argv;
 // 	data_init(&korn);
 // 	korn->env_head = env_keeper(env);
+// shlvl_(korn->env_head, env);
 // 	// track = korn->env_head;
 
 // 	t_cmd	*cmd = malloc(sizeof(t_cmd));

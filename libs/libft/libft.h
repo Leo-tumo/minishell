@@ -6,7 +6,7 @@
 /*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 19:48:58 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/05 00:10:35 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/06 00:47:00 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			ft_isascii(int c);
 int			ft_isalnum(int c);
 int			ft_isdigit(int c);
 int			ft_isalpha(int c);
-int			ft_atoi(const char *str);
+int64_t		ft_atoi(const char *str);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char		*ft_strrchr(const char *s, int c);

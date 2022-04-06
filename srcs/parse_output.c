@@ -105,46 +105,46 @@ int	parse_output(char *str, int i, t_cmd *c)
 	return (k);
 }
 
-
-char **output_redirs(char *s, int *count)
+char	**output_redirs(char *s, int *count)
 {
-    int     i;
-    char    quote;
-    char    **ret;
-    i = -1;
-    ret = NULL;
-    while (s[++i])
-    {
-        if ((s[i] == '\'' || s[i] == '"') && s[++i])
-        {
-            quote = s[i - 1];
-            while (s[i] != quote)
-                ++i;
-        }
-        if (s[i] == '>' && s[i + 1] && s[i + 1] == '>')
-            ++i;
-        if (s[i] == '>' && s[i + 1] && s[i + 1] != '>')
-            ++(*count);
-    }
-    ret = malloc(sizeof(char *) * (*count + 1));
-    return (ret);
+	int		i;
+	char	quote;
+	char	**ret;
+
+	i = -1;
+	ret = NULL;
+	while (s[++i])
+	{
+		if ((s[i] == '\'' || s[i] == '"') && s[++i])
+		{
+			quote = s[i - 1];
+			while (s[i] != quote)
+				++i;
+		}
+		if (s[i] == '>' && s[i + 1] && s[i + 1] == '>')
+			++i;
+		if (s[i] == '>' && s[i + 1] && s[i + 1] != '>')
+			++(*count);
+	}
+	ret = malloc(sizeof(char *) * (*count + 1));
+	return (ret);
 }
 
-int get_output_flag(char *str)
+int	get_output_flag(char *str)
 {
-    int l;
-    // int flag;
+	int l;
+	// int flag;
 
-    // flag = 0;
-    l = ft_strlen(str);
-    while (--l > 0)
-    {
-        if (str[l] == '>')
-        {
-            if (str[l - 1] && str[l - 1] == '>')
-                return (O_APPEND);
-            return (O_TRUNC);
-        }
-    }
-    return (0);
+	// flag = 0;
+	l = ft_strlen(str);
+	while (--l > 0)
+	{
+		if (str[l] == '>')
+		{
+			if (str[l - 1] && str[l - 1] == '>')
+				return (O_APPEND);
+			return (O_TRUNC);
+		}
+	}
+	return (0);
 }

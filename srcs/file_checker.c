@@ -37,7 +37,6 @@ int	is_file(char *path)
 
 	buf = malloc(sizeof(struct stat));
 	k = stat(path, buf);
-
 	free(buf);
 	if (k == -1)
 		return (0);

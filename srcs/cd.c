@@ -65,6 +65,7 @@ int	cd_(char *path, t_env *head)
 		else
 			printf("bash: cd: %s: No such file or directory\n", path);
 	}
+	g_sig.exit_status = ret;
 	return (ret);
 }
 

@@ -9,7 +9,7 @@ DIR_SRCS	=	./srcs/
 DIR_OBJS	=	./compiled_srcs/
 SRC			=	main.c builtins.c cd.c heredoc.c\
 				export_utils.c export.c\
-				file_checker.c parcer.c\
+				file_checker.c\
 				var_keeper.c utils.c\
 				echo.c signal.c art.c\
 				ft_split_our.c parse_output.c\

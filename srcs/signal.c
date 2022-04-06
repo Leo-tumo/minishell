@@ -1,18 +1,5 @@
 #include "../includes/minishell.h"
 
-/*
-** ^C signal in parent process
-*/
-void	restore_prompt(int sig)
-{
-	g_sig.exit_status = 130;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	(void)sig;
-}
-
 /*  
 ** ^C signal inside heredoc
 */
@@ -34,6 +21,7 @@ void	ctrl_c(int sig)
 	write(1, "\n", 1);
 	(void)sig;
 }
+
 /*
 ** For ^\ signal inside child process
 */
@@ -56,6 +44,7 @@ void	sig_heredoc(void)
 	signal(SIGINT, doc_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 }
+
 /*  
 ** 1 -> for parent
 ** 2 -> for child
@@ -63,7 +52,7 @@ void	sig_heredoc(void)
 */
 void	run_signals(int sig)
 {
-	struct termios term;
+	struct termios	term;
 
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);

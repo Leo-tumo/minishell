@@ -7,35 +7,48 @@
 ** where argv should be =>
 ** "cat", "-e", "file1", "file2" 
 */
-int	exec_bin(t_cmd *cmd)
+void	exec_bin(t_cmd *cmd)
 {
-	pid_t		pid;
-	int			err;
+	run_signals(2);
+	dup2(cmd->input, STDIN_FILENO);
+	dup2(cmd->output, STDOUT_FILENO);
+	execve(cmd->path, cmd->argv, NULL);
+	close(cmd->input);
+	close(cmd->output);
+}
 
-	pid = fork();
-	if (pid == -1)
-		perror(GREEN"AvôeL"WHITE);
-	if (pid == 0)
-	{
-		run_signals(2);
-		dup2(cmd->input, STDIN_FILENO);
-		dup2(cmd->output, STDOUT_FILENO);
-		execve(cmd->path, cmd->argv, NULL);
-		close(cmd->input);
-		close(cmd->output);
-	}
+/*
+** 	--- Forks processes for childs ---
+*/
+void	incubator(t_korn *korn)
+{
+	int	i;
+
+	if (korn->cmd_count == 1 && korn->cmd[0]->argv 
+			&& is_builtin(korn->cmd[0]->argv[0]))
+		cmd_switch(korn->cmd[0], korn);
 	else
 	{
-		waitpid(pid, &err, WUNTRACED);
-		g_sig.exit_status = WEXITSTATUS(err); //FIXME: wrong status if interrupted by signal
+		i = 0;
+		while (i < korn->cmd_count)
+		{
+			korn->child = fork();
+			if (korn->child == 0)
+			{
+				if (!korn->cmd[i]->argv)
+					exit(0);
+				exec_bin(korn->cmd[i]);
+			}
+			i++;
+		}
+		waiter(korn);
 	}
-	return (WEXITSTATUS(err));
 }
 
 /*  
 ** This func check if the given command is builtin or not
 */
-int		is_builtin(t_cmd *cmd)
+int	is_builtin(t_cmd *cmd)
 {
 	if (ft_strncmp(cmd->name, "echo", 4) == 0)
 		return (1);
@@ -54,11 +67,10 @@ int		is_builtin(t_cmd *cmd)
 	return (0);
 }
 
-
 /*  
 ** This func executes the builtin commands
 */
-int		exec_(t_cmd *cmd, t_korn *korn, int command)
+int	exec_(t_cmd *cmd, t_korn *korn, int command)
 {
 	if (command == 1)
 		return (echo_(cmd));
@@ -71,7 +83,7 @@ int		exec_(t_cmd *cmd, t_korn *korn, int command)
 		if (cmd->argc == 1)
 			return (export_p(cmd->output, korn->env_head));
 		else
-			return(export_v(cmd->argv, korn->env_head));
+			return (export_v(cmd->argv, korn->env_head));
 	}
 	if (command == 5)
 		return (unset(korn));
@@ -97,17 +109,18 @@ int	cmd_switch(t_cmd *cmd, t_korn *korn)
 	{	
 		if (!guns_n_roses(cmd->name))
 			check_bin(cmd, korn);
-		ret = exec_bin(cmd);
+		exec_bin(cmd);
+		ret = g_sig.exit_status;
 	}
 	else
 		ret = exec_(cmd, korn, command);
-	return ret;
+	return (ret);
 }
 
 /*  
 ** Checks if given command can be found in Paths or not
 */
-int		check_bin(t_cmd *cmd, t_korn *korn)
+int	check_bin(t_cmd *cmd, t_korn *korn)
 {
 	char	**paths;
 	int		i;
@@ -128,4 +141,21 @@ int		check_bin(t_cmd *cmd, t_korn *korn)
 	else
 		cmd->path = final_path;
 	return (0);
+}
+
+/*
+** 		--- Waits for child processes ---
+*/
+void	waiter(t_korn *korn)
+{
+	int	i;
+	int	stat;
+
+	i = 0;
+	while (i < korn->cmd_count)
+	{
+		wait(&stat);
+		g_sig.exit_status = WEXITSTATUS(stat); // FIXME: needs improvements if p1 = 2; p2 = 0 -> should be 2
+		i++;
+	}
 }

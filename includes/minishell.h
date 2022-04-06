@@ -25,14 +25,11 @@
 # define TRUE 1
 # define FALSE 0
 
-
 /*  
 ** Bash errors
 */
 # define PERMISSION_DENIED 	126 // command found, but ain't executable
 # define COMMAND_NOT_FOUND 	127 // command not found
-
-
 
 /*  
 ** Struct for command
@@ -92,16 +89,20 @@ typedef struct s_env
 typedef struct s_korn
 {
 	int		line; // counts lines for heredoc error message
+	int		d_q; // if final delimiter is quoted = 1 else 0
 	int		heredoc_count; // in case that there are many Speciall for 2🍕s
 	char	**delimiters; // heredoc delimiters' gang ✵ - should replace t_doc linked list;
 	t_env	*env_head;	// head of env variables
-	int		out;
-	int		in;
-	int		argc;
-	char	**argv;		
+	int		cmd_count; // count of commands
+	t_cmd	**cmd; // commands themself
+	pid_t	*child; // pid array for processes
 }			t_korn;
 
-
+/* 
+** 		---	Starters ---
+*/
+void		shlvl_(t_env *env, char **nv);
+void		restore_prompt(int sig);
 void		print_welcome_message(void);
 void		data_init(t_korn **korn);
 t_env		*env_keeper(char **env);
@@ -111,9 +112,9 @@ void		here_doc(t_korn *korn);
 /*  
 ** util functions
 */
-void		delete_var(t_env** head, char *key);
+void		delete_var(t_env **head, char *key);
 void		close_2(int *fd);
-char		*replace_dollar(char * ret, char **var_name, char **str, t_env *env);
+char		*repl_dollar(char *ret, char **var_name, char **str, t_env *env);
 int			ft_strcmp(const char *s1, const char *s2);
 int			char_join(char c, char **s1);
 char		**env_split(char *str);
@@ -121,7 +122,6 @@ char		*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 void		free_cmd(t_cmd *cmd);
 int			check_bin(t_cmd *cmd, t_korn *korn);
 int			guns_n_roses(char *name);
-
 
 /*  
 ** builtins and their utils
@@ -143,7 +143,6 @@ char		*get_value(char *name, t_env *head);
 int			echo_(t_cmd *cmd);
 int			ft_exit(t_korn *korn, t_cmd *cmd);
 
-
 /* 
 ** file status checking functions 
 */
@@ -154,8 +153,6 @@ int			is_link(char *path);
 int			is_socket(char *path);
 char		*show_prompt(void);
 int			is_meta(char c);
-
-
 
 /*
 ** AVO functions ⇣⇣
@@ -176,19 +173,18 @@ void		heredoc(void);
 void		fill(char **to, char *from);
 char		**first_step(char *str);
 int			line_count(char **splitted);
-char 		**output_redirs(char *s, int *count);
-char 		**input_redirs(char *s, int *count, t_korn *korn);
-int 		get_output_flag(char *str);
+char		**output_redirs(char *s, int *count);
+char		**input_redirs(char *s, int *count, t_korn *korn);
+int			get_output_flag(char *str);
 
 
 
 #endif
 
-//	TODO: Have to update Exit status of all builtins 😥 
 // ◦ echo 	✅✅✅
 // ◦ cd		✅✅✅
 // ◦ pwd 	✅✅✅
 // ◦ export ✅✅✅
 // ◦ unset 	✅✅✅
 // ◦ env  	✅✅✅
-// ◦ exit 	✅✅✅ FIXME: I'm not sure that it has to be this easy - need to handle signed 💩 & limit should be size_t
+// ◦ exit 	✅✅✅

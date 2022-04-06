@@ -35,5 +35,6 @@ int	pwd_(t_korn *korn)
 	pwd = getcwd(NULL, 0);
 	ft_putendl_fd(pwd, korn->out);
 	ft_putstr_fd("\n", korn->out);
+	g_sig.exit_status = 0;
 	return (0);
 }

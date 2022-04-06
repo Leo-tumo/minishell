@@ -16,11 +16,13 @@ int	is_valid_name(char *str)
 	while (*str && *str != '=')
 	{
 		if (!ft_isalnum(*str) && *str != '_')
-			if (!(*str == '+' && *(str +1) && *(str + 1) == '='))
+		{
+			if (!(*str == '+' && *(str + 1) && *(str + 1) == '='))
 			{
 				g_sig.exit_status = 1;
 				return (FALSE);
 			}
+		}
 		str++;
 	}
 	return (TRUE);

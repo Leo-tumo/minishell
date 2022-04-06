@@ -10,6 +10,7 @@ int	env_(t_korn *korn, t_cmd *cmd)
 	if (cmd->argc > 1)
 	{
 		printf("env: Unsupported arguments to env\n");
+		g_sig.exit_status = 1;
 		return (1);
 	}
 	tmp = korn->env_head;
@@ -39,58 +40,34 @@ int	unset_name(char *name)
 		return (FALSE);
 	}
 }
-// /*  
-// ** 		--- util for unset ---
-// */
-// int	env_norme(char *name, t_korn *korn, t_cmd *cmd)
-// {
-// 	t_env *tmp;
-
-// 	tmp = korn->env_head;
-// 	while (tmp)
-// 	{
-// 		if (!unset_name(name))
-// 			return (1);
-// 		if (ft_strlen(tmp->name) == ft_strlen(korn->argv[1])
-// 			&& !ft_strncmp(tmp->name, name, ft_strlen(name)))
-// 		{
-// 				tmp->blind = 0;
-// 			ft_bzero(tmp->name, ft_strlen(tmp->name));
-// 			ft_bzero(tmp->data, ft_strlen(tmp->data));
-// 			break ;
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	return (0);
-// }
 
 /*  
 ** 		--Finds var in linked list and deletes it
 **		used double pointer, in case of the needed
 **		var is also the head of struct
 */
-void delete_var(t_env **head, char *key)
+void	delete_var(t_env **head, char *key)
 {
-    t_env	*temp;
+	t_env	*temp;
 	t_env	*prev;
 
 	temp = *head;
-    if (temp != NULL && (ft_strcmp(temp->name, key) == 0))
+	if (temp != NULL && (ft_strcmp(temp->name, key) == 0))
 	{
-        *head = temp->next;
-        free(temp);
-        return;
-    }
-    while (temp != NULL && (ft_strcmp(temp->name, key) != 0))
+		*head = temp->next;
+		free(temp);
+		return ;
+	}
+	while (temp != NULL && (ft_strcmp(temp->name, key) != 0))
 	{
 		printf("KEY ==== %s\tTEMP === %s\n", key, temp->name);
-        prev = temp;
-        temp = temp->next;
-    }
-    if (temp == NULL)
-        return;
-    prev->next = temp->next;
-    free(temp);
+		prev = temp;
+		temp = temp->next;
+	}
+	if (temp == NULL)
+		return ;
+	prev->next = temp->next;
+	free(temp);
 }
 
 /*  
@@ -113,13 +90,13 @@ int	unset_(t_korn *korn, t_cmd *cmd)
 			printf("-bash: unset: `%s': not a valid identifier\n", cmd->argv[i]);
 			ret = 1;
 			++i;
-			continue;
+			continue ;
 		}
 		printf("VAR === %s\n", cmd->argv[i]);
 		delete_var(&korn->env_head, cmd->argv[i]);
 		++i;
 	}
-	ft_putchar_fd('\n', korn->out);
+	ft_putchar_fd('\n', cmd->output);
 	if (ret == 0)
 		g_sig.exit_status = 0;
 	else
@@ -127,7 +104,38 @@ int	unset_(t_korn *korn, t_cmd *cmd)
 	return (ret == 0);
 }
 
-extern char **environ;
+/*  
+** increments SHLVL anytime minishell is called
+*/
+void	shlvl_(t_env *env, char **nv)
+{
+	char	*shlvl_value;
+	int		shlvl;
+	t_env	*tmp;
+
+	tmp = env;
+	shlvl_value = getenv("SHLVL");
+	if (ft_strcmp(shlvl_value, "") == 0)
+		return ;
+	shlvl = ft_atoi(shlvl_value) + 1;
+	while (tmp && tmp->next)
+	{
+		if (ft_strncmp("SHLVL", tmp->name, 5) == 0)
+		{
+			tmp->data = ft_itoa(shlvl);
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	while (*nv)
+	{
+		if (ft_strncmp("SHLVL", tmp->name, 5) == 0)
+			*nv = ft_strjoin("SHLVL=", ft_itoa(shlvl));
+		++nv;
+	}
+}
+
+extern char	**environ;
 
 int	main() //FIXME:
 {
@@ -142,9 +150,7 @@ int	main() //FIXME:
 	
 
 	export_v(ft_split("export a=a b=bababe c=dsaffd", ' '), env);
-	// printf("A === %s\n$? === %d\n", get_value("c", env), g_sig.exit_status);
 	unset_(korn, cmd);
 	export_p(1, env);
 	printf("$? === %d\n", g_sig.exit_status);
-	
 }

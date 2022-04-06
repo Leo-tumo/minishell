@@ -74,7 +74,7 @@ void	renew_var_norme(char **new_var, int has_value, t_env *head)
 	tmp = head;
 	name = remove_plus_sign(new_var[0]);
 	while (ft_strncmp(name, tmp->name, ft_strlen(name) + 1) != 0)
-			tmp = tmp->next;
+		tmp = tmp->next;
 	tmp->blind = 1;
 	if (has_value)
 	{
