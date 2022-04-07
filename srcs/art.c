@@ -65,7 +65,12 @@ char	*show_prompt(t_korn *korn)
 		run_signals(1);
 		line = readline(MAGENTA"AvôeL> "WHITE);
 		if (!line)
-			run_signals(3);
+		{
+			printf("\033[1A");
+			printf("\033[7C");
+			printf("exit\n");
+			exit(0);
+		}
 		else if (*line == '\0')
 			free(line);
 		else

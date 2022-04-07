@@ -41,7 +41,7 @@ char	**twod_array(char *str)
 	return (ret);
 }
 
-int	cd_(char *path, t_env *head)
+int	cd_(char *path, t_env **head)
 {
 	int		ret;
 	char	cwd[256];
@@ -49,7 +49,7 @@ int	cd_(char *path, t_env *head)
 
 	getcwd(cwd, sizeof(cwd));
 	if (path[0] == '-' || path[0] == '~')
-		clean_path = replace_path(path, head);
+		clean_path = replace_path(path, *head);
 	else
 		clean_path = path;
 	ret = chdir(clean_path);
@@ -93,22 +93,3 @@ char	*get_value(char *name, t_env *head)
 	ret = tmp->data;
 	return (ret);
 }
-
-// extern char **environ;
-// int	main() // TODO: Just for test - I think it works!
-// {
-// 	t_korn	*korn = malloc(sizeof(t_korn));
-
-// 	t_env	*env = malloc(sizeof(t_env));
-// 	env = env_keeper(environ);
-// 	korn->env_head = env;
-	
-
-// 	printf("NOW I'M AT == %s\n", getcwd(NULL, 0));
-// 	cd_("..", korn->env_head);
-// 	printf("NOW I'M AT == %s\n", getcwd(NULL, 0));
-// 	printf("$PWD == %s\n", get_value("OLDPWD", korn->env_head));
-// 	cd_("..", korn->env_head);
-// 	printf("$PWD == %s\n", get_value("OLDPWD", korn->env_head));
-	
-// } 

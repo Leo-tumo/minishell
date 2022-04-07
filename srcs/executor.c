@@ -17,7 +17,6 @@ void	exec_bin(t_cmd *cmd)
 	close(cmd->output);
 }
 
-
 /*  
 ** This func check if the given command is builtin or not
 */
@@ -48,7 +47,7 @@ int	exec_(t_cmd *cmd, t_korn *korn, int command)
 	if (command == 1)
 		return (echo_(cmd));
 	if (command == 2)
-		return (cd_(cmd->argv[1], korn->env_head));
+		return (cd_(cmd->argv[1], &korn->env_head));
 	if (command == 3)
 		return (pwd_(*cmd));
 	if (command == 4)
@@ -56,7 +55,7 @@ int	exec_(t_cmd *cmd, t_korn *korn, int command)
 		if (cmd->argc == 1)
 			return (export_p(cmd->output, korn->env_head));
 		else
-			return (export_v(cmd->argv, korn->env_head));
+			return (export_v(cmd->argv, &korn->env_head));
 	}
 	if (command == 5)
 		return (unset_(korn, cmd));

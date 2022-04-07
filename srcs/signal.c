@@ -55,7 +55,9 @@ void	run_signals(int sig)
 	struct termios	term;
 
 	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHO;
 	term.c_lflag &= ~(ECHOCTL);
+	term.c_lflag |= ECHO;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	if (sig == 1)
 	{
@@ -68,33 +70,6 @@ void	run_signals(int sig)
 		signal(SIGINT, ctrl_c);
 		signal(SIGQUIT, back_slash);
 	}
-	if (sig == 3)
-	{
-		printf("\033[1A");
-		printf("\033[10C");
-		printf("exit\n");
-		exit(0);
-	}
 	if (sig == 4)
 		sig_heredoc();
 }
-
-// FIXME: 👇🏻 Don't wanna delete this for now
-// void sig_handler(int signal)
-// {
-// 	if (signal == SIGINT)
-// 	{
-// 		printf("\033[K");
-// 		// printf("%sAvôeL> %s\n", MAGENTA, WHITE);
-// 	}
-// 	if (rl_on_new_line() == -1) // readline Output the string set to ?
-// 		exit(1);
-// 	rl_replace_line("", 1); // Throws out the string already typed in the prompt.
-// 	rl_redisplay();         // Prevents prompt cursor from moving.
-// }
-
-// void setting_signal()
-// {
-// 	signal(SIGINT, sig_handler); // CTRL + C
-// 	signal(SIGQUIT, SIG_IGN);    // CTRL + /
-// }

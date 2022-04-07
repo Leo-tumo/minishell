@@ -39,7 +39,7 @@ typedef struct s_cmd
 {
 	char		*name; // command name - ex. echo, cd, yes, tee, cal etc...
 	char		*path; // this is very important -> commands full path
-	char		**argv; // needed for execve || can be replaced by ft_split(args, " "). Should include commans name
+	char		**argv; // needed for execve || can be replaced by ft_split(args, " "). Should include command's name
 	int			argc; // argument count
 	int			input;
 	int			output;
@@ -95,7 +95,7 @@ typedef struct s_korn
 ** 		---	Starters ---
 */
 char		*show_prompt(t_korn *korn);
-void		shlvl_(t_env *env, char **nv);
+void		shlvl_(t_env **env);
 void		restore_prompt(int sig);
 void		print_welcome_message(void);
 void		data_init(t_korn **korn);
@@ -123,16 +123,16 @@ int			guns_n_roses(char *name);
 int			is_valid_name(char *str);
 int			env_(t_korn *korn, t_cmd *cmd);
 int			pwd_(t_cmd cmd);
-int			cd_(char *path, t_env *head);
+int			cd_(char *path, t_env **head);
 int			unset_(t_korn *korn, t_cmd *cmd);
-int			export_p(int fd, t_env *env);
-int			export_v(char**s, t_env *head);
+int			export_p(int fd, t_env **env);
+int			export_v(char**s, t_env **head);
 int			export_append(char *s);
 int			check_value(char *s);
 int			check_existance(char *s, t_env *head);
 char		*remove_plus_sign(char *s);
-void		renew_var(char *new_var, int append, int has_value, t_env *head);
-void		append_var(char *str, int flags, t_env *head);
+void		renew_var(char *new_var, int append, int has_value, t_env **head);
+void		append_var(char *str, int flags, t_env **head);
 char		*get_value(char *name, t_env *head);
 int			echo_(t_cmd *cmd);
 int			ft_exit(t_korn *korn, t_cmd *cmd);
@@ -143,9 +143,6 @@ int			ft_exit(t_korn *korn, t_cmd *cmd);
 int			is_directory(char *path);
 int			is_executable(char *path);
 int			is_file(char *path);
-int			is_link(char *path);
-int			is_socket(char *path);
-int			is_meta(char c);
 
 /*
 ** AVO functions ⇣⇣

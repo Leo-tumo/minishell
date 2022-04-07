@@ -104,20 +104,24 @@ int	unset_(t_korn *korn, t_cmd *cmd)
 	return (ret == 0);
 }
 
+
+
+
+
 /*  
 ** increments SHLVL anytime minishell is called
 */
-void	shlvl_(t_env *env, char **nv)
+void	shlvl_(t_env **env)
 {
 	char	*shlvl_value;
 	int		shlvl;
 	t_env	*tmp;
 
-	tmp = env;
+	tmp = *env;
 	shlvl_value = getenv("SHLVL");
 	if (ft_strcmp(shlvl_value, "") == 0)
 		return ;
-	shlvl = ft_atoi(shlvl_value) + 1;
+	shlvl = (int)ft_atoi(shlvl_value) + 1;
 	while (tmp && tmp->next)
 	{
 		if (ft_strncmp("SHLVL", tmp->name, 5) == 0)
@@ -127,30 +131,4 @@ void	shlvl_(t_env *env, char **nv)
 		}
 		tmp = tmp->next;
 	}
-	while (*nv)
-	{
-		if (ft_strncmp("SHLVL", tmp->name, 5) == 0)
-			*nv = ft_strjoin("SHLVL=", ft_itoa(shlvl));
-		++nv;
-	}
 }
-
-extern char	**environ;
-
-// int	main() //FIXME:
-// {
-// 	t_korn	*korn = malloc(sizeof(t_korn));
-
-// 	t_env	*env = malloc(sizeof(t_env));
-// 	env = env_keeper(environ);
-// 	korn->env_head = env;
-// 	t_cmd *cmd = malloc(sizeof(t_cmd));
-// 	cmd->argv = ft_split("unset b c", ' ');
-// 	cmd->argc = 3;
-	
-
-// 	export_v(ft_split("export a=a b=bababe c=dsaffd", ' '), env);
-// 	unset_(korn, cmd);
-// 	export_p(1, env);
-// 	printf("$? === %d\n", g_sig.exit_status);
-// }
