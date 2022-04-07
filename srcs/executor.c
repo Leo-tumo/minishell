@@ -17,33 +17,6 @@ void	exec_bin(t_cmd *cmd)
 	close(cmd->output);
 }
 
-/*
-** 	--- Forks processes for childs ---
-*/
-void	incubator(t_korn *korn)
-{
-	int	i;
-
-	if (korn->cmd_count == 1 && korn->cmd[0]->argv 
-			&& is_builtin(korn->cmd[0]->argv[0]))
-		cmd_switch(korn->cmd[0], korn);
-	else
-	{
-		i = 0;
-		while (i < korn->cmd_count)
-		{
-			korn->child = fork();
-			if (korn->child == 0)
-			{
-				if (!korn->cmd[i]->argv)
-					exit(0);
-				exec_bin(korn->cmd[i]);
-			}
-			i++;
-		}
-		waiter(korn);
-	}
-}
 
 /*  
 ** This func check if the given command is builtin or not
@@ -77,7 +50,7 @@ int	exec_(t_cmd *cmd, t_korn *korn, int command)
 	if (command == 2)
 		return (cd_(cmd->argv[1], korn->env_head));
 	if (command == 3)
-		return (pwd_(korn));
+		return (pwd_(*cmd));
 	if (command == 4)
 	{
 		if (cmd->argc == 1)
@@ -86,7 +59,7 @@ int	exec_(t_cmd *cmd, t_korn *korn, int command)
 			return (export_v(cmd->argv, korn->env_head));
 	}
 	if (command == 5)
-		return (unset(korn));
+		return (unset_(korn, cmd));
 	if (command == 6)
 		return (env_(korn, cmd));
 	if (command == 7)
@@ -157,5 +130,33 @@ void	waiter(t_korn *korn)
 		wait(&stat);
 		g_sig.exit_status = WEXITSTATUS(stat); // FIXME: needs improvements if p1 = 2; p2 = 0 -> should be 2
 		i++;
+	}
+}
+
+/*
+** 	--- Forks processes for childs ---
+*/
+void	incubator(t_korn *korn)
+{
+	int	i;
+
+	if (korn->cmd_count == 1 && korn->cmd[0].argv 
+			&& is_builtin(&korn->cmd[0]))
+		cmd_switch(&korn->cmd[0], korn);
+	else
+	{
+		i = 0;
+		while (i < korn->cmd_count)
+		{
+			korn->child[i] = fork();
+			if (korn->child == 0)
+			{
+				if (!korn->cmd[i].argv)
+					exit(0);
+				exec_bin(&korn->cmd[i]);
+			}
+			i++;
+		}
+		waiter(korn);
 	}
 }

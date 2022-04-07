@@ -35,7 +35,7 @@ char	*replace_var(char *str, t_env *env)
 			else if (*str == '?')
 				str += char_join('0', &ret);
 			else if (*str == '_' || ft_isalpha(*str))
-				ret = replace_dollar(ret, &var_name, &str, env);
+				ret = repl_dollar(ret, &var_name, &str, env);
 			else
 				++str;
 		}

@@ -133,9 +133,7 @@ char	**output_redirs(char *s, int *count)
 int	get_output_flag(char *str)
 {
 	int l;
-	// int flag;
 
-	// flag = 0;
 	l = ft_strlen(str);
 	while (--l > 0)
 	{

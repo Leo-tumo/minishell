@@ -9,11 +9,11 @@ void	print_struct(t_cmd c)
 	j = -1;
 	printf("=============INFILES=============\n");
 	while (++j < c.infile_count)
-		printf("INFILE #%d === %s, FD === %d\n", j + 1, c.infile[j], c.input_fd);
+		printf("INFILE #%d === %s\n", j + 1, c.infile[j]);
 	j = -1;
-	printf("=============OUTFILES=============\n");
+	printf("=============OUTFILES============\n");
 	while (++j < c.outfile_count)
-		printf("OUTFILE #%d === %s, FD === %d, FLAG === %x\n", j + 1, c.outfile[j], c.output_fd, c.output_flag);
+		printf("OUTFILE #%d === %s, FLAG === %x\n", j + 1, c.outfile[j], c.output_flag);
 }
 
 void	fill(char **to, char *from)

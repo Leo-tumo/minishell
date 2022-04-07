@@ -19,6 +19,7 @@
 # define WHITE "\001\033[0m\002"
 # define GREEN "\001\033[1;92m\002"
 # define RED "\001\033[1;31m\002"
+
 /*
 * Sorry I love 🐍
 */
@@ -38,25 +39,18 @@ typedef struct s_cmd
 {
 	char		*name; // command name - ex. echo, cd, yes, tee, cal etc...
 	char		*path; // this is very important -> commands full path
-	char		*args; // temporary, just for test
 	char		**argv; // needed for execve || can be replaced by ft_split(args, " "). Should include commans name
 	int			argc; // argument count
 	int			input;
 	int			output;
 	int			flag; // 0 = other, 1 = echo, 2 = cd, 3 = pwd, 4 = export, 5 = unset, 6 = env, 7 = exit
-/* Stexic sksum en structi Avoi masery 💪🏻 */
 	char		**infile;
 	int			infile_count;//? malloci hamar
 	int			input_index;
-	int			input_fd;//verjin inputi fd defaltov 0
-	int			double_input;//piti darna heredoc, logican piti poxvi
 	char		**outfile;
 	int			outfile_count;//?malloci hamar
-	int			output_fd;//defaultov 1, kam |
-	int			output_flag;//O_TRUNC kam O_APPEND kaxvac outputi tipic
-	int			output_index;//for the malloc in 2d output array
-	char		*argument;
-	int			command_flag;
+	int			output_flag; //O_TRUNC kam O_APPEND kaxvac outputi tipic
+	int			output_index; //for the malloc in 2d output array
 }			t_cmd;
 
 /*  
@@ -76,7 +70,6 @@ typedef struct s_env
 {
 	char			*name;
 	char			*data;
-	int				blind;
 	struct s_env	*next;
 }				t_env;
 
@@ -94,13 +87,14 @@ typedef struct s_korn
 	char	**delimiters; // heredoc delimiters' gang ✵ - should replace t_doc linked list;
 	t_env	*env_head;	// head of env variables
 	int		cmd_count; // count of commands
-	t_cmd	**cmd; // commands themself
+	t_cmd	*cmd; // commands themself
 	pid_t	*child; // pid array for processes
 }			t_korn;
 
 /* 
 ** 		---	Starters ---
 */
+char		*show_prompt(t_korn *korn);
 void		shlvl_(t_env *env, char **nv);
 void		restore_prompt(int sig);
 void		print_welcome_message(void);
@@ -128,7 +122,7 @@ int			guns_n_roses(char *name);
 */
 int			is_valid_name(char *str);
 int			env_(t_korn *korn, t_cmd *cmd);
-int			pwd_(t_korn *korn);
+int			pwd_(t_cmd cmd);
 int			cd_(char *path, t_env *head);
 int			unset_(t_korn *korn, t_cmd *cmd);
 int			export_p(int fd, t_env *env);
@@ -138,7 +132,7 @@ int			check_value(char *s);
 int			check_existance(char *s, t_env *head);
 char		*remove_plus_sign(char *s);
 void		renew_var(char *new_var, int append, int has_value, t_env *head);
-void		append_var(char *str, int flags, t_env *head, int blind);
+void		append_var(char *str, int flags, t_env *head);
 char		*get_value(char *name, t_env *head);
 int			echo_(t_cmd *cmd);
 int			ft_exit(t_korn *korn, t_cmd *cmd);
@@ -151,7 +145,6 @@ int			is_executable(char *path);
 int			is_file(char *path);
 int			is_link(char *path);
 int			is_socket(char *path);
-char		*show_prompt(void);
 int			is_meta(char c);
 
 /*
@@ -166,8 +159,8 @@ int			parse_output(char *str, int i, t_cmd *c);
 void		print_struct(t_cmd c);
 void		init(t_cmd *c, char *str, t_korn *korn);
 t_cmd		command_init(char *str, t_korn *korn);
-t_cmd		*t_cmd_init(char **splitted, int lines, t_korn *korn);
-void		parse(char *str, t_env *envs, t_korn *korn);
+t_cmd		*t_cmd_init(char **splitted, t_korn **korn);
+void		parse(char *str, t_korn **korn);
 int			parse_input(char *str, int i, t_cmd *c, t_korn *korn);
 void		heredoc(void);
 void		fill(char **to, char *from);

@@ -56,7 +56,7 @@ void	print_welcome_message(void)
 /* 
 ** Shows the prompt via readline
 */
-char	*show_prompt(void)
+char	*show_prompt(t_korn *korn)
 {
 	char	*line;
 
@@ -74,6 +74,7 @@ char	*show_prompt(void)
 				continue ;
 			add_history(line);
 		}
+		parse(line, &korn);
 	}
 	return (line);
 }

@@ -9,9 +9,9 @@ void	init(t_cmd *c, char *str, t_korn *korn)
 	c->output_flag = get_output_flag(str);
 	c->infile = input_redirs(str, &c->infile_count, korn);
 	c->outfile = output_redirs(str, &c->outfile_count);
-	c->input_fd = 0;
-	c->output_fd = 1;
-	c->argument = NULL;
+	c->input = 0;
+	c->output = 1;
+	// c->argument = NULL;
 	c->name = NULL;
 }
 
@@ -34,31 +34,27 @@ t_cmd	command_init(char *str, t_korn *korn)
 	return (c);
 }
 
-t_cmd	*t_cmd_init(char **splitted, int lines, t_korn *korn)
+t_cmd	*t_cmd_init(char **splitted, t_korn **korn)
 {
 	int		i;
 	t_cmd	*ret;
 
 	i = -1;
-	ret = (t_cmd *)malloc((lines + 1) * sizeof(t_cmd));
-	while (++i < lines)
+	ret = (t_cmd *)malloc(((*korn)->cmd_count + 1) * sizeof(t_cmd));
+	while (++i < (*korn)->cmd_count)
 	{
-		ret[i] = command_init(splitted[i], korn);
+		ret[i] = command_init(splitted[i], (*korn));
 		print_struct(ret[i]);
 	}
 	return (ret);
 }
 
-void	parse(char *str, t_env *envs, t_korn *korn)
+void	parse(char *str, t_korn **korn)
 {
-	// int		lines;
 	char	**splitted;
-	// t_cmd	*line_commands;
 
-	(void) korn;
-	(void) envs;
 	splitted = first_step(str);
-	// lines = line_count(splitted);
-	// line_commands = t_cmd_init(splitted, lines, korn);
+	(*korn)->cmd_count = line_count(splitted);
+	(*korn)->cmd = t_cmd_init(splitted, korn);
 	free(splitted);
 }

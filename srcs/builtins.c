@@ -28,13 +28,13 @@ int	mini_ls(char *path)
 ** prints current working directory to given fd
 ** works even if PWD is unset
 */
-int	pwd_(t_korn *korn)
+int	pwd_(t_cmd cmd)
 {
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	ft_putendl_fd(pwd, korn->out);
-	ft_putstr_fd("\n", korn->out);
+	ft_putendl_fd(pwd, cmd.output);
+	ft_putstr_fd("\n", cmd.output);
 	g_sig.exit_status = 0;
 	return (0);
 }

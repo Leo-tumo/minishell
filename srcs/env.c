@@ -137,20 +137,20 @@ void	shlvl_(t_env *env, char **nv)
 
 extern char	**environ;
 
-int	main() //FIXME:
-{
-	t_korn	*korn = malloc(sizeof(t_korn));
+// int	main() //FIXME:
+// {
+// 	t_korn	*korn = malloc(sizeof(t_korn));
 
-	t_env	*env = malloc(sizeof(t_env));
-	env = env_keeper(environ);
-	korn->env_head = env;
-	t_cmd *cmd = malloc(sizeof(t_cmd));
-	cmd->argv = ft_split("unset b c", ' ');
-	cmd->argc = 3;
+// 	t_env	*env = malloc(sizeof(t_env));
+// 	env = env_keeper(environ);
+// 	korn->env_head = env;
+// 	t_cmd *cmd = malloc(sizeof(t_cmd));
+// 	cmd->argv = ft_split("unset b c", ' ');
+// 	cmd->argc = 3;
 	
 
-	export_v(ft_split("export a=a b=bababe c=dsaffd", ' '), env);
-	unset_(korn, cmd);
-	export_p(1, env);
-	printf("$? === %d\n", g_sig.exit_status);
-}
+// 	export_v(ft_split("export a=a b=bababe c=dsaffd", ' '), env);
+// 	unset_(korn, cmd);
+// 	export_p(1, env);
+// 	printf("$? === %d\n", g_sig.exit_status);
+// }

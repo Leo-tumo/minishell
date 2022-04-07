@@ -77,13 +77,13 @@ int	export_v(char **s, t_env *head)
 		if (check_existance(s[i], head))
 			renew_var(s[i], sign, empty_value, head);
 		else
-			append_var(s[i], sign * 10 + empty_value, head, 1);
+			append_var(s[i], sign * 10 + empty_value, head);
 		++i;
 	}
 	return (ret);
 }
 
-void	append_var(char *str, int flags, t_env *head, int blind)
+void	append_var(char *str, int flags, t_env *head)
 {
 	t_env	*tmp;
 	char	**var;
@@ -100,7 +100,6 @@ void	append_var(char *str, int flags, t_env *head, int blind)
 		tmp = tmp->next;
 	tmp->next = malloc(sizeof(t_env));
 	tmp->next->next = NULL;
-	tmp->next->blind = blind;
 	if (sign)
 		key = remove_plus_sign(var[0]);
 	else
