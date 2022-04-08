@@ -5,7 +5,7 @@
 */
 void	doc_ctrl_c(int sig)
 {
-	g_sig.exit_status = 131;
+	g_sig.exit_status = sig + SIG_PLUS;
 	printf("\033[1A");
 	printf("\033[0C");
 	exit(131);
@@ -17,7 +17,7 @@ void	doc_ctrl_c(int sig)
 */
 void	ctrl_c(int sig)
 {
-	g_sig.exit_status = 130;
+	g_sig.exit_status = sig + SIG_PLUS;
 	write(1, "\n", 1);
 	(void)sig;
 }
@@ -27,7 +27,7 @@ void	ctrl_c(int sig)
 */
 void	back_slash(int sig)
 {
-	g_sig.exit_status = 131;
+	g_sig.exit_status = sig + SIG_PLUS;
 	printf("Quit :3\n");
 	(void)sig;
 }
@@ -63,6 +63,7 @@ void	run_signals(int sig)
 	{
 		signal(SIGINT, restore_prompt);
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGTERM, SIG_IGN);
 		g_sig.exit_status = 0;
 	}
 	if (sig == 2)

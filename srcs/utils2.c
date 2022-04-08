@@ -33,10 +33,46 @@ int	ft_strcmp(const char *s1, const char *s2)
 */
 void	restore_prompt(int sig)
 {
-	g_sig.exit_status = 130;
+	g_sig.exit_status = SIG_PLUS + sig;
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 	(void)sig;
+}
+
+void	free2(char **s)
+{
+	int		i;
+
+	i = 0;
+	while (s[i])
+	{
+		free(s[i]);
+		++i;
+	}
+}
+
+/*  
+**  Same as python's str.lower()
+*/
+char	*lower_(char const *s)
+{
+	size_t		i;
+	char		*ret;
+
+	if (!s)
+		return (NULL);
+	i = 0;
+	ret = malloc(ft_strlen(s) + 1);
+	while (i < ft_strlen(s))
+	{
+		if (ft_isalpha(s[i]))
+			ret[i] = s[i] | 1 << 5;
+		else
+			ret[i] = s[i];
+		++i;
+	}
+	ret[i] = '\0';
+	return (ret);
 }

@@ -1,118 +1,53 @@
 #include "../includes/minishell.h"
 
 /*  
-** Executes binary file
-** Note: execve works this way
-** execve("/bin/cat", argv, NULL);
-** where argv should be =>
-** "cat", "-e", "file1", "file2" 
+** 		Executes binary file
+** 		Note: execve works this way
+** 		execve("/bin/cat", argv, NULL);
+** 		where argv should be =>    
+** 		"cat", "-e", "file1", "file2" 
 */
-void	exec_bin(t_cmd *cmd)
+void	exec_bin(t_cmd *cmd, t_korn *korn)
 {
+	char	**env;
+
 	run_signals(2);
 	dup2(cmd->input, STDIN_FILENO);
 	dup2(cmd->output, STDOUT_FILENO);
-	execve(cmd->path, cmd->argv, NULL);
-	close(cmd->input);
-	close(cmd->output);
+	env = ll_to_matrix(korn->env_head);
+	if (!guns_n_roses(cmd->name))
+	{
+		pathfinder(cmd, korn);
+		execve(cmd->path, cmd->argv, env);
+	}
+	else
+		execve(cmd->name, cmd->argv, env);
 }
 
 /*  
-** This func check if the given command is builtin or not
+** This func executes the --BUILTIN-- commands
 */
-int	is_builtin(t_cmd *cmd)
+void	exec_(t_cmd *cmd, t_korn *korn)
 {
-	if (ft_strncmp(cmd->name, "echo", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd->name, "cd", 2) == 0)
-		return (2);
-	if (ft_strncmp(cmd->name, "pwd", 3) == 0)
-		return (3);
-	if (ft_strncmp(cmd->name, "export", 6) == 0)
-		return (4);
-	if (ft_strncmp(cmd->name, "unset", 5) == 0)
-		return (5);
-	if (ft_strncmp(cmd->name, "env", 3) == 0)	
-		return (6);
-	if (ft_strncmp(cmd->name, "exit", 4) == 0)
-		return (7);
-	return (0);
-}
-
-/*  
-** This func executes the builtin commands
-*/
-int	exec_(t_cmd *cmd, t_korn *korn, int command)
-{
-	if (command == 1)
-		return (echo_(cmd));
-	if (command == 2)
-		return (cd_(cmd->argv[1], &korn->env_head));
-	if (command == 3)
-		return (pwd_(*cmd));
-	if (command == 4)
+	if (cmd->id == 1)
+		cmd->stat = echo_(cmd);
+	if (cmd->id == 2)
+		cmd->stat = cd_(cmd->argv[1], &korn->env_head);
+	if (cmd->id == 3)
+		cmd->stat = pwd_(*cmd);
+	if (cmd->id == 4)
 	{
 		if (cmd->argc == 1)
-			return (export_p(cmd->output, korn->env_head));
+			cmd->stat = export_p(cmd->output, korn->env_head);
 		else
-			return (export_v(cmd->argv, &korn->env_head));
+			cmd->stat = export_v(cmd->argv, &korn->env_head);
 	}
-	if (command == 5)
-		return (unset_(korn, cmd));
-	if (command == 6)
-		return (env_(korn, cmd));
-	if (command == 7)
-		return (ft_exit(korn, cmd));
-	return (0);
-}
-
-/*
-** Takes the command and decides, if it's 
-** builtin or not - and executes it as
-** needed FIXME: Need to check for stupid inputs like - EcHo etc. 
-*/
-int	cmd_switch(t_cmd *cmd, t_korn *korn)
-{
-	int		command;
-	int		ret;
-
-	command = is_builtin(cmd);
-	if (command == 0)
-	{	
-		if (!guns_n_roses(cmd->name))
-			check_bin(cmd, korn);
-		exec_bin(cmd);
-		ret = g_sig.exit_status;
-	}
-	else
-		ret = exec_(cmd, korn, command);
-	return (ret);
-}
-
-/*  
-** Checks if given command can be found in Paths or not
-*/
-int	check_bin(t_cmd *cmd, t_korn *korn)
-{
-	char	**paths;
-	int		i;
-	char	*final_path;
-
-	i = 0;
-	paths = ft_split(get_value("PATH", korn->env_head), ':');
-	while (paths[i])
-	{
-		final_path = ft_strjoin3(paths[i], "/", cmd->name);
-		if (access(final_path, F_OK) == 0)
-			break ;
-		free(final_path);
-		++i;
-	}
-	if (!final_path)
-		return (127);
-	else
-		cmd->path = final_path;
-	return (0);
+	if (cmd->id == 5)
+		cmd->stat = unset_(korn, cmd);
+	if (cmd->id == 6)
+		cmd->stat = env_(korn, cmd);
+	if (cmd->id == 7)
+		cmd->stat = exit_(korn, cmd);
 }
 
 /*
@@ -122,14 +57,22 @@ void	waiter(t_korn *korn)
 {
 	int	i;
 	int	stat;
+	int	signaled;
 
 	i = 0;
-	while (i < korn->cmd_count)
+	while (i < korn->fork_count)
 	{
-		wait(&stat);
-		g_sig.exit_status = WEXITSTATUS(stat); // FIXME: needs improvements if p1 = 2; p2 = 0 -> should be 2
+		if (wait(&stat) == korn->child[korn->fork_count - 1])
+		{
+			if (korn->cmd[korn->cmd_count - 1].id == 0)
+				g_sig.exit_status = WEXITSTATUS(stat);
+		}
+		if (WTERMSIG(stat))
+			g_sig.exit_status = WTERMSIG(stat) + SIG_PLUS;
 		i++;
 	}
+	if (korn->cmd[korn->cmd_count - 1].id > 0)
+		g_sig.exit_status = korn->cmd[korn->cmd_count - 1].stat;
 }
 
 /*
@@ -139,23 +82,22 @@ void	incubator(t_korn *korn)
 {
 	int	i;
 
-	if (korn->cmd_count == 1 && korn->cmd[0].argv 
-			&& is_builtin(&korn->cmd[0]))
-		cmd_switch(&korn->cmd[0], korn);
-	else
+	i = 0;
+	while (i < korn->cmd_count)
 	{
-		i = 0;
-		while (i < korn->cmd_count)
+		if (korn->cmd[i].id == 0)
 		{
 			korn->child[i] = fork();
 			if (korn->child == 0)
 			{
 				if (!korn->cmd[i].argv)
 					exit(0);
-				exec_bin(&korn->cmd[i]);
+				exec_bin(&korn->cmd[i], korn);
 			}
-			i++;
 		}
-		waiter(korn);
+		else
+			exec_(&korn->cmd[i], korn);
+		i++;
 	}
+	waiter(korn);
 }

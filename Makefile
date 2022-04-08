@@ -7,14 +7,16 @@ LIBFT_DIR		= libs/libft/
 LIBFT 			= $(LIBFT_DIR)libft.a
 DIR_SRCS	=	./srcs/
 DIR_OBJS	=	./compiled_srcs/
-SRC			=	main.c builtins.c cd.c heredoc.c\
+SRC			=	main.c\
+				pwd.c cd.c env.c\
 				export_utils.c export.c\
-				file_checker.c\
-				var_keeper.c utils.c\
-				echo.c signal.c art.c\
+				echo.c exit.c\
+				var_keeper.c heredoc.c\
+				signal.c art.c\
 				ft_split_our.c parse_output.c\
-				parse_input.c init.c utils1.c\
-				utils2.c env.c
+				parse_input.c init.c pipe.c\
+				exec_gtr.c file_checker.c\
+				utils.c utils1.c utils2.c utils3.c
 
 
 NORMINETTE	:=	$(shell which norminette)

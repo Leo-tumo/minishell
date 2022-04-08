@@ -4,20 +4,21 @@
 /*  
 ** Frees cmd members and cmd, after execution
 */
-void	free_n_exit(t_cmd *cmd, int exit_status)
+int	free_n_exit(t_cmd *cmd, int exit_status, t_korn korn)
 {
 	free(cmd->name);
 	free(cmd->path);
-	free(cmd->args);
 	free(cmd->argv);
 	free(cmd);
-	exit (exit_status);
+	if (korn.cmd_count == 1)
+		exit (exit_status);
+	return (exit_status);
 }
 
 /*  
-** Checks if arg for exit is valid or not
-** Only number ex. +389 -0 etc.
-** Can't be bigger than MAX_LONG
+** 		Checks if arg for exit is valid or not
+** 		Only number ex. +389 -0 etc.
+** 		Can't be bigger than MAX_LONG
 */
 int	xarg_check(char *str)
 {
@@ -35,8 +36,8 @@ int	xarg_check(char *str)
 		++i;
 	}
 	i = ft_atoi(str);
-	if (i > LLONG_MAX || i < LLONG_MIN ||
-		(str[0] != '-' && i < 0) || (str[0] == '-' && i > 0))
+	if (i > LLONG_MAX || i < LLONG_MIN
+		|| (str[0] != '-' && i < 0) || (str[0] == '-' && i > 0))
 		return (FALSE);
 	return (TRUE);
 }
@@ -48,31 +49,28 @@ int	xarg_check(char *str)
 ** if argument ain't numeric - exits and returns 2
 ** if it has many arguments - just returns error message and 1
 */
-int	ft_exit(t_korn *korn, t_cmd *cmd)
+int	exit_(t_korn *korn, t_cmd *cmd)
 {
-	uint64_t	i;
+	int	i;
 
 	if (cmd->argc == 1)
-		free_n_exit(cmd, g_sig.exit_status);
+		return (free_n_exit(cmd, g_sig.exit_status, *korn));
 	else if (xarg_check(cmd->argv[1]) == FALSE)
 	{
 		ft_putstr_fd("exit\nbash: exit: ", 2);
 		ft_putstr_fd(cmd->argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		g_sig.exit_status = 2;
-		free_n_exit(cmd, 2);
+		i = 2;
+		return (free_n_exit(cmd, 2, *korn));
 	}
 	else if (cmd->argc > 2)
 	{
 		ft_putstr_fd("exit\n bash: exit: too many arguments\n", 2);
-		g_sig.exit_status = 1;
 		return (1);
 	}
 	else
 	{
-		i = ft_atoi(cmd->argv[1]) % 256;
-		g_sig.exit_status = i;
-		free_n_exit(cmd, i);
+		i = (int)(ft_atoi(cmd->argv[1]) % 256);
+		return (free_n_exit(cmd, i, *korn));
 	}
-	return (g_sig.exit_status);
 }

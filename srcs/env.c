@@ -9,8 +9,7 @@ int	env_(t_korn *korn, t_cmd *cmd)
 
 	if (cmd->argc > 1)
 	{
-		printf("env: Unsupported arguments to env\n");
-		g_sig.exit_status = 1;
+		ft_putendl_fd("env: Unsupported arguments to env", 2);
 		return (1);
 	}
 	tmp = korn->env_head;
@@ -36,7 +35,9 @@ int	unset_name(char *name)
 		return (TRUE);
 	else
 	{
-		printf("-bash: unset: `%s': not a valid identifier\n", name);
+		ft_putstr_fd("bash: unset: `", 2);
+		ft_putstr_fd(name, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
 		return (FALSE);
 	}
 }
@@ -60,7 +61,6 @@ void	delete_var(t_env **head, char *key)
 	}
 	while (temp != NULL && (ft_strcmp(temp->name, key) != 0))
 	{
-		printf("KEY ==== %s\tTEMP === %s\n", key, temp->name);
 		prev = temp;
 		temp = temp->next;
 	}
@@ -79,34 +79,23 @@ void	delete_var(t_env **head, char *key)
 int	unset_(t_korn *korn, t_cmd *cmd)
 {
 	int		i;
-	int		ret;
 
+	if (cmd->argv[1][0] == '-')
+	{
+		ft_putstr_fd("bash: unset: ", 2);
+		ft_putstr_fd(cmd->argv[1], 2);
+		ft_putendl_fd(": invalid option", 2);
+		return (2);
+	}
 	i = 1;
-	ret = 0;
 	while (i < cmd->argc)
 	{
-		if (!is_valid_name(cmd->argv[i]))
-		{
-			printf("-bash: unset: `%s': not a valid identifier\n", cmd->argv[i]);
-			ret = 1;
-			++i;
-			continue ;
-		}
-		printf("VAR === %s\n", cmd->argv[i]);
 		delete_var(&korn->env_head, cmd->argv[i]);
 		++i;
 	}
 	ft_putchar_fd('\n', cmd->output);
-	if (ret == 0)
-		g_sig.exit_status = 0;
-	else
-		g_sig.exit_status = 1;
-	return (ret == 0);
+	return (0);
 }
-
-
-
-
 
 /*  
 ** increments SHLVL anytime minishell is called

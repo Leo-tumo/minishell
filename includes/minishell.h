@@ -2,23 +2,23 @@
 # define MINISHELL_H
 
 # include "../libs/libft/libft.h"
-# include <stdio.h>
-# include <fcntl.h>
-# include <termios.h>
-# include <dirent.h>
-# include <sys/wait.h>
-# include <signal.h>
-# include <limits.h>
-# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
+# include <termios.h>
+# include <dirent.h>
+# include <signal.h>
+# include <limits.h>
+# include <errno.h>
+# include <stdio.h>
+# include <fcntl.h>
 
-# define MAGENTA "\001\033[1;35m\002"
-# define CYAN "\001\033[1;36m\002"
 # define WHITE "\001\033[0m\002"
-# define GREEN "\001\033[1;92m\002"
 # define RED "\001\033[1;31m\002"
+# define CYAN "\001\033[1;36m\002"
+# define GREEN "\001\033[1;92m\002"
+# define MAGENTA "\001\033[1;35m\002"
 
 /*
 * Sorry I love 🐍
@@ -31,6 +31,7 @@
 */
 # define PERMISSION_DENIED 	126 // command found, but ain't executable
 # define COMMAND_NOT_FOUND 	127 // command not found
+# define SIG_PLUS			128 // if signaled exit status = 128 + sig
 
 /*  
 ** Struct for command
@@ -43,12 +44,13 @@ typedef struct s_cmd
 	int			argc; // argument count
 	int			input;
 	int			output;
-	int			flag; // 0 = other, 1 = echo, 2 = cd, 3 = pwd, 4 = export, 5 = unset, 6 = env, 7 = exit
+	int			id; // 0 = other, 1 = echo, 2 = cd, 3 = pwd, 4 = export, 5 = unset, 6 = env, 7 = exit
+	int			stat; // exit status for each command;
 	char		**infile;
 	int			infile_count;//? malloci hamar
 	int			input_index;
 	char		**outfile;
-	int			outfile_count;//?malloci hamar
+	int			outfile_count; //?malloci hamar
 	int			output_flag; //O_TRUNC kam O_APPEND kaxvac outputi tipic
 	int			output_index; //for the malloc in 2d output array
 }			t_cmd;
@@ -89,83 +91,95 @@ typedef struct s_korn
 	int		cmd_count; // count of commands
 	t_cmd	*cmd; // commands themself
 	pid_t	*child; // pid array for processes
+	int		fork_count;
+	int		pipe_count;
 }			t_korn;
 
 /* 
 ** 		---	Starters ---
 */
-char		*show_prompt(t_korn *korn);
 void		shlvl_(t_env **env);
-void		restore_prompt(int sig);
-void		print_welcome_message(void);
-void		data_init(t_korn **korn);
-t_env		*env_keeper(char **env);
-int			check_bin(t_cmd *cmd, t_korn *korn);
 void		run_signals(int sig);
 void		here_doc(t_korn *korn);
+t_env		*env_keeper(char **env);
+void		restore_prompt(int sig);
+void		data_init(t_korn **korn);
+char		*show_prompt(t_korn *korn);
+void		print_welcome_message(void);
+
+/*  
+** Execution functions
+*/
+int			is_builtin(t_cmd cmd);
+void		fork_count(t_korn *korn);
+char		**ll_to_matrix(t_env *env);
+
 /*  
 ** util functions
 */
-void		delete_var(t_env **head, char *key);
+void		free2(char **s);
 void		close_2(int *fd);
-char		*repl_dollar(char *ret, char **var_name, char **str, t_env *env);
-int			ft_strcmp(const char *s1, const char *s2);
-int			char_join(char c, char **s1);
-char		**env_split(char *str);
-char		*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 void		free_cmd(t_cmd *cmd);
-int			check_bin(t_cmd *cmd, t_korn *korn);
+char		*lower_(char const *s);
+char		**env_split(char *str);
 int			guns_n_roses(char *name);
+int			char_join(char c, char **s1);
+int			pathfinder(t_cmd *cmd, t_korn *korn);
+void		delete_var(t_env **head, char *key);
+int			ft_strcmp(const char *s1, const char *s2);
+char		*ft_strjoin3(const char *s1, const char *s2, const char *s3);
+char		*repl_dollar(char *ret, char **var_name, char **str, t_env *env);
 
 /*  
 ** builtins and their utils
 */
-int			is_valid_name(char *str);
-int			env_(t_korn *korn, t_cmd *cmd);
 int			pwd_(t_cmd cmd);
-int			cd_(char *path, t_env **head);
-int			unset_(t_korn *korn, t_cmd *cmd);
-int			export_p(int fd, t_env **env);
-int			export_v(char**s, t_env **head);
-int			export_append(char *s);
-int			check_value(char *s);
-int			check_existance(char *s, t_env *head);
-char		*remove_plus_sign(char *s);
-void		renew_var(char *new_var, int append, int has_value, t_env **head);
-void		append_var(char *str, int flags, t_env **head);
-char		*get_value(char *name, t_env *head);
 int			echo_(t_cmd *cmd);
-int			ft_exit(t_korn *korn, t_cmd *cmd);
+int			check_value(char *s);
+int			export_append(char *s);
+int			is_valid_name(char *str);
+char		*remove_plus_sign(char *s);
+int			export_p(int fd, t_env **env);
+int			cd_(char *path, t_env **head);
+int			env_(t_korn *korn, t_cmd *cmd);
+int			export_v(char**s, t_env **head);
+int			unset_(t_korn *korn, t_cmd *cmd);
+int			exit_(t_korn *korn, t_cmd *cmd);
+char		*get_value(char *name, t_env *head);
+int			check_existance(char *s, t_env *head);
+void		append_var(char *str, int flags, t_env **head);
+void		renew_var(char *new_var, int append, int has_value, t_env **head);
 
 /* 
-** file status checking functions 
+** 		file status checking functions 
 */
+int			is_file(char *path);
+void		fd_closer(t_korn korn);
 int			is_directory(char *path);
 int			is_executable(char *path);
-int			is_file(char *path);
 
 /*
-** AVO functions ⇣⇣
+** 		Parsing functions ⇣⇣
 */
+void		heredoc(void);
 int			ft_ispace(int c);
+void		print_struct(t_cmd c);
 char		**first_step(char *str);
-char		*get_quoted_filename(char *str, int *i);
+char		**first_step(char *str);
+int			get_output_flag(char *str);
+int			line_count(char **splitted);
+void		fill(char **to, char *from);
+void		parse(char *str, t_korn **korn);
 char		*get_filename(char *str, int *i);
 char		*double_output(char *str, int *i);
-int			parse_output(char *str, int i, t_cmd *c);
-void		print_struct(t_cmd c);
-void		init(t_cmd *c, char *str, t_korn *korn);
-t_cmd		command_init(char *str, t_korn *korn);
-t_cmd		*t_cmd_init(char **splitted, t_korn **korn);
-void		parse(char *str, t_korn **korn);
-int			parse_input(char *str, int i, t_cmd *c, t_korn *korn);
-void		heredoc(void);
-void		fill(char **to, char *from);
-char		**first_step(char *str);
-int			line_count(char **splitted);
 char		**output_redirs(char *s, int *count);
+t_cmd		command_init(char *str, t_korn *korn);
+char		*get_quoted_filename(char *str, int *i);
+void		init(t_cmd *c, char *str, t_korn *korn);
+int			parse_output(char *str, int i, t_cmd *c);
+t_cmd		*t_cmd_init(char **splitted, t_korn **korn);
 char		**input_redirs(char *s, int *count, t_korn *korn);
-int			get_output_flag(char *str);
+int			parse_input(char *str, int i, t_cmd *c, t_korn *korn);
 
 
 
