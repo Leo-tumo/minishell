@@ -14,7 +14,7 @@ int	main(int argc, char **argv, char **env)
 	
 	
 	printf("STR ===  %s\n", lower_(c));
-	// show_prompt(korn);
+	show_prompt(korn);
 	return (0);
 }
 
