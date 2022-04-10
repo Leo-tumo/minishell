@@ -84,4 +84,9 @@ norm:
 				@$(NORMINETTE) $(DIR_SRCS)
 				@$(NORMINETTE) $(DIR_HEADERS)
 
-.PHONY:			all clean fclean re me debug norm
+push : 
+	@git add .
+	@git commit -m "$m"
+	@git push
+
+.PHONY:			all clean fclean re me debug norm push
