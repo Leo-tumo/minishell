@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int	parse_input(char *str, int i, t_cmd *c, t_korn *korn)
+int	parse_input(char *str, int i, t_cmd *c)
 {
 	int		k;
 	char	*filename;
@@ -8,7 +8,7 @@ int	parse_input(char *str, int i, t_cmd *c, t_korn *korn)
 	k = i;
 	filename = NULL;
 	if (str[k + 1] && str[k + 1] == '<' && ++k)
-		here_doc(korn);
+		// here_doc(korn);
 	while (str[++k])
 	{
 		if (ft_ispace(str[k]))

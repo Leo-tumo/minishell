@@ -53,6 +53,8 @@ typedef struct s_cmd
 	int			outfile_count; //?malloci hamar
 	int			output_flag; //O_TRUNC kam O_APPEND kaxvac outputi tipic
 	int			output_index; //for the malloc in 2d output array
+	int			arg_index;
+	char		*quote_flags;
 }			t_cmd;
 
 /*  
@@ -91,7 +93,6 @@ typedef struct s_korn
 	int		cmd_count; // count of commands
 	t_cmd	*cmd; // commands themself
 	pid_t	*child; // pid array for processes
-	int		fork_count;
 	int		pipe_count;
 }			t_korn;
 
@@ -111,7 +112,6 @@ void		print_welcome_message(void);
 ** Execution functions
 */
 int			is_builtin(t_cmd cmd);
-void		fork_count(t_korn *korn);
 char		**ll_to_matrix(t_env *env);
 
 /*  
@@ -133,18 +133,18 @@ char		*repl_dollar(char *ret, char **var_name, char **str, t_env *env);
 /*  
 ** builtins and their utils
 */
-int			pwd_(t_cmd cmd);
 int			echo_(t_cmd *cmd);
 int			check_value(char *s);
 int			export_append(char *s);
 int			is_valid_name(char *str);
 char		*remove_plus_sign(char *s);
+int			pwd_(t_cmd cmd, t_env *env);
 int			export_p(int fd, t_env **env);
 int			cd_(char *path, t_env **head);
 int			env_(t_korn *korn, t_cmd *cmd);
 int			export_v(char**s, t_env **head);
 int			unset_(t_korn *korn, t_cmd *cmd);
-int			exit_(t_korn *korn, t_cmd *cmd);
+int			exit_(t_cmd *cmd);
 char		*get_value(char *name, t_env *head);
 int			check_existance(char *s, t_env *head);
 void		append_var(char *str, int flags, t_env **head);
@@ -173,13 +173,13 @@ void		parse(char *str, t_korn **korn);
 char		*get_filename(char *str, int *i);
 char		*double_output(char *str, int *i);
 char		**output_redirs(char *s, int *count);
-t_cmd		command_init(char *str, t_korn *korn);
+t_cmd		*command_init(char *str, t_korn *korn);
 char		*get_quoted_filename(char *str, int *i);
 void		init(t_cmd *c, char *str, t_korn *korn);
 int			parse_output(char *str, int i, t_cmd *c);
 t_cmd		*t_cmd_init(char **splitted, t_korn **korn);
 char		**input_redirs(char *s, int *count, t_korn *korn);
-int			parse_input(char *str, int i, t_cmd *c, t_korn *korn);
+int			parse_input(char *str, int i, t_cmd *c);
 
 
 

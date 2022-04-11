@@ -10,10 +10,6 @@ int	main(int argc, char **argv, char **env)
 	data_init(&korn);
 	korn->env_head = env_keeper(env);
 	shlvl_(&korn->env_head);
-	char const c[] = "HI Leo";
-	
-	
-	printf("STR ===  %s\n", lower_(c));
 	show_prompt(korn);
 	return (0);
 }
@@ -21,7 +17,7 @@ int	main(int argc, char **argv, char **env)
 /* 
 ** initialize main data structure 
 */
-void	data_init(t_korn **korn)//add korn initialization
+void	data_init(t_korn **korn)
 {
 	g_sig.exit_status = 0;
 	*korn = (t_korn *)malloc(sizeof(t_korn));

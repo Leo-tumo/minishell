@@ -1,21 +1,5 @@
 #include "../includes/minishell.h" 
 
-void	fork_count(t_korn *korn)
-{
-	int		i;
-	int		ret;
-
-	i = 0;
-	ret = 0;
-	while (i < korn->cmd_count)
-	{
-		if (korn->cmd[i].id == 0)
-			ret++;	
-		++i;
-	}
-	korn->fork_count = ret;
-}
-
 /*  
 ** This func check if the given command is builtin or not
 **    Echo, Pwd & Env can have upper or lower case

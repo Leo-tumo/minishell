@@ -4,11 +4,13 @@
 ** prints current working directory to given fd
 ** works even if PWD is unset
 */
-int	pwd_(t_cmd cmd)
+int	pwd_(t_cmd cmd, t_env *env)
 {
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		pwd = get_value("PWD", env);
 	ft_putendl_fd(pwd, cmd.output);
 	ft_putstr_fd("\n", cmd.output);
 	g_sig.exit_status = 0;

@@ -34,11 +34,11 @@ void	exec_(t_cmd *cmd, t_korn *korn)
 	if (cmd->id == 2)
 		cmd->stat = cd_(cmd->argv[1], &korn->env_head);
 	if (cmd->id == 3)
-		cmd->stat = pwd_(*cmd);
+		cmd->stat = pwd_(*cmd, korn->env_head);
 	if (cmd->id == 4)
 	{
 		if (cmd->argc == 1)
-			cmd->stat = export_p(cmd->output, korn->env_head);
+			cmd->stat = export_p(cmd->output, &korn->env_head);
 		else
 			cmd->stat = export_v(cmd->argv, &korn->env_head);
 	}
@@ -60,9 +60,9 @@ void	waiter(t_korn *korn)
 	int	signaled;
 
 	i = 0;
-	while (i < korn->fork_count)
+	while (i < korn->cmd_count)
 	{
-		if (wait(&stat) == korn->child[korn->fork_count - 1])
+		if (wait(&stat) == korn->child[korn->cmd_count - 1])
 		{
 			if (korn->cmd[korn->cmd_count - 1].id == 0)
 				g_sig.exit_status = WEXITSTATUS(stat);
@@ -85,18 +85,18 @@ void	incubator(t_korn *korn)
 	i = 0;
 	while (i < korn->cmd_count)
 	{
-		if (korn->cmd[i].id == 0)
+		korn->child[i] = fork();
+		if (korn->child == 0)
 		{
-			korn->child[i] = fork();
-			if (korn->child == 0)
+			if (korn->cmd[i].id == 0)
 			{
 				if (!korn->cmd[i].argv)
 					exit(0);
 				exec_bin(&korn->cmd[i], korn);
 			}
+			else
+				exec_(&korn->cmd[i], korn);
 		}
-		else
-			exec_(&korn->cmd[i], korn);
 		i++;
 	}
 	waiter(korn);

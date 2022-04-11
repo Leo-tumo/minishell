@@ -4,15 +4,13 @@
 /*  
 ** Frees cmd members and cmd, after execution
 */
-int	free_n_exit(t_cmd *cmd, int exit_status, t_korn korn)
+int	free_n_exit(t_cmd *cmd, int exit_status)
 {
 	free(cmd->name);
 	free(cmd->path);
 	free(cmd->argv);
 	free(cmd);
-	if (korn.cmd_count == 1)
-		exit (exit_status);
-	return (exit_status);
+	exit (exit_status);
 }
 
 /*  
@@ -49,19 +47,19 @@ int	xarg_check(char *str)
 ** if argument ain't numeric - exits and returns 2
 ** if it has many arguments - just returns error message and 1
 */
-int	exit_(t_korn *korn, t_cmd *cmd)
+int	exit_(t_cmd *cmd)
 {
 	int	i;
 
 	if (cmd->argc == 1)
-		return (free_n_exit(cmd, g_sig.exit_status, *korn));
+		return (free_n_exit(cmd, g_sig.exit_status));
 	else if (xarg_check(cmd->argv[1]) == FALSE)
 	{
 		ft_putstr_fd("exit\nbash: exit: ", 2);
 		ft_putstr_fd(cmd->argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		i = 2;
-		return (free_n_exit(cmd, 2, *korn));
+		return (free_n_exit(cmd, 2));
 	}
 	else if (cmd->argc > 2)
 	{
@@ -71,6 +69,6 @@ int	exit_(t_korn *korn, t_cmd *cmd)
 	else
 	{
 		i = (int)(ft_atoi(cmd->argv[1]) % 256);
-		return (free_n_exit(cmd, i, *korn));
+		return (free_n_exit(cmd, i));
 	}
 }
