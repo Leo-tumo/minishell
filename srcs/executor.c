@@ -47,7 +47,7 @@ void	exec_(t_cmd *cmd, t_korn *korn)
 	if (cmd->id == 6)
 		cmd->stat = env_(korn, cmd);
 	if (cmd->id == 7)
-		cmd->stat = exit_(korn, cmd);
+		cmd->stat = exit_(cmd);
 }
 
 /*
