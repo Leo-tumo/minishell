@@ -23,9 +23,9 @@ char	*get_quoted_filename(char *str, int *i)
 
 char	*get_filename(char *str, int *i)
 {
-	int		k;
-	int		len;
-	char	*name;
+	int     k;
+	int     len;
+	char    *name;
 
 	k = *i;
 	len = 0;
@@ -70,7 +70,7 @@ char	*double_output(char *str, int *i)
 	return (name);
 }
 
-int	parse_output(char *str, int i, t_cmd *c)
+int parse_output(char *str, int i, t_cmd *c)
 {
 	int		k;
 	char	*filename;
@@ -100,7 +100,9 @@ int	parse_output(char *str, int i, t_cmd *c)
 		}
 	}
 	c->outfile[c->output_index] = malloc(ft_strlen(filename) + 1);
-	fill(&c->outfile[c->output_index], filename);
+	printf("filename === %s\n", filename);
+	// fill(&c->outfile[c->output_index], filename);
+	c->outfile[c->output_index] = ft_strdup(filename);
 	++c->output_index;
 	return (k);
 }
@@ -130,9 +132,9 @@ char	**output_redirs(char *s, int *count)
 	return (ret);
 }
 
-int	get_output_flag(char *str)
+int get_output_flag(char *str)
 {
-	int l;
+	int	l;
 
 	l = ft_strlen(str);
 	while (--l > 0)

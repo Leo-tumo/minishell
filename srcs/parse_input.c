@@ -8,7 +8,7 @@ int	parse_input(char *str, int i, t_cmd *c)
 	k = i;
 	filename = NULL;
 	if (str[k + 1] && str[k + 1] == '<' && ++k)
-		// here_doc(korn);
+		printf("HEREDOC:)\n");
 	while (str[++k])
 	{
 		if (ft_ispace(str[k]))
@@ -30,7 +30,7 @@ int	parse_input(char *str, int i, t_cmd *c)
 		}
 	}
 	c->infile[c->input_index] = malloc(ft_strlen(filename) + 1);
-	fill(&c->infile[c->input_index], filename);
+	c->infile[c->input_index] = ft_strdup(filename);
 	++c->input_index;
 	return (k);
 }

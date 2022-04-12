@@ -175,7 +175,7 @@ void		parse(char *str, t_korn **korn);
 char		*get_filename(char *str, int *i);
 char		*double_output(char *str, int *i);
 char		**output_redirs(char *s, int *count);
-t_cmd		*command_init(char *str, t_korn *korn);
+t_cmd		command_init(char *str, t_korn *korn);
 char		*get_quoted_filename(char *str, int *i);
 void		init(t_cmd *c, char *str, t_korn *korn);
 int			parse_output(char *str, int i, t_cmd *c);
