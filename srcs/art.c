@@ -63,12 +63,13 @@ char	*show_prompt(t_korn *korn)
 	while (1)
 	{
 		run_signals(1);
-		line = readline(MAGENTA"AvôeL> "WHITE);
+		line = readline(get_value("PS1", korn->env_head));
 		if (!line)
 		{
-			printf("\033[1A");
-			printf("\033[7C");
-			printf("exit\n");
+			run_signals(1);
+			ft_putstr_fd("\033[1A", 2);
+			ft_putstr_fd("\033[7C", 2);
+			ft_putendl_fd("exit", 2);
 			exit(0);
 		}
 		else if (*line == '\0')

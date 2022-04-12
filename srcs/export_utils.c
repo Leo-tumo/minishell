@@ -66,12 +66,12 @@ int	check_existance(char *s, t_env *head)
 /*  
 ** Splitted function for norminette
 */
-void	renew_var_norme(char **new_var, int has_value, t_env **head)
+void	renew_var_norme(char **new_var, int has_value, t_env *head)
 {
 	char	*name;
 	t_env	*tmp;
 
-	tmp = *head;
+	tmp = head;
 	name = remove_plus_sign(new_var[0]);
 	while (ft_strncmp(name, tmp->name, ft_strlen(name) + 1) != 0)
 		tmp = tmp->next;
@@ -85,14 +85,14 @@ void	renew_var_norme(char **new_var, int has_value, t_env **head)
 /*  
 ** Exports or renews existing var, with new value &
 */
-void	renew_var(char *new_var, int append, int has_value, t_env **head)
+void	renew_var(char *new_var, int append, int has_value, t_env *head)
 {
 	t_env	*tmp;
 	char	**var;
 
 	var = NULL;
 	var = env_split(new_var);
-	tmp = *head;
+	tmp = head;
 	if (!append)
 	{
 		while (tmp)

@@ -25,11 +25,11 @@ int	is_valid_name(char *str)
 /*  
 ** export without arguments , just printing list
 */
-int	export_p(int fd, t_env **env)
+int	export_p(int fd, t_env *env)
 {
 	t_env	*tmp;
 
-	tmp = *env;
+	tmp = env;
 	while (tmp)
 	{
 		ft_putstr_fd("declare -x ", fd);
@@ -48,7 +48,7 @@ int	export_p(int fd, t_env **env)
 /*  
 ** export with arguments
 */
-int	export_v(char **s, t_env **head)
+int	export_v(char **s, t_env *head)
 {
 	int		i;
 	int		sign;
@@ -68,7 +68,7 @@ int	export_v(char **s, t_env **head)
 		}
 		sign = export_append(s[i]);
 		empty_value = check_value(s[i]);
-		if (check_existance(s[i], *head))
+		if (check_existance(s[i], head))
 			renew_var(s[i], sign, empty_value, head);
 		else
 			append_var(s[i], sign * 10 + empty_value, head);
@@ -77,7 +77,7 @@ int	export_v(char **s, t_env **head)
 	return (ret);
 }
 
-void	append_var(char *str, int flags, t_env **head)
+void	append_var(char *str, int flags, t_env *head)
 {
 	t_env	*tmp;
 	char	**var;
@@ -85,8 +85,9 @@ void	append_var(char *str, int flags, t_env **head)
 	int		empty_value;
 	char	*key;
 
-	tmp = *head;
+	tmp = head;
 	key = NULL;
+
 	var = env_split(str);
 	sign = flags / 10;
 	empty_value = flags % 10;

@@ -111,6 +111,8 @@ void		print_welcome_message(void);
 /*  
 ** Execution functions
 */
+void		ctrl_c(int sig);
+void		back_slash(int sig);
 int			is_builtin(t_cmd cmd);
 char		**ll_to_matrix(t_env *env);
 
@@ -139,16 +141,16 @@ int			export_append(char *s);
 int			is_valid_name(char *str);
 char		*remove_plus_sign(char *s);
 int			pwd_(t_cmd cmd, t_env *env);
-int			export_p(int fd, t_env **env);
-int			cd_(char *path, t_env **head);
+int			export_p(int fd, t_env *env);
+int			cd_(char *path, t_env *head);
 int			env_(t_korn *korn, t_cmd *cmd);
-int			export_v(char**s, t_env **head);
+int			export_v(char**s, t_env *head);
 int			unset_(t_korn *korn, t_cmd *cmd);
 int			exit_(t_cmd *cmd);
 char		*get_value(char *name, t_env *head);
 int			check_existance(char *s, t_env *head);
-void		append_var(char *str, int flags, t_env **head);
-void		renew_var(char *new_var, int append, int has_value, t_env **head);
+void		append_var(char *str, int flags, t_env *head);
+void		renew_var(char *new_var, int append, int has_value, t_env *head);
 
 /* 
 ** 		file status checking functions 

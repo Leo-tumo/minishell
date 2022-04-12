@@ -32,15 +32,15 @@ void	exec_(t_cmd *cmd, t_korn *korn)
 	if (cmd->id == 1)
 		cmd->stat = echo_(cmd);
 	if (cmd->id == 2)
-		cmd->stat = cd_(cmd->argv[1], &korn->env_head);
+		cmd->stat = cd_(cmd->argv[1], korn->env_head);
 	if (cmd->id == 3)
 		cmd->stat = pwd_(*cmd, korn->env_head);
 	if (cmd->id == 4)
 	{
 		if (cmd->argc == 1)
-			cmd->stat = export_p(cmd->output, &korn->env_head);
+			cmd->stat = export_p(cmd->output, korn->env_head);
 		else
-			cmd->stat = export_v(cmd->argv, &korn->env_head);
+			cmd->stat = export_v(cmd->argv, korn->env_head);
 	}
 	if (cmd->id == 5)
 		cmd->stat = unset_(korn, cmd);

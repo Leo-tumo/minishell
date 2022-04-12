@@ -101,42 +101,18 @@ int len_4_cmd(char *str, int i)
  return (len);
 }
 
-char *ch_join(char c, char *s)
-{
- int  i;
- char *str;
-
- str = NULL;
- if (!(s))
- {
-	str = malloc(2);
-	str[0] = c;
-	str[1] = '\0';
-	return (str);
- }
- printf("STRING === %s\n", s); //FIXME:
- str = (char *)malloc(ft_strlen(s) + 2);
- i = 0;
- while(s[i])
- {
-	str[i] = s[i];
-	++i;
- }
- str[i] = c;
- str[i + 1] = '\0';
- free (s);
- return (str);
-}
-
 int parse_command(char *str, int i, t_cmd *cmd)
 {
+	int j = 0;
  	cmd->argv[cmd->arg_index] = malloc(len_4_cmd(str, i) + 1);
  	while (str[i] && !ft_ispace(str[i]))
  	{
 		if ((str[i] == '\'' || str[i] == '"') && str[i + 1] != '\0')
 	 		i = treat_quote(str, i, cmd);
-		cmd->argv[cmd->arg_index] = ch_join(str[i], cmd->argv[cmd->arg_index]);
+		printf("I === %d, STRING === %s\n", i, cmd->argv[cmd->arg_index]);
+		cmd->argv[cmd->arg_index][j] = str[i];
 		++i;
+		++j;
  	} 
  	printf("%d\n", cmd->arg_index);
  	printf("S = %s\n", cmd->argv[cmd->arg_index]);
@@ -150,9 +126,8 @@ t_cmd	*command_init(char *str, t_korn *korn)
  	t_cmd	*c;
 
  	i = 0;
-	 c = NULL;
+	c = malloc(sizeof(t_cmd));
  	init(c, str, korn);
-	c = malloc(sizeof(t_cmd)); 
  	while (str[i])
  	{
 		if (ft_ispace(str[i]))
@@ -178,16 +153,16 @@ t_cmd	*command_init(char *str, t_korn *korn)
 t_cmd	*t_cmd_init(char **splitted, t_korn **korn)
 {
 	int		i;
-	t_cmd	**ret;
+	t_cmd	*ret;
 
 	i = -1;
-	ret = (t_cmd **)malloc(((*korn)->cmd_count + 1) * sizeof(t_cmd));
+	ret = (t_cmd *)malloc(((*korn)->cmd_count + 1) * sizeof(t_cmd));
 	while (++i < (*korn)->cmd_count)
 	{
-		ret[i] = command_init(splitted[i], (*korn));
-		print_struct(*ret[i]);
+		ret[i] = *command_init(splitted[i], (*korn));
+		print_struct(ret[i]);
 	}
-	return (*ret);
+	return (ret);
 }
 
 void	parse(char *str, t_korn **korn)

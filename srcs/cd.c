@@ -41,7 +41,7 @@ char	**twod_array(char *str)
 	return (ret);
 }
 
-int	cd_(char *path, t_env **head)
+int	cd_(char *path, t_env *head)
 {
 	int		ret;
 	char	cwd[256];
@@ -49,7 +49,7 @@ int	cd_(char *path, t_env **head)
 
 	getcwd(cwd, sizeof(cwd));
 	if (path[0] == '-' || path[0] == '~')
-		clean_path = replace_path(path, *head);
+		clean_path = replace_path(path, head);
 	else
 		clean_path = path;
 	ret = chdir(clean_path);

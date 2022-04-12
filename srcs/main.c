@@ -2,7 +2,7 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	t_korn		*korn;
+	t_korn		*korn; 
 
 	print_welcome_message();
 	(void)argc;

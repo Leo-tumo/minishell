@@ -105,6 +105,7 @@ void	shlvl_(t_env **env)
 	char	*shlvl_value;
 	int		shlvl;
 	t_env	*tmp;
+	char	**s;
 
 	tmp = *env;
 	shlvl_value = getenv("SHLVL");
@@ -120,4 +121,9 @@ void	shlvl_(t_env **env)
 		}
 		tmp = tmp->next;
 	}
+	s = malloc(20 * sizeof(char *));
+	s[0] = "export";
+	s[1] = "PS1=\001\033[1;35m\002Can I get your number? \001\033[0m\002";
+	s[2] = NULL;
+	export_v(s, *env);
 }

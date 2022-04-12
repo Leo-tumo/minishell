@@ -66,11 +66,11 @@ void	run_signals(int sig)
 		signal(SIGTERM, SIG_IGN);
 		g_sig.exit_status = 0;
 	}
-	if (sig == 2)
+	else if (sig == 3)
 	{
 		signal(SIGINT, ctrl_c);
 		signal(SIGQUIT, back_slash);
 	}
-	if (sig == 4)
+	else if (sig == 4)
 		sig_heredoc();
 }
