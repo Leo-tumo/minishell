@@ -114,6 +114,7 @@ void		print_welcome_message(void);
 void		ctrl_c(int sig);
 void		back_slash(int sig);
 int			is_builtin(t_cmd cmd);
+void		incubator(t_korn *korn);
 char		**ll_to_matrix(t_env *env);
 
 /*  

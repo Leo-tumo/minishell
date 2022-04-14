@@ -12,7 +12,7 @@ SRC			=	main.c\
 				export_utils.c export.c\
 				echo.c exit.c\
 				var_keeper.c heredoc.c\
-				signal.c art.c\
+				signal.c art.c executor.c\
 				ft_split_our.c parse_output.c\
 				parse_input.c init.c pipe.c\
 				exec_gtr.c file_checker.c\

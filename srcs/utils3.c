@@ -11,13 +11,13 @@ char	**ll_to_matrix(t_env *env)
 
 	i = 0;
 	tmp = env;
-	array = malloc(sizeof(char **));
+	array = malloc(sizeof(char *) * 100);
 	while (tmp != NULL)
 	{
 		if (tmp->data)
 			array[i] = ft_strjoin3(tmp->name, "=", tmp->data);
 		else
-			array[i] = ft_strdup(tmp->name);
+			array[i] = tmp->name;
 		i++;
 		tmp = tmp->next;
 	}

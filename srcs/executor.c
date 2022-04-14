@@ -12,13 +12,19 @@ void	exec_bin(t_cmd *cmd, t_korn *korn)
 	char	**env;
 
 	run_signals(2);
-	dup2(cmd->input, STDIN_FILENO);
-	dup2(cmd->output, STDOUT_FILENO);
+	if (cmd->input != 0)
+		dup2(cmd->input, STDIN_FILENO);
+	if (cmd->output != 1)
+		dup2(cmd->output, STDOUT_FILENO);
 	env = ll_to_matrix(korn->env_head);
+	for(int i = 0; env[i]; ++i)
+		printf("ENV[%d] = %s\n", i, env[i]);
 	if (!guns_n_roses(cmd->name))
 	{
 		pathfinder(cmd, korn);
-		execve(cmd->path, cmd->argv, env);
+		execve(cmd->path, cmd->argv, env); // FIXME:
+		printf("PATH == %s, ARGV == %s\n", cmd->path, cmd->argv[0]);
+		// printf("HELLO WORLD\n");
 	}
 	else
 		execve(cmd->name, cmd->argv, env);
@@ -57,7 +63,7 @@ void	waiter(t_korn *korn)
 {
 	int	i;
 	int	stat;
-	int	signaled;
+	// int	signaled;
 
 	i = 0;
 	while (i < korn->cmd_count)
@@ -86,8 +92,10 @@ void	incubator(t_korn *korn)
 	while (i < korn->cmd_count)
 	{
 		korn->child[i] = fork();
-		if (korn->child == 0)
+		
+		if (korn->child[i] == 0)
 		{
+			// korn->cmd[i].id = is_builtin(korn->cmd[i]);
 			if (korn->cmd[i].id == 0)
 			{
 				if (!korn->cmd[i].argv)
@@ -95,7 +103,10 @@ void	incubator(t_korn *korn)
 				exec_bin(&korn->cmd[i], korn);
 			}
 			else
+			{
 				exec_(&korn->cmd[i], korn);
+			}
+			exit(1);
 		}
 		i++;
 	}
