@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_gtr.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:56:09 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 15:08:44 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h" 
 
 /*  
@@ -16,7 +28,7 @@ int	is_builtin(t_cmd cmd)
 		return (4);
 	if (ft_strncmp(cmd.name, "unset", 5) == 0)
 		return (5);
-	if (ft_strncmp(lower_(cmd.name), "env", 3) == 0)	
+	if (ft_strncmp(lower_(cmd.name), "env", 3) == 0)
 		return (6);
 	if (ft_strncmp(cmd.name, "exit", 4) == 0)
 		return (7);

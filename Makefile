@@ -15,7 +15,7 @@ SRC			=	main.c\
 				signal.c art.c executor.c\
 				ft_split_our.c parse_output.c\
 				parse_input.c init.c pipe.c\
-				exec_gtr.c file_checker.c\
+				exec_gtr.c freer.c\
 				utils.c utils1.c utils2.c utils3.c
 
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 15:00:46 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 15:00:47 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
@@ -104,7 +116,7 @@ void	fake_heredoc(t_korn *korn, char *delimiter)
 ** This function allows us to get heredoc's output to STDIN
 ** if there are multiple heredocs, it fake them except the last one
 */
-void	here_doc(t_korn *korn)
+void	here_doc(t_korn *korn, int receiver)
 {
 	int		fd[2];
 	pid_t	pid;
@@ -128,7 +140,7 @@ void	here_doc(t_korn *korn)
 	{
 		run_signals(1);
 		waitpid(pid, &g_sig.exit_status, WEXITSTATUS(g_sig.exit_status));
-		dup2(fd[0], STDIN_FILENO);
+		dup2(fd[0], korn->cmd[receiver].input);
 		close_2(fd);
 	}
 }

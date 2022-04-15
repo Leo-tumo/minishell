@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 15:06:07 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 15:06:08 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
@@ -61,6 +73,7 @@ void	run_signals(int sig)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	if (sig == 1)
 	{
+		signal(SIGHUP, SIG_IGN);
 		signal(SIGINT, restore_prompt);
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGTERM, SIG_IGN);

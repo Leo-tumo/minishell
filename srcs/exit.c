@@ -1,15 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:56:36 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 14:56:43 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 #include <limits.h>
 
 /*  
 ** Frees cmd members and cmd, after execution
 */
-int	free_n_exit(t_cmd *cmd, int exit_status)
+int	free_n_exit(t_korn *korn, int exit_status)
 {
-	free(cmd->name);
-	free(cmd->path);
-	free(cmd->argv);
-	free(cmd);
+	free_root(korn, 1);
 	exit (exit_status);
 }
 
@@ -47,7 +56,7 @@ int	xarg_check(char *str)
 ** if argument ain't numeric - exits and returns 2
 ** if it has many arguments - just returns error message and 1
 */
-int	exit_(t_cmd *cmd)
+int	exit_(t_cmd *cmd, t_korn *korn)
 {
 	int	i;
 
@@ -69,6 +78,6 @@ int	exit_(t_cmd *cmd)
 	else
 	{
 		i = (int)(ft_atoi(cmd->argv[1]) % 256);
-		return (free_n_exit(cmd, i));
+		return (free_n_exit(korn, i));
 	}
 }

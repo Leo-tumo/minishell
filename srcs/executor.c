@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:56:19 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 14:56:28 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
@@ -7,27 +19,26 @@
 ** 		where argv should be =>    
 ** 		"cat", "-e", "file1", "file2" 
 */
-void	exec_bin(t_cmd *cmd, t_korn *korn)
+void	exec_bin(t_korn *korn, int i)
 {
 	char	**env;
 
 	run_signals(2);
-	if (cmd->input != 0)
-		dup2(cmd->input, STDIN_FILENO);
-	if (cmd->output != 1)
-		dup2(cmd->output, STDOUT_FILENO);
-	env = ll_to_matrix(korn->env_head);
-	for(int i = 0; env[i]; ++i)
-		printf("ENV[%d] = %s\n", i, env[i]);
-	if (!guns_n_roses(cmd->name))
+	close_them(korn, i);
+	if (korn->cmd[i].input != 0)
+		dup2(korn->cmd[i].input, STDIN_FILENO);
+	if (korn->cmd[i].output != 1)
 	{
-		pathfinder(cmd, korn);
-		execve(cmd->path, cmd->argv, env); // FIXME:
-		printf("PATH == %s, ARGV == %s\n", cmd->path, cmd->argv[0]);
-		// printf("HELLO WORLD\n");
+		dup2(korn->cmd[i].output, STDOUT_FILENO);
+	}
+	env = ll_to_matrix(korn->env_head);
+	if (!guns_n_roses(korn->cmd[i].name))
+	{
+		pathfinder(&korn->cmd[i], korn);
+		execve(korn->cmd[i].path, korn->cmd[i].argv, env);
 	}
 	else
-		execve(cmd->name, cmd->argv, env);
+		execve(korn->cmd[i].name, korn->cmd[i].argv, env);
 }
 
 /*  
@@ -53,7 +64,7 @@ void	exec_(t_cmd *cmd, t_korn *korn)
 	if (cmd->id == 6)
 		cmd->stat = env_(korn, cmd);
 	if (cmd->id == 7)
-		cmd->stat = exit_(cmd);
+		cmd->stat = exit_(cmd, korn);
 }
 
 /*
@@ -61,22 +72,28 @@ void	exec_(t_cmd *cmd, t_korn *korn)
 */
 void	waiter(t_korn *korn)
 {
-	int	i;
-	int	stat;
-	// int	signaled;
+	int		i;
+	pid_t	pid;
+	int		stat;
+	t_cmd	*finished;
 
 	i = 0;
 	while (i < korn->cmd_count)
 	{
-		if (wait(&stat) == korn->child[korn->cmd_count - 1])
+		pid = wait(&stat);
+		if (pid == korn->child[korn->cmd_count - 1])
 		{
 			if (korn->cmd[korn->cmd_count - 1].id == 0)
 				g_sig.exit_status = WEXITSTATUS(stat);
 		}
 		if (WTERMSIG(stat))
 			g_sig.exit_status = WTERMSIG(stat) + SIG_PLUS;
+		finished = find_child(korn, pid);
+		if (finished)
+			close_one(finished);
 		i++;
 	}
+	fd_closer(*korn);
 	if (korn->cmd[korn->cmd_count - 1].id > 0)
 		g_sig.exit_status = korn->cmd[korn->cmd_count - 1].stat;
 }
@@ -92,23 +109,33 @@ void	incubator(t_korn *korn)
 	while (i < korn->cmd_count)
 	{
 		korn->child[i] = fork();
-		
 		if (korn->child[i] == 0)
 		{
-			// korn->cmd[i].id = is_builtin(korn->cmd[i]);
+			korn->cmd[i].id = is_builtin(korn->cmd[i]);
 			if (korn->cmd[i].id == 0)
 			{
 				if (!korn->cmd[i].argv)
 					exit(0);
-				exec_bin(&korn->cmd[i], korn);
+				exec_bin(korn, i);
 			}
 			else
-			{
 				exec_(&korn->cmd[i], korn);
-			}
 			exit(1);
 		}
 		i++;
 	}
 	waiter(korn);
+}
+
+/*  
+** ---	The King of Execution ---
+*/
+void	processor(t_korn *korn)
+{
+	if (korn->cmd_count > 1)
+		pi_open(korn);
+	if ((korn->cmd_count == 1) && (is_builtin(*korn->cmd[0]) > 0))
+		exec_(korn->cmd[0], korn);
+	else
+		incubator(korn);
 }

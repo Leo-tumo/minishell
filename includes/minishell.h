@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:48:49 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 14:48:53 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -80,8 +92,6 @@ typedef struct s_env
 /*  
 ** This is the main struct, maybe it'll turn to global
 ** and the name is too good 🤘🏻
-** out => redirection output fd
-** in  <= redirection input fd
 */
 typedef struct s_korn
 {
@@ -89,11 +99,11 @@ typedef struct s_korn
 	int		d_q; // if final delimiter is quoted = 1 else 0
 	int		heredoc_count; // in case that there are many Speciall for 2🍕s
 	char	**delimiters; // heredoc delimiters' gang ✵ - should replace t_doc linked list;
+	int		receiver; // command id that should receive the input
 	t_env	*env_head;	// head of env variables
 	int		cmd_count; // count of commands
 	t_cmd	*cmd; // commands themself
 	pid_t	*child; // pid array for processes
-	int		pipe_count;
 }			t_korn;
 
 /* 
@@ -101,32 +111,37 @@ typedef struct s_korn
 */
 void		shlvl_(t_env **env);
 void		run_signals(int sig);
-void		here_doc(t_korn *korn);
 t_env		*env_keeper(char **env);
 void		restore_prompt(int sig);
 void		data_init(t_korn **korn);
 char		*show_prompt(t_korn *korn);
 void		print_welcome_message(void);
+void		here_doc(t_korn *korn, int receiver);
 
 /*  
 ** Execution functions
 */
 void		ctrl_c(int sig);
 void		back_slash(int sig);
+void		pi_open(t_korn *korn);
+void		close_one(t_cmd *cmd);
 int			is_builtin(t_cmd cmd);
+void		fd_closer(t_korn korn);
 void		incubator(t_korn *korn);
 char		**ll_to_matrix(t_env *env);
+t_cmd		*find_child(t_korn *korn, pid_t pid);
+void		close_them(t_korn *korn, int index);
 
 /*  
 ** util functions
 */
 void		free2(char **s);
 void		close_2(int *fd);
-void		free_cmd(t_cmd *cmd);
 char		*lower_(char const *s);
 char		**env_split(char *str);
 int			guns_n_roses(char *name);
 int			char_join(char c, char **s1);
+void		free_root(t_korn *korn, int kill);
 int			pathfinder(t_cmd *cmd, t_korn *korn);
 void		delete_var(t_env **head, char *key);
 int			ft_strcmp(const char *s1, const char *s2);
@@ -146,8 +161,8 @@ int			export_p(int fd, t_env *env);
 int			cd_(char *path, t_env *head);
 int			env_(t_korn *korn, t_cmd *cmd);
 int			export_v(char**s, t_env *head);
+int			exit_(t_cmd *cmd, t_korn *korn);
 int			unset_(t_korn *korn, t_cmd *cmd);
-int			exit_(t_cmd *cmd);
 char		*get_value(char *name, t_env *head);
 int			check_existance(char *s, t_env *head);
 void		append_var(char *str, int flags, t_env *head);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   art.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:49:28 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 14:50:02 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	print_monster(void)
@@ -71,7 +83,8 @@ char	*show_prompt(t_korn *korn)
 			ft_putstr_fd("\033[23C", 2);
 			ft_putendl_fd("exit", 2);
 			exit(0);
-		} 		else if (*line == '\0')
+		}
+		else if (*line == '\0')
 			free(line);
 		else
 		{

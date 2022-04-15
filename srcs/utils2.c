@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 15:06:59 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 15:07:00 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	close_2(int *fd)
@@ -39,18 +51,6 @@ void	restore_prompt(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 	(void)sig;
-}
-
-void	free2(char **s)
-{
-	int		i;
-
-	i = 0;
-	while (s[i])
-	{
-		free(s[i]);
-		++i;
-	}
 }
 
 /*  

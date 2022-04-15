@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:57:01 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 15:07:46 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
@@ -87,7 +99,6 @@ void	append_var(char *str, int flags, t_env *head)
 
 	tmp = head;
 	key = NULL;
-
 	var = env_split(str);
 	sign = flags / 10;
 	empty_value = flags % 10;

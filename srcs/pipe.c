@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 15:05:54 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 15:05:55 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
@@ -25,8 +37,9 @@ void	fd_closer(t_korn korn)
 void	pi_open(t_korn *korn)
 {
 	int		i;
-	int		*fd[2];
+	int		**fd;
 
+	fd = malloc(sizeof(int) * (korn->cmd_count - 1) * 2);
 	i = 0;
 	while (i < korn->cmd_count - 1)
 	{
@@ -40,6 +53,32 @@ void	pi_open(t_korn *korn)
 			korn->cmd[i + 1].input = fd[i][0];
 		else
 			close(fd[i][0]);
+		++i;
+	}
+}
+
+void	close_one(t_cmd *cmd)
+{
+	if (cmd->output != 1)
+		close(cmd->output);
+	if (cmd->input != 0)
+		close(cmd->input);
+}
+
+void	close_them(t_korn *korn, int index)
+{
+	int	i;
+
+	i = 0;
+	while (i < korn->cmd_count - 1)
+	{
+		if (i != index)
+		{
+			if (korn->cmd[0].input)
+				close(korn->cmd[0].input);
+			if (korn->cmd[0].output != 1)
+				close(korn->cmd[0].output);
+		}
 		++i;
 	}
 }
