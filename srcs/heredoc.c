@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 15:00:46 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/16 11:05:39 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/17 00:55:09 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,18 +129,16 @@ void	here_doc(t_korn *korn)
 	{
 		run_signals(4);
 		while (i + 1 < korn->heredoc_count)
-		{
-			fake_heredoc(korn, korn->delimiters[i]);
-			++i;
-		}
+			fake_heredoc(korn, korn->delimiters[i++]);
 		heredoc_child(korn, fd[1], korn->delimiters[i]);
 		close(fd[0]);
 	}
 	else
 	{
 		run_signals(1);
+		korn->cmd[korn->receiver].input = fd[0]; // version 1
 		waitpid(pid, &g_sig.exit_status, WEXITSTATUS(g_sig.exit_status));
-		dup2(fd[0], korn->cmd[korn->receiver].input);
+		dup2(fd[0], korn->cmd[korn->receiver].input); // FIXME: version 2
 		close_2(fd);
 	}
 }
