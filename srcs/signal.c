@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 15:06:07 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/15 15:06:08 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/16 13:39:11 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,8 @@ void	run_signals(int sig)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	if (sig == 1)
 	{
-		signal(SIGHUP, SIG_IGN);
 		signal(SIGINT, restore_prompt);
 		signal(SIGQUIT, SIG_IGN);
-		signal(SIGTERM, SIG_IGN);
 		g_sig.exit_status = 0;
 	}
 	else if (sig == 3)

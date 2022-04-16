@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:56:19 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/16 09:15:27 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/16 14:11:24 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	exec_bin(t_korn *korn, int i)
 	}
 	else
 		execve(korn->cmd[i].name, korn->cmd[i].argv, env);
+		free(env);
 }
 
 /*  

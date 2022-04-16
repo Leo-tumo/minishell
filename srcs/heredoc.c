@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 15:00:46 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/15 15:00:47 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/16 11:05:39 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	fake_heredoc(t_korn *korn, char *delimiter)
 ** This function allows us to get heredoc's output to STDIN
 ** if there are multiple heredocs, it fake them except the last one
 */
-void	here_doc(t_korn *korn, int receiver)
+void	here_doc(t_korn *korn)
 {
 	int		fd[2];
 	pid_t	pid;
@@ -140,7 +140,7 @@ void	here_doc(t_korn *korn, int receiver)
 	{
 		run_signals(1);
 		waitpid(pid, &g_sig.exit_status, WEXITSTATUS(g_sig.exit_status));
-		dup2(fd[0], korn->cmd[receiver].input);
+		dup2(fd[0], korn->cmd[korn->receiver].input);
 		close_2(fd);
 	}
 }

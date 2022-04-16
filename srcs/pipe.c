@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 15:05:54 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/15 15:05:55 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/16 11:19:45 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ void	pi_open(t_korn *korn)
 	int		i;
 	int		**fd;
 
-	fd = malloc(sizeof(int) * (korn->cmd_count - 1) * 2);
+	fd = malloc(sizeof(int *) * (korn->cmd_count) * 2);
 	i = 0;
 	while (i < korn->cmd_count - 1)
 	{
+		fd[i] = malloc(sizeof(int) * 2);
 		if (pipe(fd[i]) == -1)
 			perror("Error\nbash: ");
 		if (korn->cmd[i].output == 1)

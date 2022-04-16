@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:56:36 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/15 14:56:43 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/16 11:04:02 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ int	exit_(t_cmd *cmd, t_korn *korn)
 	int	i;
 
 	if (cmd->argc == 1)
-		return (free_n_exit(cmd, g_sig.exit_status));
+		return (free_n_exit(korn, g_sig.exit_status));
 	else if (xarg_check(cmd->argv[1]) == FALSE)
 	{
 		ft_putstr_fd("exit\nbash: exit: ", 2);
 		ft_putstr_fd(cmd->argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		i = 2;
-		return (free_n_exit(cmd, 2));
+		return (free_n_exit(korn, 2));
 	}
 	else if (cmd->argc > 2)
 	{

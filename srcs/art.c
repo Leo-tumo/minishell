@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   art.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:49:28 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/15 14:50:02 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/16 13:37:55 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*show_prompt(t_korn *korn)
 	while (1)
 	{
 		run_signals(1);
-		line = readline(get_value("PS1", korn->env_head));
+		line = readline("minishell> ");
 		if (!line)
 		{
 			run_signals(1);

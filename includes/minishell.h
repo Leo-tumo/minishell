@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:48:49 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/15 14:48:53 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/16 16:39:21 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ typedef struct s_korn
 	int		d_q; // if final delimiter is quoted = 1 else 0
 	int		heredoc_count; // in case that there are many Speciall for 2🍕s
 	char	**delimiters; // heredoc delimiters' gang ✵ - should replace t_doc linked list;
-	int		receiver; // command id that should receive the input
+	int		receiver; // fd of receiver
 	t_env	*env_head;	// head of env variables
 	int		cmd_count; // count of commands
 	t_cmd	*cmd; // commands themself
@@ -116,7 +116,7 @@ void		restore_prompt(int sig);
 void		data_init(t_korn **korn);
 char		*show_prompt(t_korn *korn);
 void		print_welcome_message(void);
-void		here_doc(t_korn *korn, int receiver);
+void		here_doc(t_korn *korn);
 
 /*  
 ** Execution functions
