@@ -6,7 +6,7 @@
 /*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:56:19 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/15 14:56:28 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/16 09:15:27 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,8 @@ void	processor(t_korn *korn)
 {
 	if (korn->cmd_count > 1)
 		pi_open(korn);
-	if ((korn->cmd_count == 1) && (is_builtin(*korn->cmd[0]) > 0))
-		exec_(korn->cmd[0], korn);
+	if ((korn->cmd_count == 1) && (is_builtin(korn->cmd[0]) > 0))
+		exec_(&korn->cmd[0], korn);
 	else
 		incubator(korn);
 }
