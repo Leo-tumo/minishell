@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:56:19 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/16 14:11:24 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/17 01:03:30 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	exec_(t_cmd *cmd, t_korn *korn)
 		cmd->stat = env_(korn, cmd);
 	if (cmd->id == 7)
 		cmd->stat = exit_(cmd, korn);
+	if (korn->cmd_count > 1)
+		exit (cmd->stat);
 }
 
 /*
@@ -129,10 +131,16 @@ void	incubator(t_korn *korn)
 }
 
 /*  
-** ---	The King of Execution ---
+** ---	The 👑King of Execution ---
+** --- 1. heredoc 
+** --- 2. open pipes if needed
+** --- 3. if only 1 func & builtin => don't fork
+** --- 4. else execute everything ...
 */
 void	processor(t_korn *korn)
 {
+	if (korn->heredoc_count > 0)
+		here_doc(korn);
 	if (korn->cmd_count > 1)
 		pi_open(korn);
 	if ((korn->cmd_count == 1) && (is_builtin(korn->cmd[0]) > 0))
