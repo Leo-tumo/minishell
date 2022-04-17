@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_input.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/15 15:01:52 by amidoyan          #+#    #+#             */
-/*   Updated: 2022/04/16 11:05:53 by letumany         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 int	parse_input(char *str, int i, t_cmd *c)
@@ -20,7 +8,8 @@ int	parse_input(char *str, int i, t_cmd *c)
 	k = i;
 	filename = NULL;
 	if (str[k + 1] && str[k + 1] == '<' && ++k)
-		printf("HEREDOC:)\n");
+		// parse_heredoc()
+		printf("BARLUS\n");
 	while (str[++k])
 	{
 		if (ft_ispace(str[k]))
@@ -42,7 +31,8 @@ int	parse_input(char *str, int i, t_cmd *c)
 		}
 	}
 	c->infile[c->input_index] = malloc(ft_strlen(filename) + 1);
-	c->infile[c->input_index] = ft_strdup(filename);
+	printf("filename ===%s<-\n", filename);
+	fill(&c->infile[c->input_index], filename);
 	++c->input_index;
 	return (k);
 }

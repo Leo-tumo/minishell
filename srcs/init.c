@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/15 15:01:02 by amidoyan          #+#    #+#             */
-/*   Updated: 2022/04/15 15:01:14 by letumany         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 int	get_argc(char *str)
@@ -28,12 +16,12 @@ int	get_argc(char *str)
 			while (str[i] != quote)
 				++i;
 		}
-		else if (str[i] == '>' || str[i] == '<')
+		else if (str[i] && (str[i] == '>' || str[i] == '<'))
 		{
 			++i;
 			while (ft_ispace(str[i]))
 				++i;
-			while (!ft_ispace(str[i]))
+			while (str[i] && !ft_ispace(str[i]))
 			{
 				if ((str[i] == '\'' || str[i] == '"') && str[++i])
 				{
@@ -63,7 +51,7 @@ void	init(t_cmd *c, char *str, t_korn *korn)
 	c->input = 0;
 	c->output = 1;
 	c->argc = get_argc(str);
-	c->argv = malloc(sizeof(char *) * (c->argc + 1));
+	c->argv = calloc(sizeof(char *), (c->argc + 1));
 	c->arg_index = 0;
 	c->name = NULL;
 	c->quote_flags = ft_calloc(sizeof(int), (c->argc + 1));
@@ -87,15 +75,15 @@ int	treat_quote(char *str, int i, int *j, t_cmd *cmd)
 	else if (quote == '"')
 	{
 		cmd->quote_flags[cmd->arg_index] = 2;
-		while (str[i] != quote)
+		while (str[i] && (str[i] != quote))
 		{
 			cmd->argv[cmd->arg_index][*j] = str[i];
 			++i;
-			++*j;
+			++*j; 
 		}
 	}
 	printf("I is %d, char is ->%c<-\n", i, str[i]);
-	return (i + 1);
+	return (i);
 }
 
 int	len_4_cmd(char *str, int i)
@@ -126,18 +114,53 @@ int	parse_command(char *str, int i, t_cmd *cmd)
 
 	j = 0;
 	cmd->argv[cmd->arg_index] = malloc(len_4_cmd(str, i) + 1);
-	while (str[i] && !ft_ispace(str[i]))
+
+	while (str[i] && !ft_ispace(str[i]) && str[i] != '>' && str[i]!= '<')
 	{
-		if ((str[i] == '\'' || str[i] == '"') && str[i + 1] != '\0')
-			i = treat_quote(str, i, &j, cmd);
-		if (ft_ispace(str[i]))
-			break ;
-		cmd->argv[cmd->arg_index][j] = str[i];
-		++i;
-		++j;
+
+		if (str[i] == '\'' || str[i] == '"')
+			i = treat_quote(str, i, &j, cmd) + 1;
+		else
+		{
+			cmd->argv[cmd->arg_index][j] = str[i];
+			++i;
+			++j;
+		}
 	}
 	++cmd->arg_index;
-	return (i);
+	return (i - 1);
+}
+
+int syntax_error_check(char *str)
+{
+	int		i;
+	char	symbol;
+	int		flag;
+
+	i = -1;
+	flag = 0;
+	while(str[++i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			flag = 1;
+			symbol = str[i];
+			while (str[++i] && (str[i] != symbol))
+				continue;
+			if (str[i] == symbol)
+				flag = 0;
+		}
+		if (str[i] == '|')
+		{
+			while (str[++i] && str[i] != '|')
+				++i;
+			if (str[i] == '|')
+				return(printf("\001\033[1;35m\002Can I get your number? \001\033[0m\002Syntax Error1\n"));	
+		}
+	}
+	if (flag == 1)
+		return(printf("\001\033[1;35m\002Can I get your number? \001\033[0m\002Syntax Error\n"));
+	return (0);
 }
 
 t_cmd	command_init(char *str, t_korn *korn)
@@ -167,7 +190,7 @@ t_cmd	*t_cmd_init(char **splitted, t_korn **korn)
 	t_cmd	*ret;
 
 	i = -1;
-	ret = (t_cmd *)malloc(((*korn)->cmd_count + 1) * sizeof(t_cmd));
+	ret = (t_cmd *)calloc(((*korn)->cmd_count + 1), sizeof(t_cmd));
 	while (++i < (*korn)->cmd_count)
 	{
 		ret[i] = command_init(splitted[i], (*korn));
@@ -180,6 +203,8 @@ void	parse(char *str, t_korn **korn)
 {
 	char	**splitted;
 
+	if(syntax_error_check(str))
+		return ;
 	splitted = first_step(str);
 	(*korn)->cmd_count = line_count(splitted);
 	(*korn)->cmd = t_cmd_init(splitted, korn);

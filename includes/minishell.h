@@ -6,7 +6,7 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:48:49 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/16 16:39:21 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/17 20:14:34 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ typedef struct s_korn
 ** 		---	Starters ---
 */
 void		shlvl_(t_env **env);
-void		run_signals(int sig);
+void		run_signals(int sig); 
 t_env		*env_keeper(char **env);
 void		restore_prompt(int sig);
 void		data_init(t_korn **korn);

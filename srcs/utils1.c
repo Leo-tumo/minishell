@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils1.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/15 15:06:33 by amidoyan          #+#    #+#             */
-/*   Updated: 2022/04/15 15:06:50 by letumany         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
-void	print_struct(t_cmd c)
+void    print_struct(t_cmd c)
 {
 	// int  i;
 	int	j;
@@ -67,8 +55,9 @@ char	**first_step(char *str)
 	while (ret[++i] != NULL)
 	{
 		tmp1 = ft_strtrim(ret[i], " ");
-		fill(&ret[i], tmp1);
-		free(tmp1);
+		free(ret[i]);
+		ret[i] = tmp1;
+		// free(tmp1);
 	}
 	return (ret);
 }
