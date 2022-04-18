@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:48:49 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/17 20:14:34 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/18 21:13:39 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libs/libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/errno.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <termios.h>
@@ -63,7 +64,7 @@ typedef struct s_cmd
 	int			input_index;
 	char		**outfile;
 	int			outfile_count; //?malloci hamar
-	int			output_flag; //O_TRUNC kam O_APPEND kaxvac outputi tipic
+	int			output_flag; //O_TRUNC kam O_APPEND kaxvac outputi tipic FIXME: output flagy piti amen commandi hamar lini
 	int			output_index; //for the malloc in 2d output array
 	int			arg_index;
 	char		*quote_flags;
@@ -137,6 +138,7 @@ void		close_them(t_korn *korn, int index);
 */
 void		free2(char **s);
 void		close_2(int *fd);
+void		free_cmd(t_cmd *cmd);
 char		*lower_(char const *s);
 char		**env_split(char *str);
 int			guns_n_roses(char *name);

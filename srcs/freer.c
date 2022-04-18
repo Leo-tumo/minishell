@@ -6,7 +6,7 @@
 /*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:58:54 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/15 15:00:20 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/18 20:53:21 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,24 @@ void	free_root(t_korn *korn, int kill)
 		delete_env(&korn->env_head);
 		free(korn);
 	}
+}
+
+/* 
+** -- Frees one cmd ---
+ */
+void	free_cmd(t_cmd *cmd)
+{
+	if (cmd->name)
+			free(cmd->name);
+	if (cmd->path)
+		free(cmd->path);
+	if (cmd->argv[0])
+		free2(cmd->argv);
+	if (cmd->infile[0])
+		free2(cmd->infile);
+	if (cmd->outfile[0])
+		free2(cmd->outfile);
+	if (cmd->quote_flags)
+		free(cmd->quote_flags);
+	free(cmd);
 }
