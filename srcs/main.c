@@ -6,7 +6,7 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 15:01:38 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/16 13:37:39 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:24:53 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int	main(int argc, char **argv, char **env)
 {
 	t_korn		*korn;
 
-	// print_welcome_message();
+	print_welcome_message();
 	(void)argc;
 	(void)argv;
 	data_init(&korn);
 	korn->env_head = env_keeper(env);
-	// shlvl_(&korn->env_head);
+	shlvl_(&korn->env_head);
 	show_prompt(korn);
 	// korn->cmd_count = 2;
 	// korn->cmd = malloc(sizeof(t_cmd) * 2);
@@ -39,8 +39,6 @@ int	main(int argc, char **argv, char **env)
 	// korn->cmd[0].output = 1;
 	// korn->cmd[0].argc = 2;
 	// // printf("SURPRISE SURPRISE \n");
-	pi_open(korn);
-	incubator(korn);
 	return (0);
 }
 

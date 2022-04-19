@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:56:19 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/17 01:03:30 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/19 13:39:01 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	exec_bin(t_korn *korn, int i)
 */
 void	exec_(t_cmd *cmd, t_korn *korn)
 {
+	cmd->id = is_builtin(*cmd);
 	if (cmd->id == 1)
 		cmd->stat = echo_(cmd);
 	if (cmd->id == 2)
@@ -141,10 +142,18 @@ void	processor(t_korn *korn)
 {
 	if (korn->heredoc_count > 0)
 		here_doc(korn);
+	if (korn->cmd_count == 0)
+		return;
 	if (korn->cmd_count > 1)
 		pi_open(korn);
 	if ((korn->cmd_count == 1) && (is_builtin(korn->cmd[0]) > 0))
+	{
+
 		exec_(&korn->cmd[0], korn);
+	}
 	else
+	{
+		printf("CHI MTNUM\n");
 		incubator(korn);
+	}
 }

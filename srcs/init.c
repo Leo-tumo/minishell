@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/19 13:11:16 by amidoyan          #+#    #+#             */
+/*   Updated: 2022/04/19 13:34:04 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int	get_argc(char *str)
@@ -127,6 +139,7 @@ int	parse_command(char *str, int i, t_cmd *cmd)
 			++j;
 		}
 	}
+	cmd->name = cmd->argv[0];
 	++cmd->arg_index;
 	return (i - 1);
 }

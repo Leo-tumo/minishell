@@ -6,7 +6,7 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:48:49 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/17 20:14:34 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/19 13:20:14 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void		close_one(t_cmd *cmd);
 int			is_builtin(t_cmd cmd);
 void		fd_closer(t_korn korn);
 void		incubator(t_korn *korn);
+void		processor(t_korn *korn);
 char		**ll_to_matrix(t_env *env);
 t_cmd		*find_child(t_korn *korn, pid_t pid);
 void		close_them(t_korn *korn, int index);
