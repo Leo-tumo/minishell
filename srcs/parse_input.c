@@ -1,15 +1,73 @@
 #include "../includes/minishell.h"
 
+int	check_quoted_delim(char *str, int k)
+{
+	while (str[k] && !ft_ispace(str[k]))
+	{
+		if (str[k] == '\'' || str[k] == '"')
+			return (TRUE);
+		++k;
+	}
+	return (FALSE);
+}
+
+int	delim_len(char *str, int k)
+{
+	int		len;
+	char	quote;
+
+	len = 0;
+	while (str[k] && !ft_ispace(str[k]))
+	{
+		if (str[k] == '\'' || str[k] == '"')
+		{
+			quote = str[k];
+			++k;
+			while (str[k++] != quote)
+				++len;
+			++k;
+		}
+		if (ft_ispace(str[k]))
+			break;
+		++len;
+		++k;
+	}
+	printf("LEN === %d\n", len);
+	return (len);
+}
+
+int parse_heredoc(char *str, int k, t_cmd *c)
+{
+	while (ft_ispace(str[k]))
+		++k;
+	printf("SEG?%d\n", k);
+	
+	if (check_quoted_delim(str, k))
+	{
+		printf("NO\n");
+		c->doc->d_q = 1;
+	}
+	printf("INDEX");
+	printf("PLAYA PLAYA === %i\n", c->doc->d_i);
+	c->doc->delimiters[c->doc->d_i] = malloc(delim_len(str, k) + 1);
+	return (0);
+		
+}
+
 int	parse_input(char *str, int i, t_cmd *c)
 {
 	int		k;
 	char	*filename;
 
+	
 	k = i;
 	filename = NULL;
 	if (str[k + 1] && str[k + 1] == '<' && ++k)
-		// parse_heredoc()
-		printf("BARLUS\n");
+	{
+		printf("str[k] === %c &&  str[k + 1] === %c\n", str[k], str[k + 1]);
+		printf("PARSE_I %d\n", k + 1);
+		return(parse_heredoc(str, k + 1, c));
+	}
 	while (str[++k])
 	{
 		if (ft_ispace(str[k]))
@@ -31,13 +89,12 @@ int	parse_input(char *str, int i, t_cmd *c)
 		}
 	}
 	c->infile[c->input_index] = malloc(ft_strlen(filename) + 1);
-	printf("filename ===%s<-\n", filename);
 	fill(&c->infile[c->input_index], filename);
 	++c->input_index;
 	return (k);
 }
 
-char	**input_redirs(char *s, int *count, t_korn *korn)
+char	**input_redirs(char *s, int *count, t_cmd *cmd)
 {
 	int		i;
 	char	quote;
@@ -54,7 +111,10 @@ char	**input_redirs(char *s, int *count, t_korn *korn)
 				++i;
 		}
 		if (s[i] == '<' && s[i + 1] && s[i + 1] == '<')
-			here_doc(korn);
+		{
+			++i;    //FIXME:
+			cmd->doc->heredoc_count++;
+		}
 		else if (s[i] == '<' && s[i + 1] && s[i + 1] != '<')
 			++(*count);
 	}

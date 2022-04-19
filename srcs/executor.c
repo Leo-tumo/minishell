@@ -6,7 +6,7 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:56:19 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/19 13:39:01 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/19 20:00:17 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ void	incubator(t_korn *korn)
 		korn->child[i] = fork();
 		if (korn->child[i] == 0)
 		{
+			if (korn->cmd[i].input < 0 || korn->cmd[i].output < 0)
+			exit(1);
 			korn->cmd[i].id = is_builtin(korn->cmd[i]);
 			if (korn->cmd[i].id == 0)
 			{
@@ -140,20 +142,12 @@ void	incubator(t_korn *korn)
 */
 void	processor(t_korn *korn)
 {
-	if (korn->heredoc_count > 0)
-		here_doc(korn);
 	if (korn->cmd_count == 0)
 		return;
 	if (korn->cmd_count > 1)
 		pi_open(korn);
-	if ((korn->cmd_count == 1) && (is_builtin(korn->cmd[0]) > 0))
-	{
-
+	if ((korn->cmd_count == 1) && korn->cmd[0].name && (is_builtin(korn->cmd[0]) > 0))
 		exec_(&korn->cmd[0], korn);
-	}
 	else
-	{
-		printf("CHI MTNUM\n");
 		incubator(korn);
-	}
 }

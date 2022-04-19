@@ -6,7 +6,7 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:49:28 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/19 14:24:36 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/19 20:07:32 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,15 @@ void	print_welcome_message(void)
 	printf("d88 888,d88 %s\n", WHITE);
 }
 
+void	ctrl_d(void)
+{
+	run_signals(1);
+	ft_putstr_fd("\033[1A", 2);
+	ft_putstr_fd("\033[23C", 2);
+	ft_putendl_fd("exit", 2);
+	exit(0);
+}
+
 /* 
 ** Shows the prompt via readline
 */
@@ -77,13 +86,7 @@ char	*show_prompt(t_korn *korn)
 		run_signals(1);
 		line = readline(get_value("PS1", korn->env_head));
 		if (!line)
-		{
-			run_signals(1);
-			ft_putstr_fd("\033[1A", 2);
-			ft_putstr_fd("\033[23C", 2);
-			ft_putendl_fd("exit", 2);
-			exit(0);
-		}
+			ctrl_d();
 		else if (*line == '\0')
 			free(line);
 		else
@@ -94,6 +97,9 @@ char	*show_prompt(t_korn *korn)
 		}
 		parse(line, &korn);
 		processor(korn);
+		printf("THIS IS IT === %s\n", korn->cmd[0].doc->delimiters[0]);
+		printf("THIS IS IT2 === %s\n", korn->cmd[0].infile[0]);
+		free(line);
 	}
 	return (line);
 }
