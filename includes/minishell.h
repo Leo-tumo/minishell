@@ -6,7 +6,7 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:48:49 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/19 18:43:16 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/20 00:50:59 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,12 @@ void		pi_open(t_korn *korn);
 void		close_one(t_cmd *cmd);
 int			is_builtin(t_cmd cmd);
 void		fd_closer(t_korn korn);
+void		free_cmds(t_korn *korn);
 void		incubator(t_korn *korn);
 void		processor(t_korn *korn);
 char		**ll_to_matrix(t_env *env);
 t_cmd		*find_child(t_korn *korn, pid_t pid);
 void		close_them(t_korn *korn, int index);
-void		free_cmds(t_korn *korn);
 
 /*  
 ** util functions
@@ -197,6 +197,8 @@ void		init(t_cmd *c, char *str);
 int			get_output_flag(char *str);
 int			line_count(char **splitted);
 void		fill(char **to, char *from);
+int			len_4_cmd(char *str, int i);
+int			syntax_error_check(char *str);
 void		parse(char *str, t_korn **korn);
 char		*get_filename(char *str, int *i);
 char		*double_output(char *str, int *i);
@@ -204,9 +206,9 @@ char		**output_redirs(char *s, int *count);
 char		*get_quoted_filename(char *str, int *i);
 int			parse_input(char *str, int i, t_cmd *c);
 int			parse_output(char *str, int i, t_cmd *c);
+int			parse_command(char *str, int i, t_cmd *cmd);
 t_cmd		*t_cmd_init(char **splitted, t_korn **korn);
 char		**input_redirs(char *s, int *count, t_cmd *cmd);
-
-
+int			treat_quote(char *str, int i, int *j, t_cmd *cmd);
 
 #endif

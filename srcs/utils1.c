@@ -1,10 +1,8 @@
 #include "../includes/minishell.h"
 
-void    print_struct(t_cmd c)
+void	print_struct(t_cmd c)
 {
-	// int  i;
 	int	j;
-	// i = -1;
 	j = -1;
 	printf("=============INFILES=============\n");
 	while (++j < c.infile_count)
@@ -13,6 +11,10 @@ void    print_struct(t_cmd c)
 	printf("=============OUTFILES============\n");
 	while (++j < c.outfile_count)
 		printf("OUTFILE #%d === %s, FLAG === %x\n", j + 1, c.outfile[j], c.output_flag);
+	j = -1;
+	printf("=============HEREFUCK============\n");
+	while (++j < c.doc->heredoc_count)
+		printf("DELIM #%d === %s, D_Q === %d\n", j + 1, c.doc->delimiters[j], c.doc->d_q);
 	printf("COMMMMMAND ======= %s\n", c.argv[0]);
 	printf("============ ARGUMENTS===========\n");
 	j = 0;

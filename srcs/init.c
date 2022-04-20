@@ -6,11 +6,87 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 13:11:16 by amidoyan          #+#    #+#             */
-/*   Updated: 2022/04/19 19:42:48 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/20 00:54:02 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	len_4_cmd(char *str, int i)
+{
+	int		len;
+	char	quote;
+
+	len = 0;
+	while (str[i] && !ft_ispace(str[i]))
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i];
+			++i;
+			while (str[++i] != quote)
+				++len;
+		}
+		else
+			++len;
+		++i;
+	}
+	return (len);
+}
+
+int	parse_command(char *str, int i, t_cmd *cmd)
+{
+	int		j;
+
+	j = 0;
+	cmd->argv[cmd->arg_index] = malloc(len_4_cmd(str, i) + 1);
+	while (str[i] && !ft_ispace(str[i]) && str[i] != '>' && str[i]!= '<')
+	{
+		if (str[i] == '\'' || str[i] == '"')
+			i = treat_quote(str, i, &j, cmd) + 1;
+		else
+		{
+			cmd->argv[cmd->arg_index][j] = str[i];
+			++i;
+			++j;
+		}
+	}
+	cmd->name = cmd->argv[0];
+	++cmd->arg_index;
+	return (i - 1);
+}
+
+int	syntax_error_check(char *str)
+{
+	int		i;
+	char	symbol;
+	int		flag;
+
+	i = -1;
+	flag = 0;
+	while (str[++i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			flag = 1;
+			symbol = str[i];
+			while (str[++i] && (str[i] != symbol))
+				continue ;
+			if (str[i] == symbol)
+				flag = 0;
+		}
+		if (str[i] == '|')
+		{
+			while (str[++i] && str[i] != '|')
+				++i;
+			if (str[i] == '|')
+				return (printf("bash: Syntax Error\n"));
+		}
+	}
+	if (flag == 1)
+		return (printf("bash: Syntax Error\n"));
+	return (0);
+}
 
 int	get_argc(char *str)
 {
@@ -56,13 +132,13 @@ char	**heredoc_zibil(int *c, char *str)
 	int		i;
 	char	quote;
 	char	**ret;
-	
+
 	i = -1;
-	while(str[++i])
+	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
 		{
-			quote =	str[i];
+			quote = str[i];
 			while (str[++i] && str[i] != quote)
 				continue ;
 		}
@@ -132,87 +208,10 @@ int	treat_quote(char *str, int i, int *j, t_cmd *cmd)
 		{
 			cmd->argv[cmd->arg_index][*j] = str[i];
 			++i;
-			++*j; 
+			++*j;
 		}
 	}
 	return (i);
-}
-
-int	len_4_cmd(char *str, int i)
-{
-	int		len;
-	char	quote;
-
-	len = 0;
-	while (str[i] && !ft_ispace(str[i]))
-	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			quote = str[i];
-			++i;
-			while (str[++i] != quote)
-				++len;
-		}
-		else
-			++len;
-		++i;
-	}
-	return (len);
-}
-
-int	parse_command(char *str, int i, t_cmd *cmd)
-{
-	int		j;
-
-	j = 0;
-	cmd->argv[cmd->arg_index] = malloc(len_4_cmd(str, i) + 1);
-	while (str[i] && !ft_ispace(str[i]) && str[i] != '>' && str[i]!= '<')
-	{
-
-		if (str[i] == '\'' || str[i] == '"')
-			i = treat_quote(str, i, &j, cmd) + 1;
-		else
-		{
-			cmd->argv[cmd->arg_index][j] = str[i];
-			++i;
-			++j;
-		}
-	}
-	cmd->name = cmd->argv[0];
-	++cmd->arg_index;
-	return (i - 1);
-}
-
-int syntax_error_check(char *str)
-{
-	int		i;
-	char	symbol;
-	int		flag;
-
-	i = -1;
-	flag = 0;
-	while(str[++i])
-	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			flag = 1;
-			symbol = str[i];
-			while (str[++i] && (str[i] != symbol))
-				continue;
-			if (str[i] == symbol)
-				flag = 0;
-		}
-		if (str[i] == '|')
-		{
-			while (str[++i] && str[i] != '|')
-				++i;
-			if (str[i] == '|')
-				return(printf("bash: Syntax Error\n"));
-		}
-	}
-	if (flag == 1)
-		return(printf("bash: Syntax Error\n"));
-	return (0);
 }
 
 t_cmd	command_init(char *str)
@@ -238,14 +237,14 @@ t_cmd	command_init(char *str)
 
 void	check_outputs(t_cmd *cmd)
 {
-	int i;
-	int fd;
+	int	i;
+	int	fd;
 
 	i = -1;
 	fd = 0;
 	while (cmd->outfile[++i] && i < cmd->outfile_count)
 	{
-		fd = open(cmd->outfile[i], O_WRONLY|O_CREAT|cmd->output_flag);
+		fd = open(cmd->outfile[i], O_WRONLY | O_CREAT | cmd->output_flag);
 		if (fd == -1)
 		{
 			cmd->output = -1;
@@ -259,12 +258,11 @@ void	check_outputs(t_cmd *cmd)
 
 void	check_inputs(t_cmd *cmd)
 {
-	int i;
-	int fd;
+	int	i;
+	int	fd;
 
 	i = -1;
 	fd = 0;
-	printf("SF? %s\n", cmd->infile[0]);
 	while (cmd->infile[++i] && i < cmd->infile_count)
 	{
 		fd = open(cmd->infile[i], O_RDONLY);
@@ -272,9 +270,9 @@ void	check_inputs(t_cmd *cmd)
 		{
 			cmd->input = -1;
 			perror(ft_strjoin("bash: ", cmd->infile[i]));
-			break;
+			break ;
 		}
-		if(cmd->input != 0)
+		if (cmd->input != 0)
 			close(cmd->input);
 		cmd->input = fd;
 	}
@@ -282,14 +280,14 @@ void	check_inputs(t_cmd *cmd)
 
 void	files_checker(t_cmd *cmd, int ac)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < ac)
 	{
-		if(cmd[i].infile_count > 0)
+		if (cmd[i].infile_count > 0)
 			check_inputs(&cmd[i]);
-		if(cmd[i].outfile_count > 0)
+		if (cmd[i].outfile_count > 0)
 			check_outputs(&cmd[i]);
 	}
 }
@@ -306,7 +304,6 @@ t_cmd	*t_cmd_init(char **splitted, t_korn **korn)
 		ret[i] = command_init(splitted[i]);
 		print_struct(ret[i]);
 	}
-
 	return (ret);
 }
 
@@ -314,7 +311,7 @@ void	parse(char *str, t_korn **korn)
 {
 	char	**splitted;
 
-	if(syntax_error_check(str))
+	if (syntax_error_check(str))
 		return ;
 	splitted = first_step(str);
 	(*korn)->cmd_count = line_count(splitted);

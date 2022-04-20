@@ -6,7 +6,7 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:49:28 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/19 20:07:32 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/19 23:46:29 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,6 @@ char	*show_prompt(t_korn *korn)
 		}
 		parse(line, &korn);
 		processor(korn);
-		printf("THIS IS IT === %s\n", korn->cmd[0].doc->delimiters[0]);
-		printf("THIS IS IT2 === %s\n", korn->cmd[0].infile[0]);
 		free(line);
 	}
 	return (line);

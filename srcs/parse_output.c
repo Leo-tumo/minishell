@@ -6,7 +6,7 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 18:15:33 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/19 20:27:43 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/20 00:38:50 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*double_output(char *str, int *i)
 	return (name);
 }
 
-int parse_output(char *str, int i, t_cmd *c)
+int	parse_output(char *str, int i, t_cmd *c)
 {
 	int		k;
 	char	*filename;
