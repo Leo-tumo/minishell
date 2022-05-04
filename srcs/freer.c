@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   freer.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/15 14:58:54 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/18 20:53:21 by letumany         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
@@ -19,7 +8,8 @@ void	free2(char **s)
 	i = 0;
 	while (s[i])
 	{
-		free(s[i]);
+		if (s[i])
+			free(s[i]);
 		++i;
 	}
 }
@@ -77,8 +67,6 @@ void	delete_env(t_env **head)
 */
 void	free_root(t_korn *korn, int kill)
 {
-	if (korn->delimiters[0])
-		free2(korn->delimiters);
 	if (korn->cmd)
 		free_cmds(korn);
 	if (korn->child)

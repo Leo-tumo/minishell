@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/15 14:48:49 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/18 21:13:39 by letumany         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -46,6 +35,15 @@
 # define COMMAND_NOT_FOUND 	127 // command not found
 # define SIG_PLUS			128 // if signaled exit status = 128 + sig
 
+typedef struct s_heredoc
+{
+	int		d_q; // if final delimiter is quoted = 1 else 0
+	int		heredoc_count; // in case that there are many Speciall for 2🍕s
+	char	**delimiters; // heredoc delimiters' gang ✵ - should replace t_doc linked list;
+	int		d_i; //for delimeters malloc
+	int		status; //fake or not
+}				t_doc;
+
 /*  
 ** Struct for command
 */
@@ -64,10 +62,11 @@ typedef struct s_cmd
 	int			input_index;
 	char		**outfile;
 	int			outfile_count; //?malloci hamar
-	int			output_flag; //O_TRUNC kam O_APPEND kaxvac outputi tipic FIXME: output flagy piti amen commandi hamar lini
-	int			output_index; //for the malloc in 2d output array
+	int			output_flag;
+	int			output_index;
 	int			arg_index;
 	char		*quote_flags;
+	t_doc		*doc;
 }			t_cmd;
 
 /*  
@@ -75,6 +74,7 @@ typedef struct s_cmd
 */
 typedef struct s_sig
 {
+	int		line; // counts lines for heredoc error message
 	int		exit_status;
 }		t_sig;
 
@@ -96,15 +96,10 @@ typedef struct s_env
 */
 typedef struct s_korn
 {
-	int		line; // counts lines for heredoc error message
-	int		d_q; // if final delimiter is quoted = 1 else 0
-	int		heredoc_count; // in case that there are many Speciall for 2🍕s
-	char	**delimiters; // heredoc delimiters' gang ✵ - should replace t_doc linked list;
-	int		receiver; // fd of receiver
-	t_env	*env_head;	// head of env variables
-	int		cmd_count; // count of commands
-	t_cmd	*cmd; // commands themself
-	pid_t	*child; // pid array for processes
+	t_env	*env_head;
+	int		cmd_count;
+	t_cmd	*cmd;
+	pid_t	*child;
 }			t_korn;
 
 /* 
@@ -117,7 +112,7 @@ void		restore_prompt(int sig);
 void		data_init(t_korn **korn);
 char		*show_prompt(t_korn *korn);
 void		print_welcome_message(void);
-void		here_doc(t_korn *korn);
+void		here_doc(t_korn *korn, t_cmd *cmd);
 
 /*  
 ** Execution functions
@@ -128,7 +123,9 @@ void		pi_open(t_korn *korn);
 void		close_one(t_cmd *cmd);
 int			is_builtin(t_cmd cmd);
 void		fd_closer(t_korn korn);
+void		free_cmds(t_korn *korn);
 void		incubator(t_korn *korn);
+void		processor(t_korn *korn);
 char		**ll_to_matrix(t_env *env);
 t_cmd		*find_child(t_korn *korn, pid_t pid);
 void		close_them(t_korn *korn, int index);
@@ -185,30 +182,24 @@ void		heredoc(void);
 int			ft_ispace(int c);
 void		print_struct(t_cmd c);
 char		**first_step(char *str);
+t_cmd		command_init(char *str);
 char		**first_step(char *str);
+void		init(t_cmd *c, char *str);
 int			get_output_flag(char *str);
 int			line_count(char **splitted);
 void		fill(char **to, char *from);
+int			len_4_cmd(char *str, int i);
+int			syntax_error_check(char *str);
 void		parse(char *str, t_korn **korn);
 char		*get_filename(char *str, int *i);
 char		*double_output(char *str, int *i);
 char		**output_redirs(char *s, int *count);
-t_cmd		command_init(char *str, t_korn *korn);
 char		*get_quoted_filename(char *str, int *i);
-void		init(t_cmd *c, char *str, t_korn *korn);
-int			parse_output(char *str, int i, t_cmd *c);
-t_cmd		*t_cmd_init(char **splitted, t_korn **korn);
-char		**input_redirs(char *s, int *count, t_korn *korn);
 int			parse_input(char *str, int i, t_cmd *c);
-
-
+int			parse_output(char *str, int i, t_cmd *c);
+int			parse_command(char *str, int i, t_cmd *cmd);
+t_cmd		*t_cmd_init(char **splitted, t_korn **korn);
+char		**input_redirs(char *s, int *count, t_cmd *cmd);
+int			treat_quote(char *str, int i, int *j, t_cmd *cmd);
 
 #endif
-
-// ◦ echo 	✅✅✅
-// ◦ cd		✅✅✅
-// ◦ pwd 	✅✅✅
-// ◦ export ✅✅✅
-// ◦ unset 	✅✅✅
-// ◦ env  	✅✅✅
-// ◦ exit 	✅✅✅

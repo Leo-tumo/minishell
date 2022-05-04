@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 14:56:02 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/15 14:56:03 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/20 00:56:26 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	env_(t_korn *korn, t_cmd *cmd)
 		{
 			ft_putstr_fd(tmp->name, cmd->output);
 			write(cmd->output, "=", 1);
-			ft_putendl_fd(tmp->name, cmd->output);
+			ft_putendl_fd(tmp->data, cmd->output);
 		}
 		tmp = tmp->next;
 	}

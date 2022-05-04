@@ -6,7 +6,7 @@
 /*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 15:06:07 by letumany          #+#    #+#             */
-/*   Updated: 2022/04/16 13:39:11 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/19 18:39:32 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	back_slash(int sig)
 void	sig_heredoc(void)
 {
 	g_sig.exit_status = 131;
-	signal(SIGINT, doc_ctrl_c);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_IGN);
 }
 

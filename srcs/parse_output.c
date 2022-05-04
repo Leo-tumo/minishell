@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_output.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/19 18:15:33 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/20 00:38:50 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 char	*get_quoted_filename(char *str, int *i)
@@ -70,7 +82,7 @@ char	*double_output(char *str, int *i)
 	return (name);
 }
 
-int parse_output(char *str, int i, t_cmd *c)
+int	parse_output(char *str, int i, t_cmd *c)
 {
 	int		k;
 	char	*filename;
