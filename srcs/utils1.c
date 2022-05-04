@@ -3,6 +3,7 @@
 void	print_struct(t_cmd c)
 {
 	int	j;
+
 	j = -1;
 	printf("=============INFILES=============\n");
 	while (++j < c.infile_count)
