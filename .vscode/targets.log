@@ -8,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This program built for i386-apple-darwin11.3.0
  
 
-# Make data base, printed on Wed May  4 16:58:10 2022
+# Make data base, printed on Wed May  4 17:02:54 2022
 
 # Variables
 
@@ -43,9 +43,10 @@ MAKEFILE_LIST :=  Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
+ 
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/5h/_d24rntd18v36q5p5tvf5cg00000gn/T/vscode-ipc-1c2b6cbe-d670-4bfa-8c80-5a739b35cbb9.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/5h/_d24rntd18v36q5p5tvf5cg00000gn/T/vscode-ipc-160289b8-b25b-4de2-8d7f-7ae49cda38a0.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -91,7 +92,7 @@ VSCODE_CODE_CACHE_PATH = /Users/leo/Library/Application Support/Code/CachedData/
 # environment
 LOGNAME = leo
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 ZSH = /Users/leo/.oh-my-zsh
 # environment
@@ -216,6 +217,7 @@ compiled_srcs:
 # automatic
 # * := 
 # automatic
+ 
 # + := 
 # automatic
 # | := 
@@ -317,7 +319,6 @@ compiled_srcs/art.o: | compiled_srcs
 Makefile:
 #  Implicit rule search has been done.
 #  Last modified 2022-05-04 16:21:56
- 
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -455,6 +456,7 @@ compiled_srcs/utils.o: | compiled_srcs
 compiled_srcs/export_utils.o: | compiled_srcs
 #  Implicit rule search has not been done.
 #  Modification time never checked.
+ 
 #  File has not been updated.
 
 compiled_srcs/main.o: srcs/main.c | compiled_srcs
@@ -509,6 +511,6 @@ compiled_srcs/ft_split_our.o: | compiled_srcs
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Wed May  4 16:58:10 2022
+# Finished Make data base on Wed May  4 17:02:54 2022
 
  

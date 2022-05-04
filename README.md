@@ -30,14 +30,15 @@ The general idea for this shell is reading a string of commands in a prompt usin
 
 We were asked to implement some basic builtins with the help of some functions, here is a brief overview of them:
 
-|  Builtin  |                            Description                            | Options | Parameters |                       Helpful Functions                       |
-| :--------: | :----------------------------------------------------------------: | :-----: | :--------: | :------------------------------------------------------------: |
-|  ``echo``  |   Prints arguments separated with a space followed by a new line   | ``-n`` |    ✔️    |    [write](https://man7.org/linux/man-pages/man2/write.2.html)    |
-|   ``cd``   | Changes current working directory, updating ``PWD`` and ``OLDPWD`` |   ❌   |    ✔️    |    [chdir](https://man7.org/linux/man-pages/man2/chdir.2.html)    |
-|  ``pwd``  |                  Prints current working directory                  |   ❌   |     ❌     | [getcwd](https://www.man7.org/linux/man-pages/man3/getcwd.3.html) |
-|  ``env``  |                         Prints environment                         |   ❌   |     ❌     |    [write](https://man7.org/linux/man-pages/man2/write.2.html)    |
-| ``export`` |               Adds/replaces variable in environment               |   ❌   |    ✔️    |                               ❌                               |
-| ``unset`` |                 Removes variable from environment                 |   ❌   |    ✔️    |                               ❌                               |
+
+|  Builtin  |                            Description                            | Options | Parameters |                         Helpful Functions                         |
+| :----------: | :-----------------------------------------------------------------: | :-------: | :----------: | :-----------------------------------------------------------------: |
+|  ``echo``  |  Prints arguments separated with a space followed by a new line  | ``-n`` |    ✔️    |    [write](https://man7.org/linux/man-pages/man2/write.2.html)    |
+|   ``cd``   | Changes current working directory, updating``PWD`` and ``OLDPWD`` |        |    ✔️    |    [chdir](https://man7.org/linux/man-pages/man2/chdir.2.html)    |
+|  ``pwd``  |                 Prints current working directory                 |   ❌   |     ❌     | [getcwd](https://www.man7.org/linux/man-pages/man3/getcwd.3.html) |
+|  ``env``  |                        Prints environment                        |   ❌   |     ❌     |    [write](https://man7.org/linux/man-pages/man2/write.2.html)    |
+| ``export`` |               Adds/replaces variable in environment               |   ❌   |    ✔️    |                                ❌                                |
+| ``unset`` |                 Removes variable from environment                 |   ❌   |    ✔️    |                                ❌                                |
 
 ### Basic Usage
 

@@ -7,7 +7,6 @@ tput setaf 190 && printf "\033[2K\rCompiling srcs/pwd.c"
 gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/pwd.c -o compiled_srcs/pwd.o
 tput setaf 190 && printf "\033[2K\rCompiling srcs/cd.c"
 gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/cd.c -o compiled_srcs/cd.o
- 
 tput setaf 190 && printf "\033[2K\rCompiling srcs/env.c"
 gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/env.c -o compiled_srcs/env.o
 tput setaf 190 && printf "\033[2K\rCompiling srcs/export_utils.c"
@@ -16,7 +15,6 @@ tput setaf 190 && printf "\033[2K\rCompiling srcs/export.c"
 gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/export.c -o compiled_srcs/export.o
 tput setaf 190 && printf "\033[2K\rCompiling srcs/echo.c"
 gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/echo.c -o compiled_srcs/echo.o
- 
 tput setaf 190 && printf "\033[2K\rCompiling srcs/exit.c"
 gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/exit.c -o compiled_srcs/exit.o
 tput setaf 190 && printf "\033[2K\rCompiling srcs/var_keeper.c"
@@ -37,7 +35,6 @@ tput setaf 190 && printf "\033[2K\rCompiling srcs/parse_input.c"
 gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/parse_input.c -o compiled_srcs/parse_input.o
 tput setaf 190 && printf "\033[2K\rCompiling srcs/init.c"
 gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/init.c -o compiled_srcs/init.o
- 
 tput setaf 190 && printf "\033[2K\rCompiling srcs/pipe.c"
 gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/pipe.c -o compiled_srcs/pipe.o
 tput setaf 190 && printf "\033[2K\rCompiling srcs/exec_gtr.c"
