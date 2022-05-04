@@ -1,6 +1,6 @@
 # minishell
 
-## As beautiful as shell with `@aa`
+## As beautiful as shell with
 
 ![letumany's 42 minishell Score](https://badge42.vercel.app/api/v2/cl1l8hert000609l6rjl6rx6o/project/2509597)
 
@@ -46,6 +46,6 @@ We were asked to implement some basic builtins with the help of some functions, 
 
 ### Credits
 
-`Avo Midoyan` – `lexer` `parser`
+`Avo Midoyan` – ``lexer`` ``parser``
 
-`Leo Tumanyan` – `expander` `executor`
+`Leo Tumanyan` – ``expander`` ``executor``
