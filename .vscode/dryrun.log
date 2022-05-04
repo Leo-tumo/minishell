@@ -1,0 +1,61 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/leo/Desktop/MERGE'
+mkdir compiled_srcs
+tput setaf 190 && printf "\033[2K\rCompiling srcs/main.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/main.c -o compiled_srcs/main.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/pwd.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/pwd.c -o compiled_srcs/pwd.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/cd.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/cd.c -o compiled_srcs/cd.o
+ 
+tput setaf 190 && printf "\033[2K\rCompiling srcs/env.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/env.c -o compiled_srcs/env.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/export_utils.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/export_utils.c -o compiled_srcs/export_utils.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/export.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/export.c -o compiled_srcs/export.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/echo.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/echo.c -o compiled_srcs/echo.o
+ 
+tput setaf 190 && printf "\033[2K\rCompiling srcs/exit.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/exit.c -o compiled_srcs/exit.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/var_keeper.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/var_keeper.c -o compiled_srcs/var_keeper.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/heredoc.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/heredoc.c -o compiled_srcs/heredoc.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/signal.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/signal.c -o compiled_srcs/signal.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/art.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/art.c -o compiled_srcs/art.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/executor.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/executor.c -o compiled_srcs/executor.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/ft_split_our.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/ft_split_our.c -o compiled_srcs/ft_split_our.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/parse_output.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/parse_output.c -o compiled_srcs/parse_output.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/parse_input.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/parse_input.c -o compiled_srcs/parse_input.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/init.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/init.c -o compiled_srcs/init.o
+ 
+tput setaf 190 && printf "\033[2K\rCompiling srcs/pipe.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/pipe.c -o compiled_srcs/pipe.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/exec_gtr.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/exec_gtr.c -o compiled_srcs/exec_gtr.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/freer.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/freer.c -o compiled_srcs/freer.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/utils.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/utils.c -o compiled_srcs/utils.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/utils1.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/utils1.c -o compiled_srcs/utils1.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/utils2.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/utils2.c -o compiled_srcs/utils2.o
+tput setaf 190 && printf "\033[2K\rCompiling srcs/utils3.c"
+gcc -Wall -Wextra -Werror  -I /usr/local/opt/readline/include -I ./includes/ -c srcs/utils3.c -o compiled_srcs/utils3.o
+make -C libs/libft/
+tput setaf 2 && printf "\033[2K\r.o compiled.\n"
+gcc -Wall -Wextra -Werror   -L libs/libft/ -lft -I ./includes/ -lncurses -L /usr/local/opt/readline/lib  -lreadline ./compiled_srcs/main.o ./compiled_srcs/pwd.o ./compiled_srcs/cd.o ./compiled_srcs/env.o ./compiled_srcs/export_utils.o ./compiled_srcs/export.o ./compiled_srcs/echo.o ./compiled_srcs/exit.o ./compiled_srcs/var_keeper.o ./compiled_srcs/heredoc.o ./compiled_srcs/signal.o ./compiled_srcs/art.o ./compiled_srcs/executor.o ./compiled_srcs/ft_split_our.o ./compiled_srcs/parse_output.o ./compiled_srcs/parse_input.o ./compiled_srcs/init.o ./compiled_srcs/pipe.o ./compiled_srcs/exec_gtr.o ./compiled_srcs/freer.o ./compiled_srcs/utils.o ./compiled_srcs/utils1.o ./compiled_srcs/utils2.o ./compiled_srcs/utils3.o -o minishell
+tput setaf 2 && printf "minishell created.\n"
+tput setaf 255
+make: Leaving directory `/Users/leo/Desktop/MERGE'
+ 

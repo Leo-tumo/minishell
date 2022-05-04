@@ -1,0 +1,514 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+ 
+
+# Make data base, printed on Wed May  4 16:58:10 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# makefile (from `Makefile', line 10)
+SRC = main.c pwd.c cd.c env.c export_utils.c export.c echo.c exit.c var_keeper.c heredoc.c signal.c art.c executor.c ft_split_our.c parse_output.c parse_input.c init.c pipe.c exec_gtr.c freer.c utils.c utils1.c utils2.c utils3.c
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# makefile (from `Makefile', line 41)
+CPPFLAGS = -I /usr/local/opt/readline/include
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Users/leo/Desktop/MERGE
+# makefile
+SHELL = /bin/sh
+# makefile (from `Makefile', line 3)
+RM = rm -rf
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/5h/_d24rntd18v36q5p5tvf5cg00000gn/T/vscode-ipc-1c2b6cbe-d670-4bfa-8c80-5a739b35cbb9.sock
+# environment
+VSCODE_CWD = /
+# environment
+PATH = /Library/Frameworks/Python.framework/Versions/3.10/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+# makefile (from `Makefile', line 9)
+DIR_OBJS = ./compiled_srcs/
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# makefile (from `Makefile', line 22)
+NORMINETTE := /usr/local/bin/norminette
+# environment
+VSCODE_LOG_STACK = false
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# makefile (from `Makefile', line 40)
+LDFLAGS = -L /usr/local/opt/readline/lib 
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# makefile (from `Makefile', line 6)
+LIBFT_DIR = libs/libft/
+# makefile (from `Makefile', line 2)
+CC_FLAGS = -Wall -Wextra -Werror 
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.JY8hPMOC8l/Listeners
+# automatic
+%F = $(notdir $%)
+# environment
+VSCODE_PIPE_LOGGING = true
+# makefile (from `Makefile', line 30)
+OBJS = $(SRCS:%.c=$(DIR_OBJS)%.o)
+# environment
+PWD = /Users/leo/Desktop/MERGE
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/leo
+# default
+MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/leo/Library/Application Support/Code/CachedData/dfd34e8260c270da74b5c2d86d61aee4b6d56977
+# environment
+LOGNAME = leo
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+ZSH = /Users/leo/.oh-my-zsh
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# makefile (from `Makefile', line 4)
+DIR_HEADERS = ./includes/
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# makefile (from `Makefile', line 29)
+SRCS = $(SRC)
+# environment
+SHLVL = 1
+# makefile (from `Makefile', line 7)
+LIBFT = $(LIBFT_DIR)libft.a
+# makefile (from `Makefile', line 1)
+CC = gcc
+# makefile (from `Makefile', line 8)
+DIR_SRCS = ./srcs/
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = leo
+# makefile
+.DEFAULT_GOAL := all
+# makefile (from `Makefile', line 31)
+NAME = minishell
+# environment
+LESS = -R
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Applications/Xcode.app/Contents/Developer/usr/bin/make
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/5h/_d24rntd18v36q5p5tvf5cg00000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/leo/Library/Application Support/Code/1.66.2-main.sock
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.36850323.36850329
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x0
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+PAGER = less
+# environment
+LC_ALL = C
+# makefile (from `Makefile', line 5)
+HEADER = includes/minishell.h
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# default
+.INCLUDE_DIRS = /usr/local/include
+# environment
+MAKELEVEL := 0
+# environment
+LANG = C
+# environment
+VSCODE_PID = 64884
+# variable set hash-table stats:
+# Load=82/1024=8%, Rehash=0, Collisions=7/130=5%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777225, inode 39307464): 10 files, no impossibilities.
+# ./srcs (device 16777225, inode 39307788): 21 files, no impossibilities so far.
+# srcs (device 16777225, inode 39307788): 21 files, no impossibilities so far.
+
+# 52 files, no impossibilities in 3 directories.
+
+# Implicit Rules
+
+compiled_srcs/%.o: ./srcs/%.c
+#  commands to execute (from `Makefile', line 50):
+	@tput setaf 190 && printf "\033[2K\rCompiling $<"
+	@$(CC) $(CC_FLAGS) $(CPPFLAGS) -I $(DIR_HEADERS) -c $< -o $@
+	
+
+# 1 implicit rules, 0 (0.0%) terminal.
+
+# Files
+
+compiled_srcs:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `'
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := compiled_srcs
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := 
+# automatic
+# | := 
+# automatic
+# < := 
+# automatic
+# ^ := 
+# automatic
+# ? := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/11=9%
+#  commands to execute (from `Makefile', line 64):
+	@mkdir $@
+	
+
+compiled_srcs/echo.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/utils3.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/var_keeper.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/export.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/parse_input.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+all: minishell
+#  Phony target (prerequisite of .PHONY).
+#  Command-line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/2=0%
+
+.PHONY: all clean fclean re me debug norm push
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/heredoc.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/init.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/exec_gtr.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/signal.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+push:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@git add .
+	@git commit -m "$m"
+	@git push
+	
+
+compiled_srcs/art.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-04 16:21:56
+ 
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+srcs/main.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-04 16:21:56
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+debug: all
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+# makefile (from `Makefile', line 46)
+# CC_FLAGS += -g3 -fsanitize=address
+# variable set hash-table stats:
+# Load=1/32=3%, Rehash=0, Collisions=0/2=0%
+
+compiled_srcs/env.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/exit.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/utils1.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+minishell: compiled_srcs/main.o compiled_srcs/pwd.o compiled_srcs/cd.o compiled_srcs/env.o compiled_srcs/export_utils.o compiled_srcs/export.o compiled_srcs/echo.o compiled_srcs/exit.o compiled_srcs/var_keeper.o compiled_srcs/heredoc.o compiled_srcs/signal.o compiled_srcs/art.o compiled_srcs/executor.o compiled_srcs/ft_split_our.o compiled_srcs/parse_output.o compiled_srcs/parse_input.o compiled_srcs/init.o compiled_srcs/pipe.o compiled_srcs/exec_gtr.o compiled_srcs/freer.o compiled_srcs/utils.o compiled_srcs/utils1.o compiled_srcs/utils2.o compiled_srcs/utils3.o includes/minishell.h
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/2=0%
+#  commands to execute (from `Makefile', line 54):
+	@make -C $(LIBFT_DIR)
+	@tput setaf 2 && printf "\033[2K\r.o compiled.\n"
+	@$(CC) $(CC_FLAGS)  -L $(LIBFT_DIR) -lft -I $(DIR_HEADERS) -lncurses $(LDFLAGS) -lreadline $(OBJS) -o $(NAME)
+	@tput setaf 2 && printf "$(NAME) created.\n"
+	@tput setaf 255
+	
+
+compiled_srcs/freer.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+fclean: clean
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 73):
+	@$(RM) $(NAME)
+	@make fclean -C $(LIBFT_DIR)
+	@tput setaf 928 && printf ""$(NAME)" deleted.\n"
+	@tput setaf 255
+	
+
+me: all
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 81):
+	@./minishell
+	
+
+norm:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 84):
+	@$(NORMINETTE) $(DIR_SRCS)
+	@$(NORMINETTE) $(DIR_HEADERS)
+	
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/utils2.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/executor.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+re: fclean all
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+compiled_srcs/pipe.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 67):
+	@$(RM) $(DIR_OBJS)
+	@make clean -C $(LIBFT_DIR)
+	@tput setaf 928 && printf ".o deleted.\n"
+	@tput setaf 255
+	
+
+compiled_srcs/utils.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/export_utils.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/main.o: srcs/main.c | compiled_srcs
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `main'
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/2=0%
+#  commands to execute (from `Makefile', line 50):
+	@tput setaf 190 && printf "\033[2K\rCompiling $<"
+	@$(CC) $(CC_FLAGS) $(CPPFLAGS) -I $(DIR_HEADERS) -c $< -o $@
+	
+
+compiled_srcs/parse_output.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+includes/minishell.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/pwd.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/cd.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+compiled_srcs/ft_split_our.o: | compiled_srcs
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=40/1024=4%, Rehash=0, Collisions=5/122=4%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Finished Make data base on Wed May  4 16:58:10 2022
+
+ 
