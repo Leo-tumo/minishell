@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:56:02 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/20 00:56:26 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
 ** Prints env vars
 */
-int	env(t_korn *korn)
+int	env_(t_korn *korn, t_cmd *cmd)
 {
 	t_env	*tmp;
 
-	if (korn->argc > 1)
+	if (cmd->argc > 1)
 	{
-		printf("env: Unsupported arguments to env\n");
+		ft_putendl_fd("env: Unsupported arguments to env", 2);
 		return (1);
 	}
 	tmp = korn->env_head;
@@ -17,10 +29,9 @@ int	env(t_korn *korn)
 	{
 		if (tmp->data)
 		{
-			ft_putstr_fd(tmp->name, korn->out);
-			write(korn->out, "=", 1);
-			ft_putstr_fd(tmp->name, korn->out);
-			write(korn->out, "\n", 1);
+			ft_putstr_fd(tmp->name, cmd->output);
+			write(cmd->output, "=", 1);
+			ft_putendl_fd(tmp->data, cmd->output);
 		}
 		tmp = tmp->next;
 	}
@@ -36,31 +47,39 @@ int	unset_name(char *name)
 		return (TRUE);
 	else
 	{
-		printf("-bash: unset: `%s': not a valid identifier\n", name);
+		ft_putstr_fd("bash: unset: `", 2);
+		ft_putstr_fd(name, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
 		return (FALSE);
 	}
 }
 
-int	env_norme(char *name, t_korn *korn)
+/*  
+** 		--Finds var in linked list and deletes it
+**		used double pointer, in case of the needed
+**		var is also the head of struct
+*/
+void	delete_var(t_env **head, char *key)
 {
-	t_env *tmp;
+	t_env	*temp;
+	t_env	*prev;
 
-	tmp = korn->env_head;
-	while (tmp)
+	temp = *head;
+	if (temp != NULL && (ft_strcmp(temp->name, key) == 0))
 	{
-		if (!unset_name(name))
-			return (1);
-		if (ft_strlen(tmp->name) == ft_strlen(korn->argv[1])
-			&& !ft_strncmp(tmp->name, name, ft_strlen(name)))
-		{
-				tmp->is_exported = 0;
-			ft_bzero(tmp->name, ft_strlen(tmp->name));
-			ft_bzero(tmp->data, ft_strlen(tmp->data));
-			break ;
-		}
-		tmp = tmp->next;
+		*head = temp->next;
+		free(temp);
+		return ;
 	}
-	return (0);
+	while (temp != NULL && (ft_strcmp(temp->name, key) != 0))
+	{
+		prev = temp;
+		temp = temp->next;
+	}
+	if (temp == NULL)
+		return ;
+	prev->next = temp->next;
+	free(temp);
 }
 
 /*  
@@ -69,20 +88,54 @@ int	env_norme(char *name, t_korn *korn)
 ** if arg name is wrong => types error message, returns 1 and goes on
 ** else unsets vars, and returns 0
 */
-int	unset(t_korn *korn)
+int	unset_(t_korn *korn, t_cmd *cmd)
 {
-	t_env	*tmp;
 	int		i;
-	int		ret;
 
-	i = 0;
-	ret = 0;
-	tmp = korn->env_head;
-	while (i < korn->argc)
+	if (cmd->argv[1][0] == '-')
 	{
-		ret += env_norme(korn->argv[i], korn);
+		ft_putstr_fd("bash: unset: ", 2);
+		ft_putstr_fd(cmd->argv[1], 2);
+		ft_putendl_fd(": invalid option", 2);
+		return (2);
+	}
+	i = 1;
+	while (i < cmd->argc)
+	{
+		delete_var(&korn->env_head, cmd->argv[i]);
 		++i;
 	}
-	ft_putchar_fd('\n', korn->out);
-	return (ret == 0);
+	ft_putchar_fd('\n', cmd->output);
+	return (0);
+}
+
+/*  
+** increments SHLVL anytime minishell is called
+*/
+void	shlvl_(t_env **env)
+{
+	char	*shlvl_value;
+	int		shlvl;
+	t_env	*tmp;
+	char	**s;
+
+	tmp = *env;
+	shlvl_value = getenv("SHLVL");
+	if (ft_strcmp(shlvl_value, "") == 0)
+		return ;
+	shlvl = (int)ft_atoi(shlvl_value) + 1;
+	while (tmp && tmp->next)
+	{
+		if (ft_strncmp("SHLVL", tmp->name, 5) == 0)
+		{
+			tmp->data = ft_itoa(shlvl);
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	s = malloc(3 * sizeof(char *));
+	s[0] = "export";
+	s[1] = "PS1=\001\033[1;35m\002Can I get your number? \001\033[0m\002";
+	s[2] = NULL;
+	export_v(s, *env);
 }

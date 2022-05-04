@@ -1,47 +1,89 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 15:00:46 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/19 18:13:01 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
-** I hate libft's strncmp -> that 'n' is disgusting
+** 		 if string contains any '$' sign
+**		returns -TRUE- else returns -FALSE-
 */
-int		ft_strcmp(const char *s1, const char *s2)
+int	check_dollar_sign(char	*str)
 {
-	unsigned int	i;
-
-	i = 0;
-	while (s1[i])
+	while (*str)
 	{
-		if (s1[i] != s2[i])
-		{
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		}
-		i++;
+		if (*str == '$')
+			return (TRUE);
+		str++;
 	}
-	if (s2[i] == '\0')
-		return (0);
-	else
-		return (-s2[i]);
+	return (FALSE);
+}
+
+/*  
+** 	Replaces var name in heredoc with its value
+*/
+char	*replace_var(char *str, t_env *env)
+{
+	char	*ret;
+	char	*var_name;
+
+	ret = NULL;
+	while (*str)
+	{
+		if (*str == '$')
+		{
+			var_name = NULL;
+			str++;
+			if (ft_ispace(*str) || !*str)
+				char_join('$', &ret);
+			else if (*str == '?')
+				str += char_join('0', &ret);
+			else if (*str == '_' || ft_isalpha(*str))
+				ret = repl_dollar(ret, &var_name, &str, env);
+			else
+				++str;
+		}
+		else
+		{
+			str += char_join(*str, &ret);
+		}
+	}
+	return (ret);
 }
 
 /*  
 ** Actual heredoc is here, inside child process
 */
-void	heredoc_child(t_korn *korn, int fd, t_doc *doc)
+void	heredoc_child(t_korn *korn, int fd, char *delimiter, t_cmd *cmd)
 {
 	char	*buf;
 
 	buf = readline("> ");
 	while (buf)
 	{
-		korn->line++;
-		if (!ft_strcmp(buf, doc->delimiter))
-			exit(0);
+		g_sig.line++;
+		if (cmd->doc->d_q && check_dollar_sign(buf))
+			buf = replace_var(buf, korn->env_head);
 		ft_putendl_fd(buf, fd);
 		free(buf);
 		buf = readline("> ");
+		if (!ft_strcmp(buf, delimiter))
+		{
+			free(buf);
+			exit(0);
+		}
 		if (!buf)
 		{
-			printf("bash: warning: here-document at line %d delimited ", korn->line);
-			printf("by end-of-file (wanted `%s')\n", doc->delimiter);
+			printf("bash: warning: here-document at line %d ", g_sig.line);
+			printf("delimited by end-of-file (wanted `%s')\n", delimiter);
 			exit(0);
 		}
 	}
@@ -50,24 +92,22 @@ void	heredoc_child(t_korn *korn, int fd, t_doc *doc)
 /*  
 ** This is fake heredoc, in case of multiple heredocs 2🍕
 */
-void	fake_heredoc(t_korn *korn, t_doc *doc)
+void	fake_heredoc(t_cmd *cmd, char *delimiter)
 {
 	char	*buf;
 
-	korn->heredoc_count--;
+	cmd->doc->heredoc_count--;
 	buf = readline("> ");
-	while (buf)
+	while (ft_strcmp(buf, delimiter))
 	{
-		korn->line++;
-		if (!ft_strcmp(buf, doc->delimiter))
-			return;
 		free(buf);
 		buf = readline("> ");
+		g_sig.line++;
 		if (!buf)
 		{
-			printf("bash: warning: here-document at line %d delimited ", korn->line);
-			printf("by end-of-file (wanted `%s')\n", doc->delimiter);
-			return;
+			printf("bash: warning: here-document at line %d ", g_sig.line);
+			printf("delimited by end-of-file (wanted `%s')\n", delimiter);
+			return ;
 		}
 	}
 }
@@ -76,42 +116,28 @@ void	fake_heredoc(t_korn *korn, t_doc *doc)
 ** This function allows us to get heredoc's output to STDIN
 ** if there are multiple heredocs, it fake them except the last one
 */
-void	here_doc(t_korn *korn, t_doc *doc)
+void	here_doc(t_korn *korn, t_cmd *cmd)
 {
 	int		fd[2];
 	pid_t	pid;
+	int		i;
 
+	i = 0;
 	pipe(fd);
 	pid = fork();
 	if (pid == 0)
 	{
 		run_signals(4);
-		while (korn->heredoc_count > 1)
-		{
-			fake_heredoc(korn, doc);
-			doc = doc->next;
-		}
-		heredoc_child(korn, fd[1], doc);
+		while (i + 1 < cmd->doc->heredoc_count)
+			fake_heredoc(cmd, cmd->doc->delimiters[i++]);
+		heredoc_child(korn, fd[1], cmd->doc->delimiters[i], cmd);
 		close(fd[0]);
 	}
 	else
 	{
 		run_signals(1);
+		cmd->input = fd[0];
 		waitpid(pid, &g_sig.exit_status, WEXITSTATUS(g_sig.exit_status));
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
+		close_2(fd);
 	}
 }
-
-// int	main() // TODO: Just for test - I think it works!needless to say that I'm not sure about it.
-// {
-// 	t_doc	*doc;
-// 	t_korn	*korn = malloc(sizeof(t_korn));
-
-// 	korn->line = 0;
-// 	doc = malloc(sizeof(t_doc));
-// 	doc->delimiter = malloc(sizeof(char *));
-// 	doc->delimiter = "eof";
-// 	here_doc(korn, doc);
-// 	execl("/bin/cat", "cat", NULL);
-// }

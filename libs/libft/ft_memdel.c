@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_memdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amidoyan <amidoyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/28 20:10:09 by letumany          #+#    #+#             */
-/*   Updated: 2022/03/02 17:49:26 by amidoyan         ###   ########.fr       */
+/*   Created: 2022/04/05 00:04:39 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/05 00:07:28 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_ispace(char c)
+void	ft_memdel(void **ptr)
 {
-	if (c == '\n' || c == '\t' || c == '\v' || c == '\r' || c == '\f'
-		|| c == ' ')
-		return (1);
-	return (0);
+	if (ptr != NULL)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
 }

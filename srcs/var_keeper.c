@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   var_keeper.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 15:07:15 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 15:07:16 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
@@ -38,7 +50,6 @@ t_env	*env_keeper(char **env)
 		temp->name = s[0];
 		temp->data = s[1];
 		temp->next = NULL;
-		temp->is_exported = 1;
 		free (s);
 		if (!head)
 			head = temp;

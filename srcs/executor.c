@@ -1,126 +1,153 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:56:19 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/19 20:00:17 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
-** Executes binary file
-** Note: execve works this way
-** execve("/bin/cat", argv, NULL);
-** where argv should be =>
-** "cat", "-e", "file1", "file2" 
+** 		Executes binary file
+** 		Note: execve works this way
+** 		execve("/bin/cat", argv, NULL);
+** 		where argv should be =>    
+** 		"cat", "-e", "file1", "file2" 
 */
-int	exec_bin(t_cmd *cmd)
+void	exec_bin(t_korn *korn, int i)
 {
-	pid_t		pid;
-	int			err;
+	char	**env;
 
-	pid = fork();
-	if (pid == -1)
-		perror(GREEN"AvôeL"WHITE);
-	if (pid == 0)
+	run_signals(2);
+	close_them(korn, i);
+	if (korn->cmd[i].input != 0)
+		dup2(korn->cmd[i].input, STDIN_FILENO);
+	if (korn->cmd[i].output != 1)
 	{
-		run_signals(2);
-		dup2(cmd->input, STDIN_FILENO);
-		dup2(cmd->output, STDOUT_FILENO);
-		execve(cmd->path, cmd->argv, NULL);
-		close(cmd->input);
-		close(cmd->output);
+		dup2(korn->cmd[i].output, STDOUT_FILENO);
+	}
+	env = ll_to_matrix(korn->env_head);
+	if (!guns_n_roses(korn->cmd[i].name))
+	{
+		pathfinder(&korn->cmd[i], korn);
+		execve(korn->cmd[i].path, korn->cmd[i].argv, env);
 	}
 	else
+		execve(korn->cmd[i].name, korn->cmd[i].argv, env);
+		free(env);
+}
+
+/*  
+** This func executes the --BUILTIN-- commands
+*/
+void	exec_(t_cmd *cmd, t_korn *korn)
+{
+	cmd->id = is_builtin(*cmd);
+	if (cmd->id == 1)
+		cmd->stat = echo_(cmd);
+	if (cmd->id == 2)
+		cmd->stat = cd_(cmd->argv[1], korn->env_head);
+	if (cmd->id == 3)
+		cmd->stat = pwd_(*cmd, korn->env_head);
+	if (cmd->id == 4)
 	{
-		waitpid(pid, &err, WUNTRACED);
-		g_sig.exit_status = WEXITSTATUS(err); //FIXME: wrong status if interrupted by signal
+		if (cmd->argc == 1)
+			cmd->stat = export_p(cmd->output, korn->env_head);
+		else
+			cmd->stat = export_v(cmd->argv, korn->env_head);
 	}
-	return (WEXITSTATUS(err));
-}
-
-/*  
-** This func check if the given command is builtin or not
-*/
-int		is_builtin(t_cmd *cmd)
-{
-	if (ft_strncmp(cmd->name, "echo", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd->name, "cd", 2) == 0)
-		return (2);
-	if (ft_strncmp(cmd->name, "pwd", 3) == 0)
-		return (3);
-	if (ft_strncmp(cmd->name, "export", 6) == 0)
-		return (4);
-	if (ft_strncmp(cmd->name, "unset", 5) == 0)
-		return (5);
-	if (ft_strncmp(cmd->name, "env", 3) == 0)	
-		return (6);
-	if (ft_strncmp(cmd->name, "exit", 4) == 0)
-		return (7);
-	return (0);
-}
-
-
-/*  
-** This func executes the builtin commands
-*/
-int		exec_(t_cmd *cmd, t_korn *korn, int command)
-{
-	if (command == 1)
-		return (ft_echo(cmd));
-	if (command == 2)
-		return (ft_cd(cmd->args, korn->env_head));
-	if (command == 3)
-		return (pwd(korn));
-	if (command == 4)
-		return (export(cmd->output, korn->env_head));
-	if (command == 5)
-		return (unset(korn));
-	if (command == 6)
-		return (env(korn));
-	if (command == 7)
-		return (ft_exit(korn, cmd));
-	return (0);
+	if (cmd->id == 5)
+		cmd->stat = unset_(korn, cmd);
+	if (cmd->id == 6)
+		cmd->stat = env_(korn, cmd);
+	if (cmd->id == 7)
+		cmd->stat = exit_(cmd, korn);
+	if (korn->cmd_count > 1)
+		exit (cmd->stat);
 }
 
 /*
-** Takes the command and decides, if it's 
-** builtin or not - and executes it as
-** needed
+** 		--- Waits for child processes ---
 */
-int	cmd_switch(t_cmd *cmd, t_korn *korn)
+void	waiter(t_korn *korn)
 {
-	int		command;
-	int		ret;
+	int		i;
+	pid_t	pid;
+	int		stat;
+	t_cmd	*finished;
 
-	command = is_builtin(cmd);
-	if (command == 0)
-	{	
-		if (!guns_n_roses(cmd->name))
-			check_bin(cmd, korn);
-		ret = exec_bin(cmd);
+	i = 0;
+	while (i < korn->cmd_count)
+	{
+		pid = wait(&stat);
+		if (pid == korn->child[korn->cmd_count - 1])
+		{
+			if (korn->cmd[korn->cmd_count - 1].id == 0)
+				g_sig.exit_status = WEXITSTATUS(stat);
+		}
+		if (WTERMSIG(stat))
+			g_sig.exit_status = WTERMSIG(stat) + SIG_PLUS;
+		finished = find_child(korn, pid);
+		if (finished)
+			close_one(finished);
+		i++;
 	}
-	else
-		ret = exec_(cmd, korn, command);
-	return ret;
+	fd_closer(*korn);
+	if (korn->cmd[korn->cmd_count - 1].id > 0)
+		g_sig.exit_status = korn->cmd[korn->cmd_count - 1].stat;
+}
+
+/*
+** 	--- Forks processes for childs ---
+*/
+void	incubator(t_korn *korn)
+{
+	int	i;
+
+	i = 0;
+	while (i < korn->cmd_count)
+	{
+		korn->child[i] = fork();
+		if (korn->child[i] == 0)
+		{
+			if (korn->cmd[i].input < 0 || korn->cmd[i].output < 0)
+			exit(1);
+			korn->cmd[i].id = is_builtin(korn->cmd[i]);
+			if (korn->cmd[i].id == 0)
+			{
+				if (!korn->cmd[i].argv)
+					exit(0);
+				exec_bin(korn, i);
+			}
+			else
+				exec_(&korn->cmd[i], korn);
+			exit(1);
+		}
+		i++;
+	}
+	waiter(korn);
 }
 
 /*  
-** Checks if given command can be found in Paths or not
+** ---	The 👑King of Execution ---
+** --- 1. heredoc 
+** --- 2. open pipes if needed
+** --- 3. if only 1 func & builtin => don't fork
+** --- 4. else execute everything ...
 */
-int		check_bin(t_cmd *cmd, t_korn *korn)
+void	processor(t_korn *korn)
 {
-	char	**paths;
-	int		i;
-	char	*final_path;
-
-	i = 0;
-	paths = ft_split(get_value("PATH", korn->env_head), ':');
-	while (paths[i])
-	{
-		final_path = ft_strjoin3(paths[i], "/", cmd->name);
-		if (access(final_path, F_OK) == 0)
-			break ;
-		free(final_path);
-		++i;
-	}
-	if (!final_path)
-		return (127);
+	if (korn->cmd_count == 0)
+		return;
+	if (korn->cmd_count > 1)
+		pi_open(korn);
+	if ((korn->cmd_count == 1) && korn->cmd[0].name && (is_builtin(korn->cmd[0]) > 0))
+		exec_(&korn->cmd[0], korn);
 	else
-		cmd->path = final_path;
-	return (0);
+		incubator(korn);
 }

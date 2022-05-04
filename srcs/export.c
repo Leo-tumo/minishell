@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:57:01 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 15:07:46 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
@@ -13,8 +25,10 @@ int	is_valid_name(char *str)
 	while (*str && *str != '=')
 	{
 		if (!ft_isalnum(*str) && *str != '_')
-			if (!(*str == '+' && *(str +1) && *(str + 1) == '='))
+		{
+			if (!(*str == '+' && *(str + 1) && *(str + 1) == '='))
 				return (FALSE);
+		}
 		str++;
 	}
 	return (TRUE);
@@ -23,7 +37,7 @@ int	is_valid_name(char *str)
 /*  
 ** export without arguments , just printing list
 */
-int	export(int fd, t_env *env)
+int	export_p(int fd, t_env *env)
 {
 	t_env	*tmp;
 
@@ -46,14 +60,14 @@ int	export(int fd, t_env *env)
 /*  
 ** export with arguments
 */
-int	export_(char**s, t_env *head)
+int	export_v(char **s, t_env *head)
 {
 	int		i;
 	int		sign;
 	int		empty_value;
 	int		ret;
 
-	i = 0;
+	i = 1;
 	ret = 0;
 	while (s[i] != NULL)
 	{
@@ -69,13 +83,13 @@ int	export_(char**s, t_env *head)
 		if (check_existance(s[i], head))
 			renew_var(s[i], sign, empty_value, head);
 		else
-			append_var(s[i], sign * 10 + empty_value, head, 1);
+			append_var(s[i], sign * 10 + empty_value, head);
 		++i;
 	}
 	return (ret);
 }
 
-void	append_var(char *str, int flags, t_env *head, int is_exported)
+void	append_var(char *str, int flags, t_env *head)
 {
 	t_env	*tmp;
 	char	**var;
@@ -92,7 +106,6 @@ void	append_var(char *str, int flags, t_env *head, int is_exported)
 		tmp = tmp->next;
 	tmp->next = malloc(sizeof(t_env));
 	tmp->next->next = NULL;
-	tmp->next->is_exported = is_exported;
 	if (sign)
 		key = remove_plus_sign(var[0]);
 	else

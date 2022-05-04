@@ -1,34 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:52:50 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 14:55:52 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
-
-/*  
-** This is the pure echo command
-** it parses everything and executes 
-** 'echo' command with ready arguments
-*/
-int	ft_echo(t_cmd *cmd)
-{
-	int		i;
-	char	*arg;
-	int		flag;
-
-	flag = 0;
-	arg = NULL;
-	i = 0;
-	while (i < cmd->argc)
-	{
-		while (cmd->argv[i][0] == '-' && cmd->argv[i][1] == 'n' && !cmd->argv[i][2])
-		{
-			flag = 1;
-			++i;
-		}
-		if (!arg && cmd->argv[i])
-			arg = cmd->argv[i];
-		else if(cmd->argv[i] && cmd->argv[i][0] != '\0')
-			arg = ft_strjoin3(arg, " ", cmd->argv[i]);
-		++i;
-	}
-	return (echo(&arg, cmd->output, flag, 1));
-}
 
 /*  
 **  echo "$unknown_var" => '\n'
@@ -37,28 +19,30 @@ int	ft_echo(t_cmd *cmd)
 **  echo $HOME =>  /Users/letumany
 **  echo '$HOME' => $HOME
 */
-int	echo(char **str, int fd, int flag, int argc)
+int	echo_(t_cmd *cmd)
 {
-	int	i;
-	int	j;
-	int	ret;
+	int		i;
+	int		flag;
 
-	ret = 0;
-	i = 0;
-	while (i < argc)
+	i = 1;
+	flag = 0;
+	if (cmd->argc > 1)
 	{
-		j = 0;
-		while (str[i][j] != '\0')
+		while (cmd->argv[i] && ft_strcmp(cmd->argv[i], "-n") == 0)
 		{
-			ret += write(fd, &str[i][j], 1);
-			++j;
+			flag = 1;
+			i++;
 		}
-		if (i != argc - 1)
-			ret += write(fd, " ", 1);
-		++i;
+		while (cmd->argv[i])
+		{
+			ft_putstr_fd(cmd->argv[i], cmd->output);
+			if (cmd->argv[i + 1] && cmd->argv[i][0] != '\0')
+				write(cmd->output, " ", 1);
+			i++;
+		}
 	}
-	if (flag == FALSE)
-		write (fd, "\n", 1);
-	free(str[0]);
-	return (ret);
+	if (flag == 0)
+		write(cmd->output, "\n", 1);
+	g_sig.exit_status = 0;
+	return (0);
 }

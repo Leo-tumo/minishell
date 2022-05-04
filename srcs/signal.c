@@ -1,24 +1,23 @@
-#include "../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <letumany@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 15:06:07 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/19 18:39:32 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*
-** ^C signal in parent process
-*/
-void	restore_prompt(int sig)
-{
-	g_sig.exit_status = 130;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	(void)sig;
-}
+#include "../includes/minishell.h"
 
 /*  
 ** ^C signal inside heredoc
 */
 void	doc_ctrl_c(int sig)
 {
-	g_sig.exit_status = 131;
+	g_sig.exit_status = sig + SIG_PLUS;
 	printf("\033[1A");
 	printf("\033[0C");
 	exit(131);
@@ -30,16 +29,17 @@ void	doc_ctrl_c(int sig)
 */
 void	ctrl_c(int sig)
 {
-	g_sig.exit_status = 130;
+	g_sig.exit_status = sig + SIG_PLUS;
 	write(1, "\n", 1);
 	(void)sig;
 }
+
 /*
 ** For ^\ signal inside child process
 */
 void	back_slash(int sig)
 {
-	g_sig.exit_status = 131;
+	g_sig.exit_status = sig + SIG_PLUS;
 	printf("Quit :3\n");
 	(void)sig;
 }
@@ -53,9 +53,10 @@ void	back_slash(int sig)
 void	sig_heredoc(void)
 {
 	g_sig.exit_status = 131;
-	signal(SIGINT, doc_ctrl_c);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_IGN);
 }
+
 /*  
 ** 1 -> for parent
 ** 2 -> for child
@@ -63,10 +64,12 @@ void	sig_heredoc(void)
 */
 void	run_signals(int sig)
 {
-	struct termios term;
+	struct termios	term;
 
 	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHO;
 	term.c_lflag &= ~(ECHOCTL);
+	term.c_lflag |= ECHO;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	if (sig == 1)
 	{
@@ -74,38 +77,11 @@ void	run_signals(int sig)
 		signal(SIGQUIT, SIG_IGN);
 		g_sig.exit_status = 0;
 	}
-	if (sig == 2)
+	else if (sig == 3)
 	{
 		signal(SIGINT, ctrl_c);
 		signal(SIGQUIT, back_slash);
 	}
-	if (sig == 3)
-	{
-		printf("\033[1A");
-		printf("\033[10C");
-		printf("exit\n");
-		exit(0);
-	}
-	if (sig == 4)
+	else if (sig == 4)
 		sig_heredoc();
 }
-
-// FIXME: 👇🏻 Don't wanna delete this for now
-// void sig_handler(int signal)
-// {
-// 	if (signal == SIGINT)
-// 	{
-// 		printf("\033[K");
-// 		// printf("%sAvôeL> %s\n", MAGENTA, WHITE);
-// 	}
-// 	if (rl_on_new_line() == -1) // readline Output the string set to ?
-// 		exit(1);
-// 	rl_replace_line("", 1); // Throws out the string already typed in the prompt.
-// 	rl_redisplay();         // Prevents prompt cursor from moving.
-// }
-
-// void setting_signal()
-// {
-// 	signal(SIGINT, sig_handler); // CTRL + C
-// 	signal(SIGQUIT, SIG_IGN);    // CTRL + /
-// }

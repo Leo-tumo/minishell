@@ -1,21 +1,5 @@
 #include "../includes/minishell.h"
 
-void	print_struct(t_cmd c)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	j = -1;
-	printf("=============INFILES=============\n");
-	while (++j < c.infile_count)
-		printf("INFILE #%d === %s, FD === %d\n", j + 1, c.infile[j], c.input_fd);
-	j = -1;
-	printf("=============OUTFILES=============\n");
-	while (++j < c.outfile_count)
-		printf("OUTFILE #%d === %s, FD === %d, FLAG === %x\n", j + 1, c.outfile[j], c.output_fd, c.output_flag);
-}
-
 void	fill(char **to, char *from)
 {
 	int		len_from;
@@ -51,8 +35,9 @@ char	**first_step(char *str)
 	while (ret[++i] != NULL)
 	{
 		tmp1 = ft_strtrim(ret[i], " ");
-		fill(&ret[i], tmp1);
-		free(tmp1);
+		free(ret[i]);
+		ret[i] = tmp1;
+		// free(tmp1);
 	}
 	return (ret);
 }

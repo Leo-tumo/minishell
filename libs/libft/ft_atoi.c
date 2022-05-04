@@ -6,15 +6,17 @@
 /*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 02:55:18 by letumany          #+#    #+#             */
-/*   Updated: 2022/01/05 21:03:27 by letumany         ###   ########.fr       */
+/*   Updated: 2022/04/06 01:04:55 by letumany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_atoi(const char *str)
+#include "libft.h"
+
+int64_t	ft_atoi(const char *str)
 {
-	int	neg;
-	int	i;
-	int	num;
+	int		neg;
+	int		i;
+	int64_t	num;
 
 	i = 0;
 	neg = 1;

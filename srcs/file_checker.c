@@ -37,41 +37,10 @@ int	is_file(char *path)
 
 	buf = malloc(sizeof(struct stat));
 	k = stat(path, buf);
-
 	free(buf);
 	if (k == -1)
 		return (0);
 	if (buf->st_mode & S_IFREG)
-		return (1);
-	return (0);
-}
-
-int	is_link(char *path)
-{
-	struct stat	*buf;
-	int			k;
-
-	buf = malloc(sizeof(struct stat));
-	k = stat(path, buf);
-	free(buf);
-	if (k == -1)
-		return (0);
-	if (buf->st_mode & S_IFLNK)
-		return (1);
-	return (0);
-}
-
-int	is_socket(char *path)
-{
-	struct stat	*buf;
-	int			k;
-
-	buf = malloc(sizeof(struct stat));
-	k = stat(path, buf);
-	free(buf);
-	if (k == -1)
-		return (0);
-	if (buf->st_mode & S_IFSOCK)
 		return (1);
 	return (0);
 }

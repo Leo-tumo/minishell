@@ -7,13 +7,16 @@ LIBFT_DIR		= libs/libft/
 LIBFT 			= $(LIBFT_DIR)libft.a
 DIR_SRCS	=	./srcs/
 DIR_OBJS	=	./compiled_srcs/
-SRC			=	main.c builtins.c cd.c heredoc.c\
+SRC			=	main.c\
+				pwd.c cd.c env.c\
 				export_utils.c export.c\
-				file_checker.c parcer.c\
-				var_keeper.c utils.c\
-				echo.c signal.c art.c\
+				echo.c exit.c\
+				var_keeper.c heredoc.c\
+				signal.c art.c executor.c\
 				ft_split_our.c parse_output.c\
-				parse_input.c init.c utils1.c
+				parse_input.c init.c pipe.c\
+				exec_gtr.c freer.c\
+				utils.c utils1.c utils2.c utils3.c
 
 
 NORMINETTE	:=	$(shell which norminette)
@@ -70,6 +73,7 @@ fclean:			clean
 				@$(RM) $(NAME)
 				@make fclean -C $(LIBFT_DIR)
 				@tput setaf 928 && printf ""$(NAME)" deleted.\n"
+				@tput setaf 255
 
 re:				fclean all
 
@@ -80,4 +84,9 @@ norm:
 				@$(NORMINETTE) $(DIR_SRCS)
 				@$(NORMINETTE) $(DIR_HEADERS)
 
-.PHONY:			all clean fclean re me debug norm
+push : 
+	@git add .
+	@git commit -m "$m"
+	@git push
+
+.PHONY:			all clean fclean re me debug norm push

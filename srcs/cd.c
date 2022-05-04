@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: letumany <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/15 14:52:42 by letumany          #+#    #+#             */
+/*   Updated: 2022/04/15 14:52:43 by letumany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 /*  
@@ -41,7 +53,7 @@ char	**twod_array(char *str)
 	return (ret);
 }
 
-int	ft_cd(char *path, t_env *head)
+int	cd_(char *path, t_env *head)
 {
 	int		ret;
 	char	cwd[256];
@@ -54,7 +66,10 @@ int	ft_cd(char *path, t_env *head)
 		clean_path = path;
 	ret = chdir(clean_path);
 	if (ret == 0)
-		export_(twod_array(ft_strjoin("OLDPWD=", cwd)), head);
+	{
+		export_v(twod_array(ft_strjoin("PWD=", getcwd(NULL, 0))), head);
+		export_v(twod_array(ft_strjoin("OLDPWD=", cwd)), head);
+	}
 	else
 	{
 		if (errno == 14)
